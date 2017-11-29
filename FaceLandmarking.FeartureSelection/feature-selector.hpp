@@ -1,13 +1,28 @@
 #pragma once
 
-#include <opencv2/core.hpp>
+#include "image-feature-selector.hpp"
+#include "mask-feature-selector.hpp"
 
 namespace FaceLandmarking::FeatureSelection
 {
 	class FeatureSelector
 	{
+	private:
+		ImageFeatureSelector imageFeatrues;
+		MaskFeatureSelection maskFeatures;
+
 	public:
-		virtual void setImage(const cv::Mat& image) = 0;
-		virtual void selectFeatures(cv::Mat *features, int x, int y) const = 0;
+		void setImage(const cv::Mat& image)
+		{
+			imageFeatrues.setImage(image);
+		}
+
+		void selectFeatures(const FaceMask& mask, int maskPoint, std::vector<float>& features)
+		{
+			auto[x, y] = mask[maskPoint];
+
+			imageFeatrues.selectFeatures(x, y, features);
+			maskFeatures.selectFeatures(mask, maskPoint, features);
+		}
 	};
 }

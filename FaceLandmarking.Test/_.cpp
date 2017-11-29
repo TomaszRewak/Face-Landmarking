@@ -9,6 +9,9 @@
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-avg.hpp"
 #include "../FaceLandmarking.Learning/average-face.hpp"
+#include "../FaceLandmarking.Learning/feature-extraction.hpp"
+#include "../FaceLandmarking.FeartureSelection/image-feature-selector.hpp"
+#include "../FaceLandmarking.FeartureSelection/test/FilterApplier.hpp"
 #include "ui/mask-ui.hpp"
 
 using namespace cv;
@@ -19,15 +22,23 @@ int main(int argc, char** argv)
 {
 	auto dataPath = "D:\\Programy\\FaceLandmarking\\Data";
 
+	Learning::FeatureExtraction featureExtraction(dataPath);
+	featureExtraction.compute();
+	
+	return 0;
+
 	Learning::AverageFace averageFaceLoader(dataPath);
 	FaceMask averageMask = averageFaceLoader.load();
 
-
-
-
 	Reader::DatasetReader reader("D:\\Programy\\FaceLandmarking\\Data");
+	FeatureSelection::ImageFeatureSelector featureSelector;
+	FeatureSelection::Test::FilterApplier filterApplier;
 
 	namedWindow("example", WINDOW_AUTOSIZE);
+	namedWindow("h", WINDOW_AUTOSIZE);
+	namedWindow("s", WINDOW_AUTOSIZE);
+	namedWindow("v", WINDOW_AUTOSIZE);
+	namedWindow("filter", WINDOW_AUTOSIZE);
 
 	while (true)
 	{
@@ -40,13 +51,22 @@ int main(int argc, char** argv)
 			auto normalizedMask = MaskTransformations::MaskNormalizer::normalizeMask(example.mask, Math::Point<float>(50, 50), Math::Size<float>(100, 100));
 			auto averagenormalizedMask = MaskTransformations::MaskNormalizer::normalizeMask(averageMask, example.mask.faceCenter(), example.mask.faceSize());
 
-			Mat exampleImage = example.image;
+			Mat exampleImage;
+			example.image.copyTo(exampleImage);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, example.mask);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, normalizedMask);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, averageMask);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, averagenormalizedMask, cv::Scalar(0, 0, 255));
-
 			imshow("example", exampleImage);
+
+			featureSelector.setImage(example.image);
+			imshow("h", featureSelector.hsv[0]);
+			imshow("s", featureSelector.hsv[1]);
+			imshow("v", featureSelector.hsv[2]);
+
+			Mat filteredImage;
+			filteredImage = filterApplier.applyFilter(featureSelector.hsv[0], 2);
+			imshow("filter", filteredImage);
 		}
 		else if (key >= 0)
 			break;
@@ -113,26 +133,3 @@ int main(int argc, char** argv)
 	//
 	//return 0;
 }
-
-//int main(int argc, char** argv)
-//{
-//	Mat image;
-//	image = imread("Lenna.png", IMREAD_COLOR);
-//	if (image.empty())
-//	{
-//		cout << "Could not open or find the image" << std::endl;
-//		return -1;
-//	}
-//
-//	Mat edges;
-//	Canny(image, edges, 100, 200);
-//
-//	namedWindow("1", WINDOW_AUTOSIZE);
-//	imshow("1", image);
-//
-//	namedWindow("2", WINDOW_AUTOSIZE);
-//	imshow("2", edges);
-//
-//	waitKey(0);
-//	return 0;
-//}

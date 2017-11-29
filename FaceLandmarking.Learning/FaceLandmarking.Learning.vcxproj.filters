@@ -6,5 +6,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="learn-algorithm.hpp" />
+    <ClInclude Include="feature-extraction.hpp" />
+    <ClInclude Include="decision.hpp" />
   </ItemGroup>
 </Project>

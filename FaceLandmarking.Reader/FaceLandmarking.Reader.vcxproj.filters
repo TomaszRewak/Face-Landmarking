@@ -7,6 +7,7 @@
     <ClInclude Include="readers\mask-file.hpp" />
     <ClInclude Include="readers\image-reader.hpp" />
     <ClInclude Include="mask-io.hpp" />
+    <ClInclude Include="features-io.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />

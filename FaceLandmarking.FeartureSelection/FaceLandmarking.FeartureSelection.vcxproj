@@ -124,8 +124,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Implementation\simple-feature-selector.hpp" />
     <ClInclude Include="feature-selector.hpp" />
+    <ClInclude Include="filters\basic-filter.hpp" />
+    <ClInclude Include="image-feature-selector.hpp" />
+    <ClInclude Include="test\FilterApplier.hpp" />
+    <ClInclude Include="mask-feature-selector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />

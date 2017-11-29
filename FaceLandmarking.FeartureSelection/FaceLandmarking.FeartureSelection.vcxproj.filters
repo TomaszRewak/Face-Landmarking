@@ -6,10 +6,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="feature-selector.hpp" />
-    <ClInclude Include="Implementation\simple-feature-selector.hpp" />
+    <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test\_.cpp" />
+    <ClInclude Include="image-feature-selector.hpp" />
+    <ClInclude Include="filters\basic-filter.hpp" />
+    <ClInclude Include="test\FilterApplier.hpp" />
+    <ClInclude Include="mask-feature-selector.hpp" />
+    <ClInclude Include="feature-selector.hpp" />
   </ItemGroup>
 </Project>

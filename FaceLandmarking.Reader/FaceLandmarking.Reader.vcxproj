@@ -118,6 +118,7 @@
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="features-io.hpp" />
     <ClInclude Include="learning-example.hpp" />
     <ClInclude Include="mask-io.hpp" />
     <ClInclude Include="readers\image-reader.hpp" />

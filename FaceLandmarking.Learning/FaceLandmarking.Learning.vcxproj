@@ -119,6 +119,8 @@
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="decision.hpp" />
+    <ClInclude Include="feature-extraction.hpp" />
     <ClInclude Include="learn-algorithm.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
