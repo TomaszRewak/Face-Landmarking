@@ -6,12 +6,13 @@
 
 #include "../FaceLandmarking.Reader/dataset-reader.hpp"
 #include "../FaceLandmarking.Reader/mask-io.hpp"
+#include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-avg.hpp"
 #include "../FaceLandmarking.Learning/average-face.hpp"
-#include "../FaceLandmarking.Learning/feature-extraction.hpp"
-#include "../FaceLandmarking.FeartureSelection/image-feature-selector.hpp"
-#include "../FaceLandmarking.FeartureSelection/test/FilterApplier.hpp"
+#include "../FaceLandmarking.Learning/feature-processing.hpp"
+#include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
+#include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
 #include "ui/mask-ui.hpp"
 
 using namespace cv;
@@ -22,17 +23,18 @@ int main(int argc, char** argv)
 {
 	auto dataPath = "D:\\Programy\\FaceLandmarking\\Data";
 
-	Learning::FeatureExtraction featureExtraction(dataPath);
-	featureExtraction.compute();
-	
-	return 0;
+	//Learning::FeatureProcessing featureExtraction(dataPath);
+	//featureExtraction.compute();
+	//
+	//return 0;
 
 	Learning::AverageFace averageFaceLoader(dataPath);
 	FaceMask averageMask = averageFaceLoader.load();
 
 	Reader::DatasetReader reader("D:\\Programy\\FaceLandmarking\\Data");
-	FeatureSelection::ImageFeatureSelector featureSelector;
-	FeatureSelection::Test::FilterApplier filterApplier;
+	FeatureExtraction::ImageFeatureExtractor featureSelector;
+	FeatureExtraction::Test::FilterApplier filterApplier;
+	Reader::Validation::ImageColorTest colorTest;
 
 	namedWindow("example", WINDOW_AUTOSIZE);
 	namedWindow("h", WINDOW_AUTOSIZE);
@@ -42,21 +44,22 @@ int main(int argc, char** argv)
 
 	while (true)
 	{
-		auto key = waitKey(25);
-
-		if (key == 32 && reader.hasNext()) {
+		if (reader.hasNext()) {
 			auto example = reader.loadNext();
 			example.scaleFace(200, 200);
 
+			if (colorTest.isBackAndWhite(example.image))
+				continue;
+
 			auto normalizedMask = MaskTransformations::MaskNormalizer::normalizeMask(example.mask, Math::Point<float>(50, 50), Math::Size<float>(100, 100));
-			auto averagenormalizedMask = MaskTransformations::MaskNormalizer::normalizeMask(averageMask, example.mask.faceCenter(), example.mask.faceSize());
+			auto averageNormalizedMask = MaskTransformations::MaskNormalizer::normalizeMask(averageMask, example.mask.faceCenter(), example.mask.faceSize());
 
 			Mat exampleImage;
 			example.image.copyTo(exampleImage);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, example.mask);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, normalizedMask);
 			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, averageMask);
-			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, averagenormalizedMask, cv::Scalar(0, 0, 255));
+			exampleImage = Test::UI::MaskUI::drawMask(exampleImage, averageNormalizedMask, cv::Scalar(0, 0, 255));
 			imshow("example", exampleImage);
 
 			featureSelector.setImage(example.image);
@@ -68,7 +71,10 @@ int main(int argc, char** argv)
 			filteredImage = filterApplier.applyFilter(featureSelector.hsv[0], 2);
 			imshow("filter", filteredImage);
 		}
-		else if (key >= 0)
+
+		auto key = waitKey(250000);
+		
+		if (key != 32)
 			break;
 	}
 

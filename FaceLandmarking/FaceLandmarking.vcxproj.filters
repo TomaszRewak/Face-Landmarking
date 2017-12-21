@@ -9,5 +9,6 @@
     <ClInclude Include="math\point.hpp" />
     <ClInclude Include="math\size.hpp" />
     <ClInclude Include="mask-transformation\mask-normalizer.hpp" />
+    <ClInclude Include="mask-transformation\mask-interpolation.hpp" />
   </ItemGroup>
 </Project>

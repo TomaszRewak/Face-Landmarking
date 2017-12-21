@@ -6,9 +6,9 @@
 
 #include "filters\basic-filter.hpp"
 
-namespace FaceLandmarking::FeatureSelection
+namespace FaceLandmarking::FeatureExtraction
 {
-	class ImageFeatureSelector
+	class ImageFeatureExtractor
 	{
 	public: // private
 		cv::Mat baseImage;
@@ -24,7 +24,7 @@ namespace FaceLandmarking::FeatureSelection
 				for (size_t y = 0; y < hue.rows; y++)
 				{
 					auto& pixel = hue.at<uchar>(y, x);
-					pixel = (pixel + 90) % 179;
+					pixel = (pixel + 128) % 256;
 				}
 			}
 		}

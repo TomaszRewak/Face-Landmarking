@@ -8,6 +8,8 @@
     <ClInclude Include="readers\image-reader.hpp" />
     <ClInclude Include="mask-io.hpp" />
     <ClInclude Include="features-io.hpp" />
+    <ClInclude Include="validation\image-color-test.hpp" />
+    <ClInclude Include="nn-oi.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />

@@ -9,10 +9,11 @@
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="image-feature-selector.hpp" />
     <ClInclude Include="filters\basic-filter.hpp" />
     <ClInclude Include="test\FilterApplier.hpp" />
-    <ClInclude Include="mask-feature-selector.hpp" />
-    <ClInclude Include="feature-selector.hpp" />
+    <ClInclude Include="feature-extractor.hpp" />
+    <ClInclude Include="image-feature-extractor.hpp" />
+    <ClInclude Include="mask-feature-extractor.hpp" />
+    <ClInclude Include="decision.hpp" />
   </ItemGroup>
 </Project>

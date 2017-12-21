@@ -2,7 +2,7 @@
 
 #include "../filters/basic-filter.hpp"
 
-namespace FaceLandmarking::FeatureSelection::Test
+namespace FaceLandmarking::FeatureExtraction::Test
 {
 	class FilterApplier
 	{

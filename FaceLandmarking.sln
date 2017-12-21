@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking", "FaceLandmarking\FaceLandmarking.vcxproj", "{EBC9C140-CB20-43E2-8A0D-135E5D6B5663}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.FeartureSelection", "FaceLandmarking.FeartureSelection\FaceLandmarking.FeartureSelection.vcxproj", "{6DFBF8CF-7C14-43EF-B46A-2485A91B747B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.FeatureExtraction", "FaceLandmarking.FeatureExtraction\FaceLandmarking.FeatureExtraction.vcxproj", "{6DFBF8CF-7C14-43EF-B46A-2485A91B747B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.Test", "FaceLandmarking.Test\FaceLandmarking.Test.vcxproj", "{74A63710-75E1-4BDC-A035-7BC721E769BD}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -16,6 +16,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.Learning", "FaceLandmarking.Learning\FaceLandmarking.Learning.vcxproj", "{CF8236E4-22DB-41C8-B9DB-2D64989989FF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.Reader", "FaceLandmarking.Reader\FaceLandmarking.Reader.vcxproj", "{D530BC7E-DD0B-4647-B67F-2F3ACB142F74}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FaceLandmarking.LearningProcess", "FaceLandmarking.LearningProcess\FaceLandmarking.LearningProcess.pyproj", "{0DF252F5-2CE2-464A-B470-F20574343F46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,12 @@ Global
 		{D530BC7E-DD0B-4647-B67F-2F3ACB142F74}.Release|x64.Build.0 = Release|x64
 		{D530BC7E-DD0B-4647-B67F-2F3ACB142F74}.Release|x86.ActiveCfg = Release|Win32
 		{D530BC7E-DD0B-4647-B67F-2F3ACB142F74}.Release|x86.Build.0 = Release|Win32
+		{0DF252F5-2CE2-464A-B470-F20574343F46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DF252F5-2CE2-464A-B470-F20574343F46}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0DF252F5-2CE2-464A-B470-F20574343F46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0DF252F5-2CE2-464A-B470-F20574343F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DF252F5-2CE2-464A-B470-F20574343F46}.Release|x64.ActiveCfg = Release|Any CPU
+		{0DF252F5-2CE2-464A-B470-F20574343F46}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

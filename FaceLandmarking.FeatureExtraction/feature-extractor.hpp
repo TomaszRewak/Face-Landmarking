@@ -1,15 +1,15 @@
 #pragma once
 
-#include "image-feature-selector.hpp"
-#include "mask-feature-selector.hpp"
+#include "image-feature-extractor.hpp"
+#include "mask-feature-extractor.hpp"
 
-namespace FaceLandmarking::FeatureSelection
+namespace FaceLandmarking::FeatureExtraction
 {
-	class FeatureSelector
+	class FeatureExtractor
 	{
 	private:
-		ImageFeatureSelector imageFeatrues;
-		MaskFeatureSelection maskFeatures;
+		ImageFeatureExtractor imageFeatrues;
+		MaskFeatureExtractor maskFeatures;
 
 	public:
 		void setImage(const cv::Mat& image)

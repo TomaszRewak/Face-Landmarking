@@ -31,7 +31,7 @@ namespace FaceLandmarking::Reader
 			for (auto decision : decisions)
 				file << decision << " ";
 
-			file << std::endl;
+			file << "\n";
 			file.close();
 		}
 	};

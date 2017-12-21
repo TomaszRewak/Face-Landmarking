@@ -3,7 +3,7 @@
 #include <opencv2/core.hpp>
 #include <vector>
 
-namespace FaceLandmarking::FeatureSelection::Filters
+namespace FaceLandmarking::FeatureExtraction::Filters
 {
 	const std::vector<cv::Mat> BasicFilterSeeds{
 		cv::Mat{
@@ -19,20 +19,20 @@ namespace FaceLandmarking::FeatureSelection::Filters
 			0, 0, 0,
 			-1, -2, -1
 		},
-		cv::Mat{
-			0, 1, 0, -1, 0,
-			1, 2, 0, -2, -1,
-			2, 4, 0, -4, -2,
-			1, 2, 0, -2, -1,
-			0, 1, 0, -1, 0
-		},
-			cv::Mat{
-			0, 1, 2, 1, 0,
-			1, 2, 4, 2, 1,
-			0, 0, 0, 0, 0,
-			0, -1, -2, -1, 0,
-			-1, -2, -4, -2, -1,
-		}
+		//cv::Mat{
+		//	0, 1, 0, -1, 0,
+		//	1, 2, 0, -2, -1,
+		//	2, 4, 0, -4, -2,
+		//	1, 2, 0, -2, -1,
+		//	0, 1, 0, -1, 0
+		//},
+		//cv::Mat{
+		//	0, 1, 2, 1, 0,
+		//	1, 2, 4, 2, 1,
+		//	0, 0, 0, 0, 0,
+		//	0, -1, -2, -1, 0,
+		//	-1, -2, -4, -2, -1,
+		//}
 	};
 
 	class BasicFiler
