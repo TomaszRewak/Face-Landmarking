@@ -10,7 +10,7 @@ namespace FaceLandmarking::FeatureExtraction
 {
 	class ImageFeatureExtractor
 	{
-	public: // private
+	private:
 		cv::Mat baseImage;
 		cv::Mat blur;
 		cv::Mat color;

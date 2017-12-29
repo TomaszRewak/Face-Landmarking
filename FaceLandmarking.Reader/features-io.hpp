@@ -10,21 +10,26 @@ namespace FaceLandmarking::Reader
 	class FeaturesIO
 	{
 	private:
-		fs::path basePath;
+		std::fstream file;
 
 	public:
-		FeaturesIO(fs::path basePath) :
-			basePath(basePath)
+		FeaturesIO() 
 		{ }
 
-		void save(size_t maskPoint, const std::vector<float>& features, const std::vector<float>& decisions) const
+		void open(size_t maskPoint, fs::path basePath)
 		{
-			fs::create_directory(basePath);
 			fs::path filePath = basePath / std::to_string(maskPoint);
 
-			std::fstream file;
-			file.open(filePath.string(), std::ofstream::out | std::ofstream::app);
+			file.open(filePath.string(), std::ofstream::out);
+		}
 
+		void close()
+		{
+			file.close();
+		}
+
+		void add(const std::vector<float>& features, const std::vector<float>& decisions)
+		{
 			for (auto feature : features)
 				file << feature << " ";
 
@@ -32,7 +37,6 @@ namespace FaceLandmarking::Reader
 				file << decision << " ";
 
 			file << "\n";
-			file.close();
 		}
 	};
 }

@@ -125,12 +125,16 @@
   <ItemGroup>
     <ClInclude Include="features-io.hpp" />
     <ClInclude Include="learning-example.hpp" />
+    <ClInclude Include="mask-description-io.hpp" />
     <ClInclude Include="mask-io.hpp" />
+    <ClInclude Include="mask-limits-io.hpp" />
     <ClInclude Include="nn-oi.hpp" />
     <ClInclude Include="readers\image-reader.hpp" />
     <ClInclude Include="readers\mask-file.hpp" />
     <ClInclude Include="readers\mask-reader.hpp" />
     <ClInclude Include="dataset-reader.hpp" />
+    <ClInclude Include="readers\threshold-reader.hpp" />
+    <ClInclude Include="tree-io.hpp" />
     <ClInclude Include="validation\image-color-test.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

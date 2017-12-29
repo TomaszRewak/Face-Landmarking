@@ -5,5 +5,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ui\mask-ui.hpp" />
+    <ClInclude Include="camera.hpp" />
+    <ClInclude Include="examples.hpp" />
   </ItemGroup>
 </Project>

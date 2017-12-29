@@ -132,6 +132,8 @@
     <ClCompile Include="_.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="camera.hpp" />
+    <ClInclude Include="examples.hpp" />
     <ClInclude Include="ui\mask-ui.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -9,34 +9,51 @@ namespace FaceLandmarking::Test::UI
 	class MaskUI
 	{
 	public:
-		static cv::Mat drawMask(const cv::Mat& image, const FaceMask& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
+		static void drawMask(const cv::Mat& image, const FaceMask& mask, const MaskInfo::MaskDescription& maskDescription, cv::Scalar color = cv::Scalar(255, 255, 0))
 		{
-			cv::Mat example(image);
-
-			for (size_t pointIndex = 0; pointIndex < mask.size(); pointIndex++)
+			for (auto& shape : maskDescription.shapes)
 			{
-				const auto& point = mask[pointIndex];
-				bool isMouthPoint = pointIndex >= 58 && pointIndex <= 113;
+				if (!shape.visible)
+					continue;
+			
+				int pointsNumber = shape.points.size() - (shape.closed ? 0 : 1);
+			
+				for (size_t pointIndex = 0; pointIndex < pointsNumber; pointIndex++)
+				{
+					const auto& point = mask[shape.point(pointIndex)];
+					const auto& nextPoint = mask[shape.point(pointIndex + 1)];
+			
+					cv::line(
+						image,
+						cv::Point(point.x, point.y),
+						cv::Point(nextPoint.x, nextPoint.y),
+						color / 2
+					);
+				}
+			}
 
-				cv::Scalar color_mouth = cv::Scalar(255, 0, 0);
+			for (size_t pointIndex = 0; pointIndex <= mask.size(); pointIndex++)
+			{
+				if (!maskDescription.points[pointIndex].inUse)
+					continue;
+
+				const auto& point = mask[pointIndex];
 
 				cv::circle(
-					example,
+					image,
 					cv::Point(point.x, point.y),
 					2,
-					isMouthPoint ? color : color / 2,
+					color,
 					1);
 
 				//cv::putText(
-				//	example,
+				//	image,
 				//	std::to_string(pointIndex),
 				//	cv::Point(point.x, point.y),
 				//	cv::FONT_HERSHEY_SIMPLEX,
 				//	0.3,
 				//	cv::Scalar(125, 125, 0));
 			}
-
-			return example;
 		}
 	};
 }

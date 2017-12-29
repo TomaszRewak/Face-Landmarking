@@ -2,7 +2,7 @@
 
 #include "../face-mask.hpp"
 
-namespace FaceLandmarking::MaskTransformations
+namespace FaceLandmarking::MaskTransformation
 {
 	class MaskNormalizer
 	{

@@ -7,9 +7,8 @@ namespace FaceLandmarking::FeatureExtraction::Test
 	class FilterApplier
 	{
 	public:
-		static cv::Mat applyFilter(const cv::Mat& baseImage, int filterIndex)
+		static void applyFilter(cv::Mat& filteredImage, const cv::Mat& baseImage, int filterIndex)
 		{
-			cv::Mat filteredImage;
 			baseImage.copyTo(filteredImage);
 
 			Filters::BasicFiler filter(baseImage, filterIndex);
@@ -23,8 +22,6 @@ namespace FaceLandmarking::FeatureExtraction::Test
 					filteredImage.at<uchar>(r, c) = std::max(0., std::min(255., 125 + 50 * (filterValue + 0.5)));
 				}
 			}
-
-			return filteredImage;
 		}
 	};
 }

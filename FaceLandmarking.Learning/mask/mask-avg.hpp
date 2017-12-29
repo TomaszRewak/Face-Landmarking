@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../face-mask.hpp"
+#include "../../FaceLandmarking/face-mask.hpp"
 
-namespace FaceLandmarking::MaskTransformations
+namespace FaceLandmarking::Learning::Mask
 {
 	class AverageMask
 	{

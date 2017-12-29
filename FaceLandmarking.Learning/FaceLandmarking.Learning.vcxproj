@@ -120,12 +120,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="average-face.hpp" />
+    <ClCompile Include="average-mask-processing.hpp" />
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="feature-processing.hpp" />
+    <ClInclude Include="mask-limits-processing.hpp" />
     <ClInclude Include="mask-regression.hpp" />
+    <ClInclude Include="mask\mask-avg.hpp" />
+    <ClInclude Include="mask\threshold-builder.hpp" />
+    <ClInclude Include="regressors\nn-regressor.hpp" />
+    <ClInclude Include="regressors\tree-regressor.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

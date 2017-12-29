@@ -10,6 +10,10 @@
     <ClInclude Include="features-io.hpp" />
     <ClInclude Include="validation\image-color-test.hpp" />
     <ClInclude Include="nn-oi.hpp" />
+    <ClInclude Include="tree-io.hpp" />
+    <ClInclude Include="mask-description-io.hpp" />
+    <ClInclude Include="mask-limits-io.hpp" />
+    <ClInclude Include="readers\threshold-reader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />

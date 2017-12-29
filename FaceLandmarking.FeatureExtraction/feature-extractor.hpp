@@ -22,7 +22,7 @@ namespace FaceLandmarking::FeatureExtraction
 			auto[x, y] = mask[maskPoint];
 
 			imageFeatrues.selectFeatures(x, y, features);
-			maskFeatures.selectFeatures(mask, maskPoint, features);
+			//maskFeatures.selectFeatures(mask, maskPoint, features);
 		}
 	};
 }

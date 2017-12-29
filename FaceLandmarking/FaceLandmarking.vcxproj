@@ -128,15 +128,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="mask-transformation\mask-avg.hpp" />
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="face-mask.hpp" />
+    <ClInclude Include="mask-info\mask-description.hpp" />
+    <ClInclude Include="mask-info\mask-limits.hpp" />
+    <ClInclude Include="mask-info\mask-point.hpp" />
+    <ClInclude Include="mask-info\mask-shape.hpp" />
+    <ClInclude Include="mask-transformation\mask-fixer.hpp" />
     <ClInclude Include="mask-transformation\mask-interpolation.hpp" />
     <ClInclude Include="mask-transformation\mask-normalizer.hpp" />
+    <ClInclude Include="mask-transformation\mask-offset.hpp" />
+    <ClInclude Include="mask-transformation\mask-transition.hpp" />
+    <ClInclude Include="math\angle.hpp" />
     <ClInclude Include="math\point.hpp" />
     <ClInclude Include="math\size.hpp" />
+    <ClInclude Include="math\vector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
