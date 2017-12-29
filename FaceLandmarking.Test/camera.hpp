@@ -39,7 +39,7 @@ int camera_test()
 	MaskInfo::MaskLimits maskLimits = maskLimitsProcessing.load();
 
 	//averageMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Point<float>(300, 300), Math::Size<float>(200, 200));
-	averageMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Point<float>(120, 350), Math::Size<float>(200, 200));
+	averageMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Point<float>(200, 350), Math::Size<float>(200, 200));
 
 	auto faceCascade = cv::CascadeClassifier("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_frontalface_default.xml");
 	auto eyeCascade = cv::CascadeClassifier("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_eye.xml");
@@ -81,7 +81,7 @@ int camera_test()
 
 		featureExtractor.setImage(frame);
 
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 10; i++)
 		{
 			maskRegression.adjust(mask);
 			maskFixer.fix(mask);
