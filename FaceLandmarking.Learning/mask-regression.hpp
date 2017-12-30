@@ -38,6 +38,7 @@ namespace FaceLandmarking::Learning
 					continue;
 
 				Math::Vector<float> pointOffset;
+				float factor = 0;
 
 				for (int x = -1; x <= 1; x++)
 					for (int y = -1; y <= 1; y++)
@@ -45,10 +46,12 @@ namespace FaceLandmarking::Learning
 						features.clear();
 						featureExtractor.selectFeatures(mask[i].x + x, mask[i].y + y, features);
 
-						pointOffset = pointOffset + regressors.getOffset(i, features);
+						float localFactor = 1. / (std::abs(x) + std::abs(y) + 2);
+						pointOffset += regressors.getOffset(i, features) * localFactor;
+						factor += localFactor;
 					}
 
-				pointOffset = pointOffset / 9;
+				pointOffset = pointOffset / factor;
 
 				maskOffset[i] = pointOffset;
 			}
