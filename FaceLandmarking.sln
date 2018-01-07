@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.Reader", "F
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FaceLandmarking.LearningProcess", "FaceLandmarking.LearningProcess\FaceLandmarking.LearningProcess.pyproj", "{0DF252F5-2CE2-464A-B470-F20574343F46}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceLandmarking.FaceLocator", "FaceLandmarking.FaceLocator\FaceLandmarking.FaceLocator.vcxproj", "{6CFE0E06-379C-48EA-8CC3-36D88220D145}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,16 @@ Global
 		{0DF252F5-2CE2-464A-B470-F20574343F46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DF252F5-2CE2-464A-B470-F20574343F46}.Release|x64.ActiveCfg = Release|Any CPU
 		{0DF252F5-2CE2-464A-B470-F20574343F46}.Release|x86.ActiveCfg = Release|Any CPU
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Debug|x64.ActiveCfg = Debug|x64
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Debug|x64.Build.0 = Debug|x64
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Debug|x86.ActiveCfg = Debug|Win32
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Debug|x86.Build.0 = Debug|Win32
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Release|Any CPU.ActiveCfg = Release|Win32
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Release|x64.ActiveCfg = Release|x64
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Release|x64.Build.0 = Release|x64
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Release|x86.ActiveCfg = Release|Win32
+		{6CFE0E06-379C-48EA-8CC3-36D88220D145}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

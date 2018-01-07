@@ -37,7 +37,7 @@ namespace FaceLandmarking::MaskTransformation
 			return 0;
 		}
 
-		void fixAngle(FaceMask &mask)
+		void fixAngle(const FaceMask &mask)
 		{
 			for (size_t shapeIndex = 0; shapeIndex < maskDescription.shapes.size(); shapeIndex++)
 			{
@@ -75,7 +75,7 @@ namespace FaceLandmarking::MaskTransformation
 			}
 		}
 
-		void fixDistances(FaceMask &mask)
+		void fixDistances(const FaceMask &mask)
 		{
 			for (size_t shapeIndex = 0; shapeIndex < maskDescription.shapes.size(); shapeIndex++)
 			{
@@ -106,7 +106,7 @@ namespace FaceLandmarking::MaskTransformation
 			}
 		}
 
-		void fixFloatingPoints(FaceMask &mask)
+		void fixFloatingPoints(const FaceMask &mask)
 		{
 			for (size_t shapeIndex = 0; shapeIndex < maskDescription.shapes.size(); shapeIndex++)
 			{
@@ -169,9 +169,9 @@ namespace FaceLandmarking::MaskTransformation
 			}
 		}
 
-		void floatPoints(FaceMask &mask)
+		void floatPoints(const FaceMask &mask)
 		{
-			for (int i = 0; i <= mask.size(); i++)
+			for (int i = 0; i < mask.size(); i++)
 				maskOffset[i] += maskDescription.points[i].defaultDirection;
 		}
 
@@ -181,7 +181,7 @@ namespace FaceLandmarking::MaskTransformation
 			maskLimits(maskLimits)
 		{ }
 
-		void fix(FaceMask &mask)
+		void compute(const FaceMask &mask)
 		{
 			maskOffset.clear();
 			maskOffset.resize(maskDescription.points.size(), Math::Vector<float>(0, 0));
@@ -190,8 +190,12 @@ namespace FaceLandmarking::MaskTransformation
 			fixDistances(mask);
 			fixFloatingPoints(mask);
 			floatPoints(mask);
+		}
 
-			mask += maskOffset;
+		void apply(FaceMask& mask, float factor = 1)
+		{
+			for (size_t i = 0; i < mask.size(); i++)
+				mask[i] += maskOffset[i] * factor;
 		}
 	};
 }

@@ -18,5 +18,6 @@
     <ClInclude Include="math\angle.hpp" />
     <ClInclude Include="mask-info\mask-point.hpp" />
     <ClInclude Include="mask-transformation\mask-transition.hpp" />
+    <ClInclude Include="math\rect.hpp" />
   </ItemGroup>
 </Project>

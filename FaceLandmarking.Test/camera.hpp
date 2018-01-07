@@ -19,7 +19,10 @@
 #include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
+#include "../FaceLandmarking.FaceLocator/face-finder.hpp"
+#include "../FaceLandmarking.FaceLocator/mask-frame.hpp"
 #include "ui/mask-ui.hpp"
+#include "ui/face-ui.hpp"
 
 using namespace cv;
 using namespace std;
@@ -28,6 +31,7 @@ using namespace FaceLandmarking;
 int camera_test()
 {
 	auto dataPath = experimental::filesystem::path("D:\\Programy\\FaceLandmarking\\Data");
+	auto videoPath = "D:/Programy/FaceLandmarking/Data/examples/ja2.mp4";
 
 	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / "mask-description.mask");
 	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
@@ -38,14 +42,10 @@ int camera_test()
 	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath);
 	MaskInfo::MaskLimits maskLimits = maskLimitsProcessing.load();
 
-	//averageMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Point<float>(300, 300), Math::Size<float>(200, 200));
-	averageMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Point<float>(200, 350), Math::Size<float>(200, 200));
+	FaceLocator::FaceFinder faceFinder("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_frontalface_default.xml");
 
-	auto faceCascade = cv::CascadeClassifier("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_frontalface_default.xml");
-	auto eyeCascade = cv::CascadeClassifier("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_eye.xml");
-	auto mouthCascade = cv::CascadeClassifier("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_smile.xml");
-
-	auto mask = averageMask;
+	FaceLocator::MaskFrame maskFrame(averageMask, maskDescription, Math::Size<float>(200, 200));
+	std::vector<FaceMask> masks;
 
 	FeatureExtraction::ImageFeatureExtractor featureExtractor;
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
@@ -54,14 +54,14 @@ int camera_test()
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
 	//VideoCapture videoCapture(0);
-	VideoCapture videoCapture("D:/Programy/FaceLandmarking/Data/examples/ja3.mp4");
+	VideoCapture videoCapture(videoPath);
 	if (!videoCapture.isOpened())
 		return -1;
 
 	namedWindow("real", WINDOW_AUTOSIZE);
 
 	Mat frame;
-	Mat gray;
+	Mat scaledFrame;
 	Mat imageWithMasks;
 
 	for (;;)
@@ -69,55 +69,74 @@ int camera_test()
 		videoCapture >> frame;
 
 		if (frame.empty()) {
-			videoCapture = VideoCapture("D:/Programy/FaceLandmarking/Data/examples/ja3.mp4");
+			videoCapture = VideoCapture(videoPath);
 			continue;
 		}
 
-		Mat frame2;
-		cv::rotate(frame, frame2, cv::ROTATE_90_COUNTERCLOCKWISE);
-		frame = frame2;
-		resize(frame, frame2, Size(350, 600));
-		frame = frame2;
-
-		featureExtractor.setImage(frame);
-
-		for (int i = 0; i < 10; i++)
 		{
-			maskRegression.adjust(mask);
-			maskFixer.fix(mask);
+			Mat frame2;
+			cv::rotate(frame, frame2, cv::ROTATE_90_COUNTERCLOCKWISE);
+			frame = frame2;
+			resize(frame, frame2, Size(350, 600));
+			frame = frame2;
 		}
 
+		//{
+		//	Mat frame2;
+		//	resize(frame, frame2, Size(1200, 800));
+		//	frame = frame2;
+		//}
+
 		frame.copyTo(imageWithMasks);
-		Test::UI::MaskUI::drawMask(imageWithMasks, mask, maskDescription);
 
-		////
+		for (auto& mask : masks)
+		{
+			float scale = maskFrame.getScale(mask);
 
-		//cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
-		//
-		//std::vector<cv::Rect> faces;
-		//faceCascade.detectMultiScale(gray, faces, 1.3, 5);
-		//for (auto& face : faces)
-		//	cv::rectangle(imageWithMasks, face, cv::Scalar(255, 0, 0), 2);
-		//
-		//std::vector<cv::Rect> eyes;
-		//eyeCascade.detectMultiScale(gray, eyes, 1.3, 5);
-		//for (auto& eye : eyes)
-		//	cv::rectangle(imageWithMasks, eye, cv::Scalar(0, 255, 0), 2);
-		//
-		//std::vector<cv::Rect> mouths;
-		//mouthCascade.detectMultiScale(gray, mouths, 1.3, 15);
-		//for (auto& mouth : mouths)
-		//	cv::rectangle(imageWithMasks, mouth, cv::Scalar(0, 0, 255), 2);
+			FaceMask normalizedMask = MaskTransformation::MaskTransition::scaleRelativeTo00(mask, scale);
+			resize(frame, scaledFrame, cv::Size(frame.cols * scale, frame.rows * scale));
 
-		////
+			featureExtractor.setImage(scaledFrame);
+
+			for (int i = 0; i < 15; i++)
+			{
+				maskRegression.compute(normalizedMask);
+				maskRegression.apply(normalizedMask);
+				maskRegression.apply(mask, 1 / scale);
+
+				maskFixer.compute(normalizedMask);
+				maskFixer.apply(normalizedMask);
+				maskFixer.apply(mask, 1 / scale);
+			}
+
+			Test::UI::MaskUI::drawMask(imageWithMasks, mask, maskDescription);
+		}
+
+		for (auto& face : faceFinder)
+			Test::UI::FaceUI::drawFace(imageWithMasks, face);
 
 		imshow("real", imageWithMasks);
 
 		auto key = waitKey(30);
-		if (key == 32)
-			mask = averageMask;
-		else if (key == 27)
+		switch (key)
+		{
+		case 32: // space
+		{
+			masks.clear();
+
+			faceFinder.locate(frame);
+
+			for (auto rect : faceFinder)
+			{
+				FaceMask mask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, rect);
+				masks.push_back(mask);
+			}
+
+			break;
+		}
+		case 27: // escape
 			return 0;
+		}
 	}
 
 	return 0;

@@ -72,16 +72,19 @@ int example_test()
 			//if (colorTest.isBackAndWhite(example.image))
 			//	continue;
 
-			auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(example.mask, Math::Point<float>(50, 50), Math::Size<float>(100, 100));
-			auto averageScaledMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, example.mask.faceCenter(), example.mask.faceSize());
+			auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
+			auto averageScaledMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()));
 
 			auto adjustedMask = averageScaledMask;
 
 			while (true)
 			{
 				for (int i = 0; i < 1; i++) {
-					maskRegression.adjust(adjustedMask);
-					maskFixer.fix(adjustedMask);
+					maskRegression.compute(adjustedMask);
+					maskRegression.apply(adjustedMask);
+
+					maskFixer.compute(adjustedMask);
+					maskFixer.apply(adjustedMask);
 				}
 
 				example.image.copyTo(imageWithMasks);

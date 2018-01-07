@@ -27,7 +27,7 @@ namespace FaceLandmarking::Learning
 			regressors(regressors)
 		{ }
 
-		void adjust(FaceMask& mask)
+		void compute(FaceMask& mask)
 		{
 			maskOffset.clear();
 			maskOffset.resize(mask.size());
@@ -55,8 +55,12 @@ namespace FaceLandmarking::Learning
 
 				maskOffset[i] = pointOffset;
 			}
+		}
 
-			mask += maskOffset;
+		void apply(FaceMask& mask, float factor = 1)
+		{
+			for (size_t i = 0; i < mask.size(); i++)
+				mask[i] += maskOffset[i] * factor;
 		}
 	};
 }

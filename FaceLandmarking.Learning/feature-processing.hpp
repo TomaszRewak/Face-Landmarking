@@ -59,8 +59,8 @@ namespace FaceLandmarking::Learning
 		{
 			auto normalizedAvgMask = MaskTransformation::MaskNormalizer::normalizeMask(
 				avgMask,
-				example.mask.faceCenter(),
-				example.mask.faceSize());
+				example.mask.faceRect()
+			);
 
 			float interpolationFactors[]{
 				0.,

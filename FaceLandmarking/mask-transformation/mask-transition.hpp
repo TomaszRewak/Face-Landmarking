@@ -16,5 +16,18 @@ namespace FaceLandmarking::MaskTransformation
 
 			return movedMask;
 		}
+
+		static FaceMask scaleRelativeTo00(const FaceMask& mask, float scale)
+		{
+			FaceMask scaledMask = mask;
+
+			for (auto& point : scaledMask)
+			{
+				point.x *= scale;
+				point.y *= scale;
+			}
+
+			return scaledMask;
+		}
 	};
 }

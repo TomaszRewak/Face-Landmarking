@@ -6,6 +6,7 @@
 
 #include "math\point.hpp"
 #include "math\size.hpp"
+#include "math\rect.hpp"
 #include "./mask-transformation/mask-offset.hpp"
 
 namespace FaceLandmarking 
@@ -47,10 +48,12 @@ namespace FaceLandmarking
 			return Math::Size<float>(maxX - minX, maxY - minY);
 		}
 
-		void operator+=(const MaskTransformation::MaskOffset& offset)
+		Math::Rect<float> faceRect() const
 		{
-			for (size_t i = 0; i < size(); i++)
-				(*this)[i] = (*this)[i] + offset[i];
+			return Math::Rect<float>(
+				faceCenter(),
+				faceSize()
+			);
 		}
 	};
 }

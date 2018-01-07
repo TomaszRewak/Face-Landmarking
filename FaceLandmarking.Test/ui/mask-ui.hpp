@@ -32,7 +32,7 @@ namespace FaceLandmarking::Test::UI
 				}
 			}
 
-			for (size_t pointIndex = 0; pointIndex <= mask.size(); pointIndex++)
+			for (size_t pointIndex = 0; pointIndex < mask.size(); pointIndex++)
 			{
 				if (!maskDescription.points[pointIndex].inUse)
 					continue;
