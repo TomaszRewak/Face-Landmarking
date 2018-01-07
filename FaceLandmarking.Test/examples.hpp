@@ -26,7 +26,7 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-int example_test()
+void example_test()
 {
 	auto dataPath = experimental::filesystem::path("D:\\Programy\\FaceLandmarking\\Data");
 
@@ -104,12 +104,10 @@ int example_test()
 				if (key == 32)
 					continue;
 				else if (key == 27)
-					return 0;
+					return;
 				else
 					break;
 			}
 		}
 	}
-
-	return 0;
 }

@@ -28,10 +28,9 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-int camera_test()
+void video_test(string videoPath)
 {
 	auto dataPath = experimental::filesystem::path("D:\\Programy\\FaceLandmarking\\Data");
-	auto videoPath = "D:/Programy/FaceLandmarking/Data/examples/ja2.mp4";
 
 	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / "mask-description.mask");
 	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
@@ -56,7 +55,7 @@ int camera_test()
 	//VideoCapture videoCapture(0);
 	VideoCapture videoCapture(videoPath);
 	if (!videoCapture.isOpened())
-		return -1;
+		return;
 
 	namedWindow("real", WINDOW_AUTOSIZE);
 
@@ -135,9 +134,7 @@ int camera_test()
 			break;
 		}
 		case 27: // escape
-			return 0;
+			return;
 		}
 	}
-
-	return 0;
 }

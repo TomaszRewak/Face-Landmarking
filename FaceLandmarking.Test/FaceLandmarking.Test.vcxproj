@@ -132,7 +132,8 @@
     <ClCompile Include="_.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.hpp" />
+    <ClInclude Include="features.hpp" />
+    <ClInclude Include="video.hpp" />
     <ClInclude Include="examples.hpp" />
     <ClInclude Include="ui\face-ui.hpp" />
     <ClInclude Include="ui\mask-ui.hpp" />
