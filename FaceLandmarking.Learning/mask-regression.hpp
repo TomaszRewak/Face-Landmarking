@@ -40,8 +40,8 @@ namespace FaceLandmarking::Learning
 				Math::Vector<float> pointOffset;
 				float factor = 0;
 
-				for (int x = -1; x <= 1; x++)
-					for (int y = -1; y <= 1; y++)
+				for (int x = -2; x <= 2; x++)
+					for (int y = -2; y <= 2; y++)
 					{
 						features.clear();
 						featureExtractor.selectFeatures(mask[i].x + x, mask[i].y + y, features);

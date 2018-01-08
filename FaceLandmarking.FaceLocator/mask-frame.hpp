@@ -4,6 +4,7 @@
 #include "../FaceLandmarking/mask-info/mask-description.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/math/rect.hpp"
+#include "../FaceLandmarking/math/offset.hpp"
 
 namespace FaceLandmarking::FaceLocator
 {
@@ -13,8 +14,9 @@ namespace FaceLandmarking::FaceLocator
 		const MaskInfo::MaskDescription& maskDescription;
 
 		Math::Size<float> desiredSize;
+		Math::Offset<float> defaultOffset;
 		
-		Math::Size<float> getSize(const FaceMask &mask) const
+		Math::Rect<float> getRect(const FaceMask &mask) const
 		{
 			float
 				minX = std::numeric_limits<float>::max(),
@@ -33,25 +35,33 @@ namespace FaceLandmarking::FaceLocator
 				}
 			}
 
-			return Math::Size<float>(maxX - minX, maxY - minY);
+			return Math::Rect<float>(
+				Math::Point<float>((minX + maxX) / 2, (minY + maxY) / 2),
+				Math::Size<float>(maxX - minX, maxY - minY)
+			);
 		}
 
 	public:
 		MaskFrame(const FaceMask &averageMask, const MaskInfo::MaskDescription& maskDescription, Math::Size<float> desiredSize) :
 			maskDescription(maskDescription)
 		{
-			Math::Size<float> fullSize = averageMask.faceSize();
-			Math::Size<float> partialSize = getSize(averageMask);
+			Math::Rect<float> fullRect = averageMask.faceRect();
+			Math::Rect<float> partialRect = getRect(averageMask);
 
-			desiredSize.width *= partialSize.width / fullSize.width;
-			desiredSize.height *= partialSize.height / fullSize.height;
+			defaultOffset.left = std::abs(fullRect.left() - partialRect.left()) / fullRect.size.width * desiredSize.width;
+			defaultOffset.right = std::abs(fullRect.right() - partialRect.right()) / fullRect.size.width * desiredSize.width;
+			defaultOffset.top = std::abs(fullRect.top() - partialRect.top()) / fullRect.size.height * desiredSize.height;
+			defaultOffset.down = std::abs(fullRect.down() - partialRect.down()) / fullRect.size.height * desiredSize.height;
+
+			desiredSize.width *= partialRect.size.width / fullRect.size.width;
+			desiredSize.height *= partialRect.size.height / fullRect.size.height;
 
 			this->desiredSize = desiredSize;
 		}
 
 		float getScale(const FaceMask& mask) const
 		{
-			Math::Size<float> currentSize = getSize(mask);
+			Math::Size<float> currentSize = getRect(mask).size;
 
 			return std::min(
 				std::max(
@@ -60,6 +70,16 @@ namespace FaceLandmarking::FaceLocator
 				), 
 				2.f
 			);
+		}
+
+		Math::Rect<float> getFrame(const FaceMask& mask) const
+		{
+			Math::Rect<float> partRect = getRect(mask);
+
+			float scale = getScale(mask);
+			partRect += defaultOffset * scale;
+
+			return partRect;
 		}
 	};
 }

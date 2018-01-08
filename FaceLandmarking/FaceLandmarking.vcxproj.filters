@@ -19,5 +19,6 @@
     <ClInclude Include="mask-info\mask-point.hpp" />
     <ClInclude Include="mask-transformation\mask-transition.hpp" />
     <ClInclude Include="math\rect.hpp" />
+    <ClInclude Include="math\offset.hpp" />
   </ItemGroup>
 </Project>

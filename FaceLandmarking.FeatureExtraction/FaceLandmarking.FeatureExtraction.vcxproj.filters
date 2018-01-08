@@ -15,5 +15,7 @@
     <ClInclude Include="image-feature-extractor.hpp" />
     <ClInclude Include="mask-feature-extractor.hpp" />
     <ClInclude Include="decision.hpp" />
+    <ClInclude Include="histogram.hpp" />
+    <ClInclude Include="hsv-image.hpp" />
   </ItemGroup>
 </Project>

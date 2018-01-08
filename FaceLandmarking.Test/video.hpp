@@ -19,6 +19,8 @@
 #include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
+#include "../FaceLandmarking.FeatureExtraction/histogram.hpp"
+#include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
 #include "../FaceLandmarking.FaceLocator/face-finder.hpp"
 #include "../FaceLandmarking.FaceLocator/mask-frame.hpp"
 #include "ui/mask-ui.hpp"
@@ -58,10 +60,12 @@ void video_test(string videoPath)
 		return;
 
 	namedWindow("real", WINDOW_AUTOSIZE);
+	namedWindow("face", WINDOW_AUTOSIZE);
 
 	Mat frame;
 	Mat scaledFrame;
 	Mat imageWithMasks;
+	Mat faceImage;
 
 	for (;;)
 	{
@@ -80,12 +84,6 @@ void video_test(string videoPath)
 			frame = frame2;
 		}
 
-		//{
-		//	Mat frame2;
-		//	resize(frame, frame2, Size(1200, 800));
-		//	frame = frame2;
-		//}
-
 		frame.copyTo(imageWithMasks);
 
 		for (auto& mask : masks)
@@ -94,6 +92,28 @@ void video_test(string videoPath)
 
 			FaceMask normalizedMask = MaskTransformation::MaskTransition::scaleRelativeTo00(mask, scale);
 			resize(frame, scaledFrame, cv::Size(frame.cols * scale, frame.rows * scale));
+
+			auto faceRect = maskFrame.getFrame(mask);
+			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
+
+			{
+				FeatureExtraction::HsvImage hsvImage;
+				FeatureExtraction::Histogram histogram;
+
+				hsvImage.setImage(scaledFrame);
+				hsvImage.addOffset(FeatureExtraction::HsvChannel::H, 128);
+
+				histogram.setImage(hsvImage[FeatureExtraction::HsvChannel::S], normalizedFaceRect);
+				int maxS = histogram.max(10, false);
+				hsvImage.add(FeatureExtraction::HsvChannel::S, 150 - maxS);
+
+				histogram.setImage(hsvImage[FeatureExtraction::HsvChannel::H], normalizedFaceRect);
+				int maxH = histogram.max(10, false);
+				hsvImage.addOffset(FeatureExtraction::HsvChannel::H, 140 - maxH);
+
+				hsvImage.addOffset(FeatureExtraction::HsvChannel::H, 128);
+				hsvImage.getImage(scaledFrame);
+			}
 
 			featureExtractor.setImage(scaledFrame);
 
@@ -109,6 +129,10 @@ void video_test(string videoPath)
 			}
 
 			Test::UI::MaskUI::drawMask(imageWithMasks, mask, maskDescription);
+			Test::UI::FaceUI::drawFace(imageWithMasks, faceRect, cv::Scalar(255, 255, 255));
+			Test::UI::FaceUI::drawFace(scaledFrame, normalizedFaceRect, cv::Scalar(255, 255, 255));
+
+			imshow("face", scaledFrame);
 		}
 
 		for (auto& face : faceFinder)

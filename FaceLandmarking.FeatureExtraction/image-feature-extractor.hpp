@@ -5,46 +5,31 @@
 #include <vector>
 
 #include "filters\basic-filter.hpp"
+#include "hsv-image.hpp"
 
 namespace FaceLandmarking::FeatureExtraction
 {
 	class ImageFeatureExtractor
 	{
 	private:
-		cv::Mat baseImage;
 		cv::Mat blur;
-		cv::Mat color;
-		cv::Mat hsv[3];
-
-		void fixHue()
-		{
-			auto& hue = hsv[0];
-
-			for (size_t x = 0; x < hue.cols; x++) {
-				for (size_t y = 0; y < hue.rows; y++)
-				{
-					auto& pixel = hue.at<uchar>(y, x);
-					pixel = (pixel + 128) % 256;
-				}
-			}
-		}
+		HsvImage hsv;
 
 	public:
 		void setImage(const cv::Mat& image)
 		{
-			image.copyTo(baseImage);
+			cv::GaussianBlur(image, blur, cv::Size(5, 5), 2.5, 2.5);
+			hsv.setImage(blur);
 
-			cv::GaussianBlur(baseImage, blur, cv::Size(5, 5), 2.5, 2.5);
-			cv::cvtColor(blur, color, cv::COLOR_BGR2HSV_FULL);
-			cv::split(color, hsv);
-
-			fixHue();
+			hsv.addOffset(HsvChannel::H, 128);
 		}
 
-		void selectFeatures(int x, int y, std::vector<float>& features) const
+		void selectFeatures(int x, int y, std::vector<float>& features)
 		{
-			for (const auto& layer : hsv)
+			for (auto channel : { HsvChannel::H, HsvChannel::S, HsvChannel::V })
 			{
+				const auto& layer = hsv[channel];
+
 				for (const auto& filterSeed : Filters::BasicFilterSeeds)
 				{
 					Filters::BasicFiler filter(layer, filterSeed);
