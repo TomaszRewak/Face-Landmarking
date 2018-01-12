@@ -13,6 +13,55 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
+	class MaskRegressionBuffer
+	{
+	private:
+		cv::Mat bufferComputed;
+		cv::Mat bufferValues;
+
+		std::vector<Math::Point<int>> setPoints;
+
+	public:
+		void reset(int rows, int cols)
+		{
+			if (rows > bufferValues.rows || cols > bufferValues.cols)
+				bufferValues.create(
+					std::max(rows, bufferValues.rows),
+					std::max(cols, bufferValues.cols),
+					CV_64F);
+			if (rows > bufferComputed.rows || cols > bufferComputed.cols)
+				bufferComputed.create(
+					std::max(rows, bufferComputed.rows),
+					std::max(cols, bufferComputed.cols),
+					CV_8U);
+
+			for (auto& point : setPoints)
+				bufferComputed.at<uchar>(point.y, point.x) = 0;
+			setPoints.clear();
+		}
+
+		bool hasValue(int x, int y)
+		{
+			return bufferComputed.at<uchar>(y, x);
+		}
+
+		Math::Vector<float> getValue(int x, int y)
+		{
+			return bufferValues.at<Math::Vector<float>>(y, x);
+		}
+
+		void setValue(int x, int y, Math::Vector<float> offset)
+		{
+			bufferValues.at<Math::Vector<float>>(y, x) = offset;
+			
+			if (!hasValue(x, y))
+			{
+				bufferComputed.at<uchar>(y, x) = 1;
+				setPoints.push_back(Math::Point<int>(x, y));
+			}
+		}
+	};
+
 	template<typename FeatureExtractor, typename Regressor>
 	class MaskRegression
 	{
@@ -24,25 +73,26 @@ namespace FaceLandmarking::Learning
 		std::vector<float> features;
 		MaskTransformation::MaskOffset maskOffset;
 
-		cv::Mat bufferComputed;
-		cv::Mat bufferValues;
+		int cols;
+		int rows;
+		std::vector<MaskRegressionBuffer> buffers;
 
 	public:
 		MaskRegression(MaskInfo::MaskDescription maskDescription, Regressor regressors) :
 			maskDescription(maskDescription),
-			regressors(regressors)
+			regressors(regressors),
+			buffers(maskDescription.points.size())
 		{ }
 
 		void setImage(const FeatureExtraction::HsvImage& image)
 		{
 			featureExtractor.setImage(image);
 
-			bufferValues.create(image.rows(), image.columns(), CV_64F);
-			bufferComputed.create(image.rows(), image.columns(), CV_8U);
+			cols = image.columns();
+			rows = image.rows();
 
-			for (int x = 0; x < bufferComputed.cols; x++)
-				for (int y = 0; y < bufferComputed.rows; y++)
-					bufferComputed.at<uchar>(y, x) = 0;
+			for(auto& buffer : buffers)
+				buffer.reset(rows, cols);
 		}
 
 		void compute(FaceMask& mask, int size = 2)
@@ -55,6 +105,8 @@ namespace FaceLandmarking::Learning
 				if (!maskDescription.points[i].inUse)
 					continue;
 
+				auto& buffer = buffers[i];
+
 				Math::Vector<float> pointOffset;
 				float factor = 0;
 
@@ -64,11 +116,11 @@ namespace FaceLandmarking::Learning
 					{
 						Math::Vector<float> localOffset;
 
-						int xi = std::max(0, std::min((int)mask[i].x + x, bufferComputed.cols - 1));
-						int yi = std::max(0, std::min((int)mask[i].y + y, bufferComputed.rows - 1));
-						if (bufferComputed.at<uchar>(yi, xi))
+						int xi = std::max(0, std::min((int)mask[i].x + x, cols - 1));
+						int yi = std::max(0, std::min((int)mask[i].y + y, rows - 1));
+						if (buffer.hasValue(xi, yi))
 						{
-							localOffset = bufferValues.at<Math::Vector<float>>(yi, xi);
+							localOffset = buffer.getValue(xi, yi);
 						}
 						else
 						{
@@ -77,8 +129,7 @@ namespace FaceLandmarking::Learning
 
 							localOffset = regressors.getOffset(i, features);
 
-							bufferValues.at<Math::Vector<float>>(yi, xi) = localOffset;
-							bufferComputed.at<uchar>(yi, xi) = 1;
+							buffer.setValue(xi, yi, localOffset);
 						}
 
 						float localFactor = 1. / (std::abs(x) + std::abs(y) + 2);

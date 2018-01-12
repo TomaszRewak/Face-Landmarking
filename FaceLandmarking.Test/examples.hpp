@@ -60,7 +60,7 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 			example.scaleFace(200, 200);
 
 			FeatureExtraction::HsvImage processedImage;
-			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect());
+			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);
 			maskRegression.setImage(processedImage);
 
 			auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
