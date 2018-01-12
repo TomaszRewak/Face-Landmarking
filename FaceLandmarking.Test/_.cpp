@@ -16,7 +16,18 @@ enum class ProcessType
 int main(int argc, char** argv)
 {
 	ProcessType processType = ProcessType::Video;
-	string videoPath = "D:/Programy/FaceLandmarking/Data/examples/ja4b.mp4";
+	string dataPath = "D:/Programy/FaceLandmarking/Data";
+	string videoPath = "D:/Programy/FaceLandmarking/Data/examples/ja4.mp4";
+	string mask = "just";
+	int steps = 15;
+
+	bool transform = false;
+	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
+	int transformWidth = 350;
+	int transformHeight = 600;
+
+	int regressionSize = 2;
+	bool debug = false;
 
 	for (int i = 1; i < argc;)
 	{
@@ -33,23 +44,36 @@ int main(int argc, char** argv)
 			if (type == "features")
 				processType = ProcessType::Features;
 		}
-
 		if (param == "-video")
-		{
-			string path(argv[i++]);
-
-			videoPath = path;
-		}
+			videoPath = argv[i++];
+		if (param == "-mask")
+			mask = argv[i++];
+		if (param == "-steps")
+			steps = stoi(argv[i++]);
+		if (param == "-transform")
+			transform = true;
+		if (param == "-transform-rotate")
+			transformRotate = stoi(argv[i++]);
+		if (param == "-transform-width")
+			transformWidth = stoi(argv[i++]);
+		if (param == "-transform-height")
+			transformHeight = stoi(argv[i++]);
+		if (param == "-regression-size")
+			regressionSize = stoi(argv[i++]);
+		if (param == "-debug")
+			debug = true;
 	}
 
 	switch (processType)
 	{
 	case ProcessType::Video:
-		video_test(videoPath);
+		video_test(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
 		break;
 	case ProcessType::Example:
-		example_test();
+		example_test(mask);
+		break;
 	case ProcessType::Features:
 		features_test();
+		break;
 	}
 }

@@ -11,14 +11,14 @@
 
 namespace FaceLandmarking::FeatureExtraction
 {
-	class Histogram : public std::vector<int>
+	class Histogram : public std::vector<float>
 	{
 	public:
 		Histogram(int size = 256) :
-			std::vector<int>(size, 0)
+			std::vector<float>(size, 0)
 		{ }
 
-		void setImage(cv::Mat image, Math::Rect<float> rect)
+		void setImage(cv::Mat& image, Math::Rect<float> rect, cv::Mat& mask)
 		{
 			std::fill(begin(), end(), 0);
 
@@ -42,7 +42,7 @@ namespace FaceLandmarking::FeatureExtraction
 					if (size() < value + 1)
 						resize(value + 1, 0);
 
-					(*this)[value]++;
+					(*this)[value] += mask.at<float>(y, x);
 				}
 			}
 		}
@@ -59,14 +59,14 @@ namespace FaceLandmarking::FeatureExtraction
 			}
 
 			int max = 0;
-			int maxValue = -1;
+			double maxValue = -1;
 
 			for (int i = first; i <= last; i++)
 			{
-				int neighborhoodSum = 0;
+				double neighborhoodSum = 0;
 
 				for (int j = -neighborhood; j <= neighborhood; j++)
-					neighborhoodSum += (*this)[i + j];
+					neighborhoodSum += (*this)[i + j] * (neighborhood - std::abs(j));
 
 				if (neighborhoodSum > maxValue)
 				{
@@ -80,11 +80,11 @@ namespace FaceLandmarking::FeatureExtraction
 
 		int median() const
 		{
-			int sum = 0;
+			float sum = 0;
 			for (auto& value : *this)
 				sum += value;
 
-			int acc = 0;
+			float acc = 0;
 
 			for (int i = 0; i < size(); i++)
 			{

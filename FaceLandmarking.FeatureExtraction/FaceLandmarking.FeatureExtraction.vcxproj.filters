@@ -17,5 +17,7 @@
     <ClInclude Include="decision.hpp" />
     <ClInclude Include="histogram.hpp" />
     <ClInclude Include="hsv-image.hpp" />
+    <ClInclude Include="image-preprocessing.hpp" />
+    <ClInclude Include="face-color-detector.hpp" />
   </ItemGroup>
 </Project>

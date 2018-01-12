@@ -17,5 +17,11 @@ namespace FaceLandmarking::Math
 			width(width),
 			height(height)
 		{ }
+
+		void operator*=(float by) 
+		{
+			width *= by;
+			height *= by;
+		}
 	};
 }

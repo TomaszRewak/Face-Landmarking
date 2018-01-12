@@ -64,10 +64,11 @@ namespace FaceLandmarking::FaceLocator
 			Math::Size<float> currentSize = getRect(mask).size;
 
 			return std::min(
-				std::max(
-					desiredSize.width / currentSize.width,
-					desiredSize.height / currentSize.height
-				), 
+				desiredSize.width / currentSize.width,
+				//std::max(
+				//	desiredSize.width / currentSize.width,
+				//	desiredSize.height / currentSize.height
+				//), 
 				2.f
 			);
 		}

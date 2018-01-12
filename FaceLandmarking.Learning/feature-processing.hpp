@@ -9,6 +9,7 @@
 #include "../FaceLandmarking.Reader/features-io.hpp"
 #include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
+#include "../FaceLandmarking.FeatureExtraction/image-preprocessing.hpp"
 
 namespace FaceLandmarking::Learning
 {
@@ -18,6 +19,7 @@ namespace FaceLandmarking::Learning
 	{
 	private:
 		fs::path dataPath;
+		FeatureExtraction::ImagePreprocessor imagePreprocessor;
 		FeatureExtraction::FeatureExtractor featureSelector;
 		Reader::Validation::ImageColorTest colorTest;
 		FaceMask avgMask;
@@ -33,19 +35,28 @@ namespace FaceLandmarking::Learning
 
 		void compute()
 		{
+			auto dir = dataPath / "features";
+
+			fs::remove_all(dir);
+			fs::create_directory(dir);
+
 			for (int i = 0; i < ios.size(); i++)
-				ios[i].open(i, dataPath / "features");
+				ios[i].open(i, dir);
 
 			Reader::DatasetReader reader(dataPath);
 
 			while (reader.hasNext())
 			{
 				auto example = reader.loadNext(true);
-				example.scaleFace(200, 200);
-				featureSelector.setImage(example.image);
 
-				//if (colorTest.isBackAndWhite(example.image))
-				//	continue;
+				if (colorTest.isBackAndWhite(example.image))
+					continue;
+
+				example.scaleFace(200, 200);
+
+				FeatureExtraction::HsvImage processedImage;
+				imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);
+				featureSelector.setImage(processedImage);
 
 				compute(example);
 			}

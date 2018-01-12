@@ -23,10 +23,10 @@ namespace FaceLandmarking::Learning
 		fs::path maskFile;
 
 	public:
-		MaskLimitsProcessing(MaskInfo::MaskDescription maskDescription, fs::path dataPath) :
+		MaskLimitsProcessing(MaskInfo::MaskDescription maskDescription, fs::path dataPath, std::string maskName) :
 			maskDescription(maskDescription),
 			dataPath(dataPath),
-			maskFile(dataPath / "mask" / "mask-limits.mask")
+			maskFile(dataPath / "mask-limits" / ("mask-limits-" + maskName + ".mask"))
 		{ }
 
 		void compute() const

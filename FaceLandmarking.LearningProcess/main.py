@@ -66,14 +66,10 @@ for point, examples in data.items():
     y1 = np.array(y[:,0]) * 2
     y2 = np.array(y[:,1]) * 2
 
-    clf1 = tree.DecisionTreeClassifier(min_samples_leaf=10, criterion ='entropy')
+    clf1 = tree.DecisionTreeClassifier(min_samples_leaf=500, criterion ='entropy')
+    clf2 = tree.DecisionTreeClassifier(min_samples_leaf=500, criterion ='entropy')
+
     clf1.fit(x, y1) 
-
-    a = clf1.tree_.value
-    b = a[0]
-    c = str(b)
-
-    clf2 = tree.DecisionTreeClassifier(min_samples_leaf=10, criterion ='entropy')
     clf2.fit(x, y2) 
     
     predicted1 = np.array(clf1.predict(x_test)) / 2

@@ -67,5 +67,15 @@ namespace FaceLandmarking::FeatureExtraction
 				}
 			}
 		}
+
+		size_t columns() const
+		{
+			return color.cols;
+		}
+
+		size_t rows() const
+		{
+			return color.rows;
+		}
 	};
 }

@@ -20,13 +20,15 @@
 #include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
+#include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
+#include "../FaceLandmarking.FeatureExtraction/image-preprocessing.hpp"
 #include "ui/mask-ui.hpp"
 
 using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-void example_test()
+void example_test(string mask)
 {
 	auto dataPath = experimental::filesystem::path("D:\\Programy\\FaceLandmarking\\Data");
 
@@ -35,18 +37,19 @@ void example_test()
 	//
 	//return 0;
 
-	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / "mask-description.mask");
+	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / ("mask-description-" + mask + ".mask"));
 	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
 
 	Learning::AverageMaskProcessing averageMaskProcessing(dataPath);
 	FaceMask averageMask = averageMaskProcessing.load();
 
-	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath);
+	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath, mask);
 	MaskInfo::MaskLimits maskLimits = maskLimitsProcessing.load();
 
 	std::vector<float> features;
 	std::vector<float> decisions;
 
+	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 	FeatureExtraction::ImageFeatureExtractor featureExtractor;
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 
@@ -67,7 +70,10 @@ void example_test()
 		if (reader.hasNext()) {
 			auto example = reader.loadNext();
 			example.scaleFace(200, 200);
-			featureExtractor.setImage(example.image);
+
+			FeatureExtraction::HsvImage processedImage;
+			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect());
+			featureExtractor.setImage(processedImage);
 
 			//if (colorTest.isBackAndWhite(example.image))
 			//	continue;

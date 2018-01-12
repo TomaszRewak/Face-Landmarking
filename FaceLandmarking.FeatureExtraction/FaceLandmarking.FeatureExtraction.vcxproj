@@ -131,11 +131,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="decision.hpp" />
+    <ClInclude Include="face-color-detector.hpp" />
     <ClInclude Include="feature-extractor.hpp" />
     <ClInclude Include="filters\basic-filter.hpp" />
     <ClInclude Include="histogram.hpp" />
     <ClInclude Include="hsv-image.hpp" />
     <ClInclude Include="image-feature-extractor.hpp" />
+    <ClInclude Include="image-preprocessing.hpp" />
     <ClInclude Include="test\FilterApplier.hpp" />
     <ClInclude Include="mask-feature-extractor.hpp" />
   </ItemGroup>

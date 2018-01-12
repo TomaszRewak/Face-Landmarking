@@ -27,7 +27,7 @@ namespace FaceLandmarking::Learning
 			regressors(regressors)
 		{ }
 
-		void compute(FaceMask& mask)
+		void compute(FaceMask& mask, int size = 2)
 		{
 			maskOffset.clear();
 			maskOffset.resize(mask.size());
@@ -40,8 +40,8 @@ namespace FaceLandmarking::Learning
 				Math::Vector<float> pointOffset;
 				float factor = 0;
 
-				for (int x = -2; x <= 2; x++)
-					for (int y = -2; y <= 2; y++)
+				for (int x = -size; x <= size; x++)
+					for (int y = -size; y <= size; y++)
 					{
 						features.clear();
 						featureExtractor.selectFeatures(mask[i].x + x, mask[i].y + y, features);

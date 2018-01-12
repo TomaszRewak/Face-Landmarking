@@ -6,22 +6,19 @@
 
 #include "filters\basic-filter.hpp"
 #include "hsv-image.hpp"
+#include "hsv-image.hpp"
 
 namespace FaceLandmarking::FeatureExtraction
 {
 	class ImageFeatureExtractor
 	{
 	private:
-		cv::Mat blur;
 		HsvImage hsv;
 
 	public:
-		void setImage(const cv::Mat& image)
+		void setImage(const HsvImage& image)
 		{
-			cv::GaussianBlur(image, blur, cv::Size(5, 5), 2.5, 2.5);
-			hsv.setImage(blur);
-
-			hsv.addOffset(HsvChannel::H, 128);
+			hsv = image;
 		}
 
 		void selectFeatures(int x, int y, std::vector<float>& features)

@@ -54,9 +54,18 @@ namespace FaceLandmarking::Math
 			size.height += offset.top + offset.down;
 		}
 
-		Rect<float> operator+(const Math::Offset<float>& offset) const
+		Rect<T> operator*(float by) const
 		{
 			Rect<float> result = *this;
+
+			result.size *= by;
+
+			return result;
+		}
+
+		Rect<T> operator+(const Math::Offset<T>& offset) const
+		{
+			Rect<T> result = *this;
 
 			result += offset;
 

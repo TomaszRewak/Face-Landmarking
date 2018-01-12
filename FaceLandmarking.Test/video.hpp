@@ -21,6 +21,7 @@
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/histogram.hpp"
 #include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
+#include "../FaceLandmarking.FeatureExtraction/image-preprocessing.hpp"
 #include "../FaceLandmarking.FaceLocator/face-finder.hpp"
 #include "../FaceLandmarking.FaceLocator/mask-frame.hpp"
 #include "ui/mask-ui.hpp"
@@ -30,25 +31,35 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-void video_test(string videoPath)
+void video_test(
+	experimental::filesystem::path dataPath,
+	string videoPath,
+	string mask,
+	int steps,
+	bool transform,
+	int transformRotate,
+	int transformWidth,
+	int transformHeight,
+	int regressionSize,
+	bool debug
+)
 {
-	auto dataPath = experimental::filesystem::path("D:\\Programy\\FaceLandmarking\\Data");
-
-	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / "mask-description.mask");
+	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / ("mask-description-" + mask + ".mask"));
 	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
 
 	Learning::AverageMaskProcessing averageMaskProcessing(dataPath);
 	FaceMask averageMask = averageMaskProcessing.load();
 
-	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath);
+	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath, mask);
 	MaskInfo::MaskLimits maskLimits = maskLimitsProcessing.load();
 
-	FaceLocator::FaceFinder faceFinder("D:\\Programy\\FaceLandmarking\\Data\\haar\\haarcascade_frontalface_default.xml");
+	FaceLocator::FaceFinder faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml");
 
 	FaceLocator::MaskFrame maskFrame(averageMask, maskDescription, Math::Size<float>(200, 200));
 	std::vector<FaceMask> masks;
 
 	FeatureExtraction::ImageFeatureExtractor featureExtractor;
+	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, featureExtractor, treeRegressor);
@@ -60,12 +71,19 @@ void video_test(string videoPath)
 		return;
 
 	namedWindow("real", WINDOW_AUTOSIZE);
-	namedWindow("face", WINDOW_AUTOSIZE);
+
+	if (debug)
+	{
+		namedWindow("face", WINDOW_AUTOSIZE);
+		namedWindow("color", WINDOW_AUTOSIZE);
+	}
 
 	Mat frame;
 	Mat scaledFrame;
-	Mat imageWithMasks;
+	Mat frameWithMask;
 	Mat faceImage;
+	Mat frameTransform;
+	FeatureExtraction::HsvImage processedFrame;
 
 	for (;;)
 	{
@@ -76,15 +94,15 @@ void video_test(string videoPath)
 			continue;
 		}
 
+		if (transform)
 		{
-			Mat frame2;
-			cv::rotate(frame, frame2, cv::ROTATE_90_COUNTERCLOCKWISE);
-			frame = frame2;
-			resize(frame, frame2, Size(350, 600));
-			frame = frame2;
+			cv::rotate(frame, frameTransform, transformRotate);
+			frameTransform.copyTo(frame);
+			resize(frame, frameTransform, Size(transformWidth, transformHeight));
+			frameTransform.copyTo(frame);
 		}
 
-		frame.copyTo(imageWithMasks);
+		frame.copyTo(frameWithMask);
 
 		for (auto& mask : masks)
 		{
@@ -96,30 +114,12 @@ void video_test(string videoPath)
 			auto faceRect = maskFrame.getFrame(mask);
 			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
 
+			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.7);
+			featureExtractor.setImage(processedFrame);
+
+			for (int i = 0; i < steps; i++)
 			{
-				FeatureExtraction::HsvImage hsvImage;
-				FeatureExtraction::Histogram histogram;
-
-				hsvImage.setImage(scaledFrame);
-				hsvImage.addOffset(FeatureExtraction::HsvChannel::H, 128);
-
-				histogram.setImage(hsvImage[FeatureExtraction::HsvChannel::S], normalizedFaceRect);
-				int maxS = histogram.max(10, false);
-				hsvImage.add(FeatureExtraction::HsvChannel::S, 150 - maxS);
-
-				histogram.setImage(hsvImage[FeatureExtraction::HsvChannel::H], normalizedFaceRect);
-				int maxH = histogram.max(10, false);
-				hsvImage.addOffset(FeatureExtraction::HsvChannel::H, 140 - maxH);
-
-				hsvImage.addOffset(FeatureExtraction::HsvChannel::H, 128);
-				hsvImage.getImage(scaledFrame);
-			}
-
-			featureExtractor.setImage(scaledFrame);
-
-			for (int i = 0; i < 15; i++)
-			{
-				maskRegression.compute(normalizedMask);
+				maskRegression.compute(normalizedMask, regressionSize);
 				maskRegression.apply(normalizedMask);
 				maskRegression.apply(mask, 1 / scale);
 
@@ -128,17 +128,24 @@ void video_test(string videoPath)
 				maskFixer.apply(mask, 1 / scale);
 			}
 
-			Test::UI::MaskUI::drawMask(imageWithMasks, mask, maskDescription);
-			Test::UI::FaceUI::drawFace(imageWithMasks, faceRect, cv::Scalar(255, 255, 255));
-			Test::UI::FaceUI::drawFace(scaledFrame, normalizedFaceRect, cv::Scalar(255, 255, 255));
+			Test::UI::MaskUI::drawMask(frameWithMask, mask, maskDescription);
 
-			imshow("face", scaledFrame);
+			if (debug)
+			{
+				cv::Mat processedFrameRGB;
+				processedFrame.getImage(processedFrameRGB);
+
+				Test::UI::MaskUI::drawMask(processedFrameRGB, normalizedMask, maskDescription);
+
+				Test::UI::FaceUI::drawFace(frameWithMask, faceRect, cv::Scalar(255, 255, 255));
+				Test::UI::FaceUI::drawFace(processedFrameRGB, normalizedFaceRect, cv::Scalar(255, 255, 255));
+
+				imshow("face", processedFrameRGB);
+				imshow("color", imagePreprocessor.colorDetector);
+			}
 		}
 
-		for (auto& face : faceFinder)
-			Test::UI::FaceUI::drawFace(imageWithMasks, face);
-
-		imshow("real", imageWithMasks);
+		imshow("real", frameWithMask);
 
 		auto key = waitKey(30);
 		switch (key)

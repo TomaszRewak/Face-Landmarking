@@ -12,7 +12,7 @@ namespace FaceLandmarking::FeatureExtraction
 		MaskFeatureExtractor maskFeatures;
 
 	public:
-		void setImage(const cv::Mat& image)
+		void setImage(const HsvImage& image)
 		{
 			imageFeatrues.setImage(image);
 		}

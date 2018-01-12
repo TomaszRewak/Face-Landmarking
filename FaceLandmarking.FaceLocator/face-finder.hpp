@@ -1,5 +1,7 @@
 #pragma once
 
+#include <filesystem>
+
 #include "opencv2/objdetect/objdetect.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
@@ -8,6 +10,8 @@
 
 namespace FaceLandmarking::FaceLocator
 {
+	namespace fs = std::experimental::filesystem;
+
 	class FaceFinder : public std::vector<Math::Rect<float>>
 	{
 	private:
@@ -16,8 +20,8 @@ namespace FaceLandmarking::FaceLocator
 		cv::Mat grayImage;
 
 	public:
-		FaceFinder(std::string faceCascadePath) :
-			faceCascade(faceCascadePath)
+		FaceFinder(fs::path faceCascadePath) :
+			faceCascade(faceCascadePath.string())
 		{ }
 
 		void locate(cv::Mat& image)
