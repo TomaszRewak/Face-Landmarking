@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "../math/vector.hpp"
 
 namespace FaceLandmarking::MaskTransformation

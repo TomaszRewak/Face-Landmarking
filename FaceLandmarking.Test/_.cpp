@@ -16,8 +16,8 @@ enum class ProcessType
 int main(int argc, char** argv)
 {
 	ProcessType processType = ProcessType::Video;
-	string dataPath = "D:/Programy/FaceLandmarking/Data";
-	string videoPath = "D:/Programy/FaceLandmarking/Data/examples/ja4.mp4";
+	string dataPath = "./../Data";
+	string videoPath = "./../Data/examples/ja4.mp4";
 	string mask = "just";
 	int steps = 15;
 
@@ -44,6 +44,8 @@ int main(int argc, char** argv)
 			if (type == "features")
 				processType = ProcessType::Features;
 		}
+		if (param == "-data")
+			dataPath = argv[i++];
 		if (param == "-video")
 			videoPath = argv[i++];
 		if (param == "-mask")
@@ -70,10 +72,10 @@ int main(int argc, char** argv)
 		video_test(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
 		break;
 	case ProcessType::Example:
-		example_test(mask);
+		example_test(dataPath, mask);
 		break;
 	case ProcessType::Features:
-		features_test();
+		features_test(dataPath);
 		break;
 	}
 }

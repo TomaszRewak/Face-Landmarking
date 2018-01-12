@@ -4,7 +4,7 @@
 #include <opencv2/imgproc.hpp>
 #include <vector>
 
-#include "filters\basic-filter.hpp"
+#include "filters/basic-filter.hpp"
 #include "hsv-image.hpp"
 #include "hsv-image.hpp"
 

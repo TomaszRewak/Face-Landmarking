@@ -28,15 +28,8 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-void example_test(string mask)
+void example_test(experimental::filesystem::path dataPath, string mask)
 {
-	auto dataPath = experimental::filesystem::path("D:\\Programy\\FaceLandmarking\\Data");
-
-	//Learning::FeatureProcessing featureExtraction(dataPath);
-	//featureExtraction.compute();
-	//
-	//return 0;
-
 	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / ("mask-description-" + mask + ".mask"));
 	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
 
@@ -57,10 +50,6 @@ void example_test(string mask)
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
 	namedWindow("example", WINDOW_AUTOSIZE);
-	//namedWindow("h", WINDOW_AUTOSIZE);
-	//namedWindow("s", WINDOW_AUTOSIZE);
-	//namedWindow("v", WINDOW_AUTOSIZE);
-	//namedWindow("filter", WINDOW_AUTOSIZE);
 
 	Mat imageWithMasks;
 
@@ -74,9 +63,6 @@ void example_test(string mask)
 			FeatureExtraction::HsvImage processedImage;
 			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect());
 			featureExtractor.setImage(processedImage);
-
-			//if (colorTest.isBackAndWhite(example.image))
-			//	continue;
 
 			auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
 			auto averageScaledMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()));
@@ -99,12 +85,6 @@ void example_test(string mask)
 				Test::UI::MaskUI::drawMask(imageWithMasks, averageScaledMask, maskDescription, cv::Scalar(0, 0, 255));
 				Test::UI::MaskUI::drawMask(imageWithMasks, adjustedMask, maskDescription, cv::Scalar(255, 255, 255));
 				imshow("example", imageWithMasks);
-				//imshow("h", featureExtractor.hsv[0]);
-				//imshow("s", featureExtractor.hsv[1]);
-				//imshow("v", featureExtractor.hsv[2]);
-
-				//filterApplier.applyFilter(filteredImage, featureSelector.hsv[0], 2);
-				//imshow("filter", filteredImage);
 
 				auto key = waitKey(250000);
 				if (key == 32)

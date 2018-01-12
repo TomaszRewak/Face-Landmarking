@@ -4,9 +4,9 @@
 #include <limits>
 #include <algorithm>
 
-#include "math\point.hpp"
-#include "math\size.hpp"
-#include "math\rect.hpp"
+#include "math/point.hpp"
+#include "math/size.hpp"
+#include "math/rect.hpp"
 #include "./mask-transformation/mask-offset.hpp"
 
 namespace FaceLandmarking 

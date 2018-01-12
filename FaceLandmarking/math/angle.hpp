@@ -1,7 +1,8 @@
 #pragma once
 
-#include "point.hpp"
 #include <algorithm>
+
+#include "point.hpp"
 
 namespace FaceLandmarking::Math
 {
