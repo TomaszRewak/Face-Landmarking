@@ -43,10 +43,9 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 	std::vector<float> decisions;
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
-	FeatureExtraction::ImageFeatureExtractor featureExtractor;
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 
-	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, featureExtractor, treeRegressor);
+	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
 	namedWindow("example", WINDOW_AUTOSIZE);
@@ -62,7 +61,7 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 
 			FeatureExtraction::HsvImage processedImage;
 			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect());
-			featureExtractor.setImage(processedImage);
+			maskRegression.setImage(processedImage);
 
 			auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
 			auto averageScaledMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()));

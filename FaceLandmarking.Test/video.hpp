@@ -58,11 +58,10 @@ void video_test(
 	FaceLocator::MaskFrame maskFrame(averageMask, maskDescription, Math::Size<float>(200, 200));
 	std::vector<FaceMask> masks;
 
-	FeatureExtraction::ImageFeatureExtractor featureExtractor;
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 
-	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, featureExtractor, treeRegressor);
+	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
 	//VideoCapture videoCapture(0);
@@ -115,7 +114,7 @@ void video_test(
 			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
 
 			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.7);
-			featureExtractor.setImage(processedFrame);
+			maskRegression.setImage(processedFrame);
 
 			for (int i = 0; i < steps; i++)
 			{

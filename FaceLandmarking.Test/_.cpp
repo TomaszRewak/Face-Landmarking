@@ -19,14 +19,14 @@ int main(int argc, char** argv)
 	string dataPath = "./../Data";
 	string videoPath = "./../Data/examples/ja4.mp4";
 	string mask = "just";
-	int steps = 15;
+	int steps = 40;
 
 	bool transform = false;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
 	int transformWidth = 350;
 	int transformHeight = 600;
 
-	int regressionSize = 2;
+	int regressionSize = 5;
 	bool debug = false;
 
 	for (int i = 1; i < argc;)

@@ -28,7 +28,7 @@ namespace FaceLandmarking::FeatureExtraction
 
 				histogram.setImage(outImage[FeatureExtraction::HsvChannel::H], faceRect, colorDetector);
 				int maxH = histogram.median();
-				outImage.addOffset(FeatureExtraction::HsvChannel::H, 140 - maxH);
+				outImage.addOffset(FeatureExtraction::HsvChannel::H, 141 - maxH);
 
 				histogram.setImage(outImage[FeatureExtraction::HsvChannel::S], faceRect, colorDetector);
 				int maxS = histogram.median();

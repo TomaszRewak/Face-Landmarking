@@ -41,6 +41,9 @@ namespace FaceLandmarking::FeatureExtraction
 
 					if (s > 230)
 						value *= 0;
+
+					if (s < 30)
+						value *= 0.25;
 				}
 			}
 		}
