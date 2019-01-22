@@ -113,7 +113,7 @@ void video_test(
 			auto faceRect = maskFrame.getFrame(mask);
 			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
 
-			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.7);
+			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.7, true);
 			maskRegression.setImage(processedFrame);
 
 			for (int i = 0; i < steps; i++)

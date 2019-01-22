@@ -22,9 +22,10 @@ namespace FaceLandmarking::FeatureExtraction
 			outImage.setImage(inImage);
 			outImage.addOffset(FeatureExtraction::HsvChannel::H, 128);
 
+			colorDetector.detectFaceColor(outImage);
+
 			if (fixHSV)
 			{
-				colorDetector.detectFaceColor(outImage);
 
 				histogram.setImage(outImage[FeatureExtraction::HsvChannel::H], faceRect, colorDetector);
 				int maxH = histogram.median();

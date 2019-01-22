@@ -124,6 +124,7 @@
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="autoencoder-example-generator.hpp" />
     <ClInclude Include="feature-processing.hpp" />
     <ClInclude Include="mask-limits-processing.hpp" />
     <ClInclude Include="mask-regression.hpp" />

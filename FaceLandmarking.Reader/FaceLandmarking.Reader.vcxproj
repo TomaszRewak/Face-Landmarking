@@ -123,6 +123,7 @@
     <ClCompile Include="test\_.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="autoencoder-example-io.hpp" />
     <ClInclude Include="features-io.hpp" />
     <ClInclude Include="learning-example.hpp" />
     <ClInclude Include="mask-description-io.hpp" />

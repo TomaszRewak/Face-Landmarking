@@ -14,6 +14,7 @@
     <ClInclude Include="mask-description-io.hpp" />
     <ClInclude Include="mask-limits-io.hpp" />
     <ClInclude Include="readers\threshold-reader.hpp" />
+    <ClInclude Include="autoencoder-example-io.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />

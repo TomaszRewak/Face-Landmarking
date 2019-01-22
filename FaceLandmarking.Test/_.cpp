@@ -17,11 +17,11 @@ int main(int argc, char** argv)
 {
 	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data";
-	string videoPath = "./../Data/examples/ja4.mp4";
-	string mask = "just";
+	string videoPath = "./../Data/examples/ja3.mp4";
+	string mask = "all";
 	int steps = 40;
 
-	bool transform = false;
+	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
 	int transformWidth = 350;
 	int transformHeight = 600;
