@@ -1,9 +1,10 @@
 #pragma once
 
 #include <filesystem>
+#include <random>
 
 #include "../FaceLandmarking.Reader/dataset-reader.hpp"
-#include "../FaceLandmarking.Reader/mask-limits-io.hpp"
+#include "../FaceLandmarking.Reader/autoencoder-example-io.hpp"
 #include "mask/threshold-builder.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/mask-info/mask-description.hpp"
@@ -18,103 +19,43 @@ namespace FaceLandmarking::Learning
 	{
 	private:
 		fs::path dataPath;
-		FaceMask avgMask;
-
-		std::vector<Reader::FeaturesIO> ios;
 
 	public:
 		AutoencoderExampleGenerator(fs::path dataPath) :
-			dataPath(dataPath),
-			ios(194),
-			avgMask(AverageMaskProcessing(dataPath).load())
+			dataPath(dataPath)
 		{ }
 
 		void compute()
 		{
-			auto dir = dataPath / "autoencoder-examples";
+			Reader::AutoencoderExampleIO io{};
 
-			fs::remove_all(dir);
-			fs::create_directory(dir);
+			auto path = dataPath / "autoencoder" / "examples";
+			fs::remove(path);
 
-			for (int i = 0; i < ios.size(); i++)
-				ios[i].open(i, dir);
+			io.open(path);
 
 			Reader::DatasetReader reader(dataPath);
-
 			while (reader.hasNext())
 			{
 				auto example = reader.loadNext(false);
+				auto mask = example.mask;
+				auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(mask);
 
-				if (colorTest.isBackAndWhite(example.image))
-					continue;
-
-				example.scaleFace(200, 200);
-
-				FeatureExtraction::HsvImage processedImage;
-				imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);
-				featureSelector.setImage(processedImage);
-
-				compute(example);
+				io.add(normalizedMask, normalizedMask);
 			}
 
-			for (int i = 0; i < ios.size(); i++)
-				ios[i].close();
+			io.close();
 		}
 
-	private:
-		void compute(Reader::LearningExample& example)
+		FaceMask addRandomNoise(FaceMask mask, float grain)
 		{
-			auto normalizedAvgMask = MaskTransformation::MaskNormalizer::normalizeMask(
-				avgMask,
-				example.mask.faceRect()
-			);
+			std::default_random_engine e{};
+			std::normal_distribution<int> normal_distribution{ 0, grain };
 
-			float interpolationFactors[]{
-				0.,
-				0.1,
-				0.2,
-				0.3,
-				0.5,
-				0.75,
-				1.,
-			};
-
-			for (auto factor : interpolationFactors)
+			for (auto& point : mask)
 			{
-				compute(example, MaskTransformation::MaskInterpolation::interpolate(example.mask, normalizedAvgMask, factor, false, false));
-				compute(example, MaskTransformation::MaskInterpolation::interpolate(example.mask, normalizedAvgMask, factor, false, true));
-				compute(example, MaskTransformation::MaskInterpolation::interpolate(example.mask, normalizedAvgMask, factor, true, false));
-				compute(example, MaskTransformation::MaskInterpolation::interpolate(example.mask, normalizedAvgMask, factor, true, true));
-			}
-
-			float offsetFactors[]{
-				2,
-				5,
-				10,
-				25,
-				50
-			};
-
-			for (auto offsetFactor : offsetFactors)
-			{
-				compute(example, MaskTransformation::MaskTransition::moveMask(example.mask, Math::Vector<float>(offsetFactor, 0)));
-				compute(example, MaskTransformation::MaskTransition::moveMask(example.mask, Math::Vector<float>(-offsetFactor, 0)));
-				compute(example, MaskTransformation::MaskTransition::moveMask(example.mask, Math::Vector<float>(0, offsetFactor)));
-				compute(example, MaskTransformation::MaskTransition::moveMask(example.mask, Math::Vector<float>(0, -offsetFactor)));
-			}
-		}
-
-		void compute(Reader::LearningExample& example, const FaceMask& currentMask)
-		{
-			for (size_t i = 0; i < example.mask.size(); i++)
-			{
-				std::vector<float> features;
-				std::vector<float> decisions;
-
-				featureSelector.selectFeatures(currentMask, i, features);
-				FeatureExtraction::Decision::getDecisions(example.mask, currentMask, i, decisions);
-
-				ios[i].add(features, decisions);
+				point.x += normal_distribution(e);
+				point.y += normal_distribution(e);
 			}
 		}
 	};

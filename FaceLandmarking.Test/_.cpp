@@ -10,12 +10,13 @@ enum class ProcessType
 {
 	Video,
 	Example,
-	Features
+	Features,
+	Autoencoder
 };
 
 int main(int argc, char** argv)
 {
-	ProcessType processType = ProcessType::Video;
+	ProcessType processType = ProcessType::Autoencoder;
 	string dataPath = "./../Data";
 	string videoPath = "./../Data/examples/ja3.mp4";
 	string mask = "all";
@@ -76,6 +77,9 @@ int main(int argc, char** argv)
 		break;
 	case ProcessType::Features:
 		features_test(dataPath);
+		break;
+	case ProcessType::Autoencoder:
+		autoencoder_test(dataPath);
 		break;
 	}
 }

@@ -14,7 +14,7 @@ namespace FaceLandmarking::Reader
 		std::fstream file;
 
 	public:
-		AutoencoderExampleIO() :
+		AutoencoderExampleIO()
 		{ }
 
 		void open(fs::path filePath)
