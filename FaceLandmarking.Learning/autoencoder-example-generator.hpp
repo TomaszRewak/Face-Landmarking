@@ -42,6 +42,19 @@ namespace FaceLandmarking::Learning
 				auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(mask);
 
 				io.add(normalizedMask, normalizedMask);
+
+				for (int i = 0; i < 4; i++) {
+					auto newMask = addRandomNoise(normalizedMask, 0.1);
+					io.add(normalizedMask, newMask);
+				}
+				for (int i = 0; i < 4; i++) {
+					auto newMask = addRandomNoise(normalizedMask, 0.01);
+					io.add(normalizedMask, newMask);
+				}
+				for (int i = 0; i < 4; i++) {
+					auto newMask = addRandomNoise(normalizedMask, 0.001);
+					io.add(normalizedMask, newMask);
+				}
 			}
 
 			io.close();
@@ -50,13 +63,15 @@ namespace FaceLandmarking::Learning
 		FaceMask addRandomNoise(FaceMask mask, float grain)
 		{
 			std::default_random_engine e{};
-			std::normal_distribution<int> normal_distribution{ 0, grain };
+			std::normal_distribution<float> normal_distribution{ 0, grain };
 
 			for (auto& point : mask)
 			{
 				point.x += normal_distribution(e);
 				point.y += normal_distribution(e);
 			}
+
+			return mask;
 		}
 	};
 }
