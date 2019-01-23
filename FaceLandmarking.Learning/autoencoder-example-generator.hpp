@@ -19,6 +19,7 @@ namespace FaceLandmarking::Learning
 	{
 	private:
 		fs::path dataPath;
+		std::default_random_engine e{};
 
 	public:
 		AutoencoderExampleGenerator(fs::path dataPath) :
@@ -43,8 +44,8 @@ namespace FaceLandmarking::Learning
 
 				io.add(normalizedMask, normalizedMask);
 
-				/*for (int i = 0; i < 4; i++) {
-					auto newMask = addRandomNoise(normalizedMask, 0.1);
+				for (int i = 0; i < 4; i++) {
+					auto newMask = addRandomNoise(normalizedMask, 0.05);
 					io.add(normalizedMask, newMask);
 				}
 				for (int i = 0; i < 4; i++) {
@@ -54,7 +55,7 @@ namespace FaceLandmarking::Learning
 				for (int i = 0; i < 4; i++) {
 					auto newMask = addRandomNoise(normalizedMask, 0.001);
 					io.add(normalizedMask, newMask);
-				}*/
+				}
 			}
 
 			io.close();
@@ -62,7 +63,6 @@ namespace FaceLandmarking::Learning
 
 		FaceMask addRandomNoise(FaceMask mask, float grain)
 		{
-			std::default_random_engine e{};
 			std::normal_distribution<float> normal_distribution{ 0, grain };
 
 			for (auto& point : mask)
