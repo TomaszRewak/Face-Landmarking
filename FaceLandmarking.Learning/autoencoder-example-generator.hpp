@@ -43,7 +43,7 @@ namespace FaceLandmarking::Learning
 
 				io.add(normalizedMask, normalizedMask);
 
-				for (int i = 0; i < 4; i++) {
+				/*for (int i = 0; i < 4; i++) {
 					auto newMask = addRandomNoise(normalizedMask, 0.1);
 					io.add(normalizedMask, newMask);
 				}
@@ -54,7 +54,7 @@ namespace FaceLandmarking::Learning
 				for (int i = 0; i < 4; i++) {
 					auto newMask = addRandomNoise(normalizedMask, 0.001);
 					io.add(normalizedMask, newMask);
-				}
+				}*/
 			}
 
 			io.close();

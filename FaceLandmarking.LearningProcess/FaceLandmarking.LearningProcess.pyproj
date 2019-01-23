@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0df252f5-2ce2-464a-b470-f20574343f46</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>main.py</StartupFile>
+    <StartupFile>autoencoder.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -23,6 +23,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="autoencoder.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="autoencoder_example_reader.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="data_reader.py">
