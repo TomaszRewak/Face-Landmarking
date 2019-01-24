@@ -3,7 +3,7 @@ import shutil
 import pathlib
 from sklearn.neural_network import MLPRegressor
 from autoencoder_example_reader import import_face_data
-from tree_writer import write_tree
+from nn_writer import write_nn
 
 data = import_face_data('../Data/autoencoder/examples')
 
@@ -26,3 +26,5 @@ y_test = data[train_set_size:]
 score = nn.score(x_test, y_test)
 
 print(score)
+
+write_nn('../Data/regressors/nn', 'autoencoder', nn)

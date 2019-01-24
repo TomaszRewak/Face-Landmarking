@@ -32,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
+    <Compile Include="nn_writer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tree_writer.py">
       <SubType>Code</SubType>
     </Compile>
