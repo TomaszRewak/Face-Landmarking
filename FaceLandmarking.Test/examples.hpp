@@ -50,8 +50,8 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
-	Learning::Regressors::NNRegressor<Learning::Regressors::SigmoidActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::SigmoidActivation>> maskAutoencoder(autoencoderRegressor);
+	Learning::Regressors::NNRegressor<Learning::Regressors::IdentityActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::IdentityActivation>> maskAutoencoder(autoencoderRegressor);
 
 	namedWindow("example", WINDOW_AUTOSIZE);
 

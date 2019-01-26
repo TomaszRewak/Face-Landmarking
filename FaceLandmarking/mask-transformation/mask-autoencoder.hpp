@@ -22,8 +22,8 @@ namespace FaceLandmarking::MaskTransformation
 			auto normalizedInput = MaskNormalizer::normalizeMask(input);
 			auto normalizedInputRect = normalizedInput.faceRect();
 
-			std::vector<float> inputValues(input.size() * 2, 0);
-			std::vector<float> outputValues(input.size() * 2, 0);
+			std::vector<float> inputValues(input.size() * 2);
+			std::vector<float> outputValues(input.size() * 2);
 
 			for (int i = 0; i < normalizedInput.size(); i++)
 			{
@@ -40,7 +40,7 @@ namespace FaceLandmarking::MaskTransformation
 				normalizedOutput[i].y = outputValues[i * 2 + 1];
 			}
 
-			auto output = MaskNormalizer::normalizeMask(normalizedOutput, normalizedOutput.faceRect(), inputRect);
+			auto output = MaskNormalizer::normalizeMask(normalizedOutput, normalizedInputRect, inputRect);
 
 			return output;
 		}
