@@ -40,21 +40,23 @@ namespace FaceLandmarking::Learning
 			{
 				auto example = reader.loadNext(false);
 				auto mask = example.mask;
+
 				auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(mask);
+				auto normalizedMaskRect = normalizedMask.faceRect();
 
 				io.add(normalizedMask, normalizedMask);
 
-				for (int i = 0; i < 4; i++) {
-					auto newMask = addRandomNoise(normalizedMask, 0.05);
-					io.add(normalizedMask, newMask);
-				}
-				for (int i = 0; i < 4; i++) {
-					auto newMask = addRandomNoise(normalizedMask, 0.01);
-					io.add(normalizedMask, newMask);
-				}
-				for (int i = 0; i < 4; i++) {
-					auto newMask = addRandomNoise(normalizedMask, 0.001);
-					io.add(normalizedMask, newMask);
+				for (float grain : {0.05, 0.01, 0.001})
+				{
+					for (int i = 0; i < 4; i++) {
+						auto newMask = addRandomNoise(normalizedMask, grain);
+						auto newMaskRect = newMask.faceRect();
+
+						io.add(
+							MaskTransformation::MaskNormalizer::normalizeMask(normalizedMask, newMaskRect, normalizedMaskRect),
+							MaskTransformation::MaskNormalizer::normalizeMask(newMask, newMaskRect, normalizedMaskRect)
+						);
+					}
 				}
 			}
 

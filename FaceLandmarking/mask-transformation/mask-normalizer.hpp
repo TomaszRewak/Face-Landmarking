@@ -8,20 +8,18 @@ namespace FaceLandmarking::MaskTransformation
 	class MaskNormalizer
 	{
 	public:
-		static FaceMask normalizeMask(const FaceMask& mask, Math::Rect<float> rect)
+		static FaceMask normalizeMask(const FaceMask& mask, Math::Rect<float> sourceRect, Math::Rect<float> targetRect)
 		{
 			FaceMask normalizedMask = mask;
 
-			auto maskSize = mask.faceSize();
 			float scaleFactor = std::min(
-				rect.size.width / maskSize.width,
-				rect.size.height / maskSize.height
+				targetRect.size.width / sourceRect.size.width,
+				targetRect.size.height / sourceRect.size.height
 			);
 
-			auto maskCenter = mask.faceCenter();
 			auto maskOffset = Math::Point<float>(
-				rect.center.x - maskCenter.x * scaleFactor,
-				rect.center.y - maskCenter.y * scaleFactor
+				targetRect.center.x - sourceRect.center.x * scaleFactor,
+				targetRect.center.y - sourceRect.center.y * scaleFactor
 			);
 
 			for (auto& point : normalizedMask)
@@ -31,6 +29,13 @@ namespace FaceLandmarking::MaskTransformation
 			}
 
 			return normalizedMask;
+		}
+
+		static FaceMask normalizeMask(const FaceMask& mask, Math::Rect<float> targetRect)
+		{
+			auto maskRect = mask.faceRect();
+
+			return normalizeMask(mask, maskRect, targetRect);
 		}
 
 		static FaceMask normalizeMask(const FaceMask& mask)
