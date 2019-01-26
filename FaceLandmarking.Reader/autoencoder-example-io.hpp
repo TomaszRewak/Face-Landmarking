@@ -29,13 +29,13 @@ namespace FaceLandmarking::Reader
 
 		void add(const FaceMask& inputMask, const FaceMask& outputMask)
 		{
-			for (auto feature : inputMask)
-				file << feature.x << " " << feature.y << " ";
+			for (auto point : inputMask)
+				file << point.x << " " << point.y << " ";
 
 			file << "\n";
 
-			for (auto feature : outputMask)
-				file << feature.x << " " << feature.y << " ";
+			for (auto point : outputMask)
+				file << point.x << " " << point.y << " ";
 
 			file << "\n";
 		}

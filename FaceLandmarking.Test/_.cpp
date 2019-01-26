@@ -16,7 +16,7 @@ enum class ProcessType
 
 int main(int argc, char** argv)
 {
-	ProcessType processType = ProcessType::Autoencoder;
+	ProcessType processType = ProcessType::Example;
 	string dataPath = "./../Data";
 	string videoPath = "./../Data/examples/ja3.mp4";
 	string mask = "all";

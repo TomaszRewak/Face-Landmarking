@@ -12,10 +12,12 @@
 #include "../FaceLandmarking.Reader/mask-description-io.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-fixer.hpp"
+#include "../FaceLandmarking/mask-transformation/mask-autoencoder.hpp"
 #include "../FaceLandmarking.Learning/average-mask-processing.hpp"
 #include "../FaceLandmarking.Learning/feature-processing.hpp"
 #include "../FaceLandmarking.Learning/mask-regression.hpp"
 #include "../FaceLandmarking.Learning/regressors/tree-regressor.hpp"
+#include "../FaceLandmarking.Learning/regressors/nn-regressor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
@@ -63,6 +65,9 @@ void video_test(
 
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
+
+	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
 
 	//VideoCapture videoCapture(0);
 	VideoCapture videoCapture(videoPath);
@@ -122,9 +127,10 @@ void video_test(
 				maskRegression.apply(normalizedMask);
 				maskRegression.apply(mask, 1 / scale);
 
-				maskFixer.compute(normalizedMask);
-				maskFixer.apply(normalizedMask);
-				maskFixer.apply(mask, 1 / scale);
+				mask = maskAutoencoder.passThrough(mask);
+				// maskFixer.compute(normalizedMask);
+				// maskFixer.apply(normalizedMask);
+				// maskFixer.apply(mask, 1 / scale);
 			}
 
 			Test::UI::MaskUI::drawMask(frameWithMask, mask, maskDescription);

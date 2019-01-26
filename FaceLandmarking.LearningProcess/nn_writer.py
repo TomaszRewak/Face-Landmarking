@@ -20,11 +20,11 @@ def write_nn(path, file_name, nn):
 
             for node_weights in weights[i]:
                 for weight in node_weights:
-                    file.write("{0} ".format(weight))
+                    file.write("{0:0.5f} ".format(weight))
 
             file.write("\n")
 
             for bias in biases[i]:
-                file.write("{0} ".format(bias))
+                file.write("{0:0.7f} ".format(bias))
 
             file.write("\n")

@@ -12,10 +12,12 @@
 #include "../FaceLandmarking.Reader/mask-description-io.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-fixer.hpp"
+#include "../FaceLandmarking/mask-transformation/mask-autoencoder.hpp"
 #include "../FaceLandmarking.Learning/average-mask-processing.hpp"
 #include "../FaceLandmarking.Learning/feature-processing.hpp"
 #include "../FaceLandmarking.Learning/mask-regression.hpp"
 #include "../FaceLandmarking.Learning/regressors/tree-regressor.hpp"
+#include "../FaceLandmarking.Learning/regressors/nn-regressor.hpp"
 #include "../FaceLandmarking.Learning/mask-limits-processing.hpp"
 #include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
@@ -48,6 +50,9 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
+	Learning::Regressors::NNRegressor<Learning::Regressors::SigmoidActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::SigmoidActivation>> maskAutoencoder(autoencoderRegressor);
+
 	namedWindow("example", WINDOW_AUTOSIZE);
 
 	Mat imageWithMasks;
@@ -74,8 +79,10 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 					maskRegression.compute(adjustedMask);
 					maskRegression.apply(adjustedMask);
 
-					maskFixer.compute(adjustedMask);
-					maskFixer.apply(adjustedMask);
+					//maskFixer.compute(adjustedMask);
+					//maskFixer.apply(adjustedMask);
+
+					adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 				}
 
 				example.image.copyTo(imageWithMasks);

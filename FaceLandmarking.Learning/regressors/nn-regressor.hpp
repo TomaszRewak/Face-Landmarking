@@ -9,6 +9,22 @@ namespace FaceLandmarking::Learning::Regressors
 {
 	namespace fs = std::experimental::filesystem;
 
+	struct IdentityActivation
+	{
+		float operator()(float value) { return value; }
+	};
+
+	struct ReluActivation
+	{
+		float operator()(float value) { return std::max(0.f, value); }
+	};
+
+	struct SigmoidActivation
+	{
+		float operator()(float value) { return 1.f / (1.f + std::exp(-value)); }
+	};
+
+	template<typename Activation>
 	class NNRegressor
 	{
 	private:
@@ -27,12 +43,15 @@ namespace FaceLandmarking::Learning::Regressors
 				layers.push_back(std::vector<float>(size));
 		}
 
-		void get(const std::vector<float>& features, std::vector<float>& output)
+		template<typename Iterator>
+		void passThrough(Iterator input, Iterator output)
 		{
-			for (size_t i = 0; i < features.size(); i++)
-				layers[0][i] = features[i];
+			Activation activation;
 
-			for (size_t layer = 0; layer < weights.size(); layer++)
+			for (size_t i = 0; i < layers[0].size(); i++)
+				layers[0][i] = *(input++);
+
+			for (size_t layer = 0; layer < layers.size() - 1; layer++)
 			{
 				auto& l0 = layers[layer];
 				auto& l1 = layers[layer + 1];
@@ -54,11 +73,11 @@ namespace FaceLandmarking::Learning::Regressors
 					l1[b_i] += b[b_i];
 
 				for (auto& n : l1)
-					n = 1 / (1 + std::exp(-n));
+					n = activation(n);
 			}
 
 			for (auto v : layers[layers.size() - 1])
-				output.push_back(v);
+				*(output++) = v;
 		}
 	};
 }

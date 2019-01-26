@@ -20,5 +20,6 @@
     <ClInclude Include="mask-transformation\mask-transition.hpp" />
     <ClInclude Include="math\rect.hpp" />
     <ClInclude Include="math\offset.hpp" />
+    <ClInclude Include="mask-transformation\mask-autoencoder.hpp" />
   </ItemGroup>
 </Project>

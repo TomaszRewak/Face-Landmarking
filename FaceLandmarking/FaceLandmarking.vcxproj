@@ -136,6 +136,7 @@
     <ClInclude Include="mask-info\mask-limits.hpp" />
     <ClInclude Include="mask-info\mask-point.hpp" />
     <ClInclude Include="mask-info\mask-shape.hpp" />
+    <ClInclude Include="mask-transformation\mask-autoencoder.hpp" />
     <ClInclude Include="mask-transformation\mask-fixer.hpp" />
     <ClInclude Include="mask-transformation\mask-interpolation.hpp" />
     <ClInclude Include="mask-transformation\mask-normalizer.hpp" />
