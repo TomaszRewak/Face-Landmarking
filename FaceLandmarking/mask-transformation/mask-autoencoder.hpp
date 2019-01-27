@@ -44,16 +44,5 @@ namespace FaceLandmarking::MaskTransformation
 
 			return output;
 		}
-
-		void apply(FaceMask& mask, float factor, float threashold)
-		{
-			auto newMask = passThrough(mask);
-
-			for (int i = 0; i < mask.size(); i++)
-			{
-				mask[i].x += std::min(threashold, std::max(-threashold, (newMask[i].x - mask[i].x))) * factor;
-				mask[i].y += std::min(threashold, std::max(-threashold, (newMask[i].y - mask[i].y))) * factor;
-			}
-		}
 	};
 }

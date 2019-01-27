@@ -7,7 +7,7 @@ from nn_writer import write_nn
 
 data = import_face_data('../Data/all-points/autoencoder/examples')
 
-hidden_layer_sizes = (388) # 388
+hidden_layer_sizes = (100) # 388
 nn = MLPRegressor(hidden_layer_sizes = hidden_layer_sizes, 
     activation = 'logistic')
 

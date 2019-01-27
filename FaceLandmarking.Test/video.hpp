@@ -118,7 +118,7 @@ void video_test(
 				maskRegression.apply(normalizedMask);
 				maskRegression.apply(mask, 1 / scale);
 			}
-			mask = maskAutoencoder.passThrough(mask);
+			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
 
 			Test::UI::MaskUI::drawMask(frameWithMask, mask);
 

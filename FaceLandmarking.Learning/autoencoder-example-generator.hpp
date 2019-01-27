@@ -50,8 +50,8 @@ namespace FaceLandmarking::Learning
 						auto newMaskRect = newMask.faceRect();
 
 						io.add(
-							MaskTransformation::MaskNormalizer::normalizeMask(normalizedMask, newMaskRect, normalizedMaskRect),
-							MaskTransformation::MaskNormalizer::normalizeMask(newMask, newMaskRect, normalizedMaskRect)
+							MaskTransformation::MaskNormalizer::normalizeMask(newMask, newMaskRect, normalizedMaskRect),
+							MaskTransformation::MaskNormalizer::normalizeMask(normalizedMask, newMaskRect, normalizedMaskRect)
 						);
 					}
 				}

@@ -16,7 +16,7 @@ enum class ProcessType
 
 int main(int argc, char** argv)
 {
-	ProcessType processType = ProcessType::Example;
+	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data/all-points";
 	string videoPath = "./../Data/video-examples/ja7.mp4";
 	string mask = "all";
@@ -66,7 +66,7 @@ int main(int argc, char** argv)
 		if (param == "-regression-size")
 			regressionSize = stoi(argv[i++]);
 		if (param == "-debug")
-			debug = true;
+			debug = false;
 	}
 
 	switch (processType)
