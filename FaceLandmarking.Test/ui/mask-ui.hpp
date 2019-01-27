@@ -9,34 +9,10 @@ namespace FaceLandmarking::Test::UI
 	class MaskUI
 	{
 	public:
-		static void drawMask(const cv::Mat& image, const FaceMask& mask, const MaskInfo::MaskDescription& maskDescription, cv::Scalar color = cv::Scalar(255, 255, 0))
+		static void drawMask(const cv::Mat& image, const FaceMask& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
 		{
-			for (auto& shape : maskDescription.shapes)
-			{
-				if (!shape.visible)
-					continue;
-			
-				int pointsNumber = shape.points.size() - (shape.closed ? 0 : 1);
-			
-				/*for (size_t pointIndex = 0; pointIndex < pointsNumber; pointIndex++)
-				{
-					const auto& point = mask[shape.point(pointIndex)];
-					const auto& nextPoint = mask[shape.point(pointIndex + 1)];
-			
-					cv::line(
-						image,
-						cv::Point(point.x, point.y),
-						cv::Point(nextPoint.x, nextPoint.y),
-						color / 2
-					);
-				}*/
-			}
-
 			for (size_t pointIndex = 0; pointIndex < mask.size(); pointIndex++)
 			{
-				if (!maskDescription.points[pointIndex].inUse)
-					continue;
-
 				const auto& point = mask[pointIndex];
 
 				cv::circle(

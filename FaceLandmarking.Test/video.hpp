@@ -9,9 +9,7 @@
 #include "../FaceLandmarking.Reader/dataset-reader.hpp"
 #include "../FaceLandmarking.Reader/mask-io.hpp"
 #include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
-#include "../FaceLandmarking.Reader/mask-description-io.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-fixer.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-autoencoder.hpp"
 #include "../FaceLandmarking.Learning/average-mask-processing.hpp"
 #include "../FaceLandmarking.Learning/feature-processing.hpp"
@@ -46,25 +44,18 @@ void video_test(
 	bool debug
 )
 {
-	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / ("mask-description-" + mask + ".mask"));
-	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
-
 	Learning::AverageMaskProcessing averageMaskProcessing(dataPath);
 	FaceMask averageMask = averageMaskProcessing.load();
 
-	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath, mask);
-	MaskInfo::MaskLimits maskLimits = maskLimitsProcessing.load();
-
 	FaceLocator::FaceFinder faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml");
 
-	FaceLocator::MaskFrame maskFrame(averageMask, maskDescription, Math::Size<float>(200, 200));
+	FaceLocator::MaskFrame maskFrame(averageMask, Math::Size<float>(200, 200));
 	std::vector<FaceMask> masks;
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
-	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 
-	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
-	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
+	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
+	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
 
 	Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
 	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation>> maskAutoencoder(autoencoderRegressor);
@@ -125,22 +116,18 @@ void video_test(
 			{
 				maskRegression.compute(normalizedMask, regressionSize);
 				maskRegression.apply(normalizedMask);
-				maskRegression.apply(mask, 1 / scale * 2);
-				
-				// maskFixer.compute(normalizedMask);
-				// maskFixer.apply(normalizedMask);
-				// maskFixer.apply(mask, 1 / scale);
+				maskRegression.apply(mask, 1 / scale);
 			}
 			mask = maskAutoencoder.passThrough(mask);
 
-			Test::UI::MaskUI::drawMask(frameWithMask, mask, maskDescription);
+			Test::UI::MaskUI::drawMask(frameWithMask, mask);
 
 			if (debug)
 			{
 				cv::Mat processedFrameRGB;
 				processedFrame.getImage(processedFrameRGB);
 
-				Test::UI::MaskUI::drawMask(processedFrameRGB, normalizedMask, maskDescription);
+				Test::UI::MaskUI::drawMask(processedFrameRGB, normalizedMask);
 
 				Test::UI::FaceUI::drawFace(frameWithMask, faceRect, cv::Scalar(255, 255, 255));
 				Test::UI::FaceUI::drawFace(processedFrameRGB, normalizedFaceRect, cv::Scalar(255, 255, 255));

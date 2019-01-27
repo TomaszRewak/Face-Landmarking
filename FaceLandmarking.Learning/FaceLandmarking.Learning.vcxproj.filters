@@ -9,9 +9,7 @@
     <ClInclude Include="mask-regression.hpp" />
     <ClInclude Include="regressors\nn-regressor.hpp" />
     <ClInclude Include="regressors\tree-regressor.hpp" />
-    <ClInclude Include="mask-limits-processing.hpp" />
     <ClInclude Include="mask\mask-avg.hpp" />
-    <ClInclude Include="mask\threshold-builder.hpp" />
     <ClInclude Include="autoencoder-example-generator.hpp" />
   </ItemGroup>
 </Project>

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "mask-frame.hpp"
-#include "../FaceLandmarking/mask-info/mask-description.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
 #include "../FaceLandmarking/math/rect.hpp"
 #include "../FaceLandmarking/math/offset.hpp"
@@ -11,11 +10,9 @@ namespace FaceLandmarking::FaceLocator
 	class MaskFrame
 	{
 	private:
-		const MaskInfo::MaskDescription& maskDescription;
-
 		Math::Size<float> desiredSize;
 		Math::Offset<float> defaultOffset;
-		
+
 		Math::Rect<float> getRect(const FaceMask &mask) const
 		{
 			float
@@ -26,13 +23,10 @@ namespace FaceLandmarking::FaceLocator
 
 			for (size_t i = 0; i < mask.size(); i++)
 			{
-				if (maskDescription.points[i].inUse)
-				{
-					minX = std::min(minX, mask[i].x);
-					maxX = std::max(maxX, mask[i].x);
-					minY = std::min(minY, mask[i].y);
-					maxY = std::max(maxY, mask[i].y);
-				}
+				minX = std::min(minX, mask[i].x);
+				maxX = std::max(maxX, mask[i].x);
+				minY = std::min(minY, mask[i].y);
+				maxY = std::max(maxY, mask[i].y);
 			}
 
 			return Math::Rect<float>(
@@ -42,8 +36,7 @@ namespace FaceLandmarking::FaceLocator
 		}
 
 	public:
-		MaskFrame(const FaceMask &averageMask, const MaskInfo::MaskDescription& maskDescription, Math::Size<float> desiredSize) :
-			maskDescription(maskDescription)
+		MaskFrame(const FaceMask &averageMask, Math::Size<float> desiredSize)
 		{
 			Math::Rect<float> fullRect = averageMask.faceRect();
 			Math::Rect<float> partialRect = getRect(averageMask);
@@ -67,7 +60,7 @@ namespace FaceLandmarking::FaceLocator
 				std::max(
 					desiredSize.width / currentSize.width,
 					desiredSize.height / currentSize.height
-				), 
+				),
 				2.f
 			);
 		}

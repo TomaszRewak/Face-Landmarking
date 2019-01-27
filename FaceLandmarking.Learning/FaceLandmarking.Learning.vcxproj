@@ -126,10 +126,8 @@
   <ItemGroup>
     <ClInclude Include="autoencoder-example-generator.hpp" />
     <ClInclude Include="feature-processing.hpp" />
-    <ClInclude Include="mask-limits-processing.hpp" />
     <ClInclude Include="mask-regression.hpp" />
     <ClInclude Include="mask\mask-avg.hpp" />
-    <ClInclude Include="mask\threshold-builder.hpp" />
     <ClInclude Include="regressors\nn-regressor.hpp" />
     <ClInclude Include="regressors\tree-regressor.hpp" />
   </ItemGroup>

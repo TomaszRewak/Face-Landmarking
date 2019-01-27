@@ -9,16 +9,13 @@
 #include "../FaceLandmarking.Reader/dataset-reader.hpp"
 #include "../FaceLandmarking.Reader/mask-io.hpp"
 #include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
-#include "../FaceLandmarking.Reader/mask-description-io.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-fixer.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-autoencoder.hpp"
 #include "../FaceLandmarking.Learning/average-mask-processing.hpp"
 #include "../FaceLandmarking.Learning/feature-processing.hpp"
 #include "../FaceLandmarking.Learning/mask-regression.hpp"
 #include "../FaceLandmarking.Learning/regressors/tree-regressor.hpp"
 #include "../FaceLandmarking.Learning/regressors/nn-regressor.hpp"
-#include "../FaceLandmarking.Learning/mask-limits-processing.hpp"
 #include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
 #include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
 #include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
@@ -32,23 +29,16 @@ using namespace FaceLandmarking;
 
 void example_test(experimental::filesystem::path dataPath, string mask)
 {
-	Reader::MaskDescriptionIO maskDescriptionIO(dataPath / "mask" / ("mask-description-" + mask + ".mask"));
-	MaskInfo::MaskDescription maskDescription = maskDescriptionIO.load();
-
 	Learning::AverageMaskProcessing averageMaskProcessing(dataPath);
 	FaceMask averageMask = averageMaskProcessing.load();
-
-	Learning::MaskLimitsProcessing maskLimitsProcessing(maskDescription, dataPath, mask);
-	MaskInfo::MaskLimits maskLimits = maskLimitsProcessing.load();
 
 	std::vector<float> features;
 	std::vector<float> decisions;
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
-	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 
-	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
-	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
+	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
+	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
 
 	Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
 	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation>> maskAutoencoder(autoencoderRegressor);
@@ -78,18 +68,15 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 				for (int i = 0; i < 10; i++) {
 					maskRegression.compute(adjustedMask);
 					maskRegression.apply(adjustedMask);
-
-					//maskFixer.compute(adjustedMask);
-					//maskFixer.apply(adjustedMask);
 				}
 
 				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);
 
-				Test::UI::MaskUI::drawMask(imageWithMasks, example.mask, maskDescription);
-				Test::UI::MaskUI::drawMask(imageWithMasks, averageScaledMask, maskDescription, cv::Scalar(0, 0, 255));
-				Test::UI::MaskUI::drawMask(imageWithMasks, adjustedMask, maskDescription, cv::Scalar(255, 255, 255));
+				Test::UI::MaskUI::drawMask(imageWithMasks, example.mask);
+				Test::UI::MaskUI::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
+				Test::UI::MaskUI::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
 				imshow("example", imageWithMasks);
 
 				auto key = waitKey(250000);

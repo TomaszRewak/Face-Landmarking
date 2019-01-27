@@ -5,10 +5,7 @@
 
 #include "../FaceLandmarking.Reader/dataset-reader.hpp"
 #include "../FaceLandmarking.Reader/autoencoder-example-io.hpp"
-#include "mask/threshold-builder.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/mask-info/mask-description.hpp"
-#include "../FaceLandmarking/mask-info/mask-limits.hpp"
 #include "../FaceLandmarking/math/angle.hpp"
 
 namespace FaceLandmarking::Learning

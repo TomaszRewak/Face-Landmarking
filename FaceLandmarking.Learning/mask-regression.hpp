@@ -66,7 +66,6 @@ namespace FaceLandmarking::Learning
 	class MaskRegression
 	{
 	private:
-		MaskInfo::MaskDescription maskDescription;
 		FeatureExtractor featureExtractor;
 		Regressor regressors;
 
@@ -78,10 +77,9 @@ namespace FaceLandmarking::Learning
 		std::vector<MaskRegressionBuffer> buffers;
 
 	public:
-		MaskRegression(MaskInfo::MaskDescription maskDescription, Regressor regressors) :
-			maskDescription(maskDescription),
+		MaskRegression(Regressor regressors) :
 			regressors(regressors),
-			buffers(maskDescription.points.size())
+			buffers(194)
 		{ }
 
 		void setImage(const FeatureExtraction::HsvImage& image)
@@ -102,9 +100,6 @@ namespace FaceLandmarking::Learning
 
 			for (size_t i = 0; i < mask.size(); i++)
 			{
-				if (!maskDescription.points[i].inUse)
-					continue;
-
 				auto& buffer = buffers[i];
 
 				Math::Vector<float> pointOffset;
