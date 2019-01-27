@@ -3,6 +3,7 @@
 #include <vector>
 #include <limits>
 #include <algorithm>
+#include <array>
 
 #include "math/point.hpp"
 #include "math/size.hpp"
@@ -11,14 +12,47 @@
 
 namespace FaceLandmarking 
 {
-	class FaceMask : public std::vector<Math::Point<float>> 
+	template<size_t N>
+	class FaceMask
 	{
+	private:
+		std::array<Math::Point<float>, N> points;
+
 	public:
+		const Math::Point<float>& operator[](int n) const
+		{
+			return points[n];
+		}
+
+		Math::Point<float>& operator[](int n)
+		{
+			return points[n];
+		}
+
+		auto begin() const 
+		{
+			return points.begin();
+		}
+
+		auto begin()
+		{
+			return points.begin();
+		}
+
+		auto end() const
+		{
+			return points.end();
+		}
+
+		auto end()
+		{
+			return points.end();
+		}
+
 		Math::Point<float> faceCenter() const 
 		{
 			float x = 0;
 			float y = 0;
-			int points = size();
 
 			for (const auto& point : *this)
 			{
@@ -26,7 +60,7 @@ namespace FaceLandmarking
 				y += point.y;
 			}
 
-			return Math::Point<float>(x / points, y / points);
+			return Math::Point<float>(x / N, y / N);
 		}
 
 		Math::Size<float> faceSize() const

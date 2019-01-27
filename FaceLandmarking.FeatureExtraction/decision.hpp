@@ -4,10 +4,11 @@
 
 namespace FaceLandmarking::FeatureExtraction
 {
+	template<size_t N>
 	class Decision
 	{
 	public:
-		static void getDecisions(const FaceMask& face, const FaceMask& mask, size_t point, std::vector<float>& decisions)
+		static void getDecisions(const FaceMask<N>& face, const FaceMask<N>& mask, size_t point, std::vector<float>& decisions)
 		{
 			const auto& facePoint = face[point];
 			const auto& maskPoint = mask[point];

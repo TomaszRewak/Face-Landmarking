@@ -5,12 +5,13 @@
 
 namespace FaceLandmarking::MaskTransformation
 {
+	template<size_t N>
 	class MaskNormalizer
 	{
 	public:
-		static FaceMask normalizeMask(const FaceMask& mask, Math::Rect<float> sourceRect, Math::Rect<float> targetRect)
+		static FaceMask<N> normalizeMask(const FaceMask<N>& mask, Math::Rect<float> sourceRect, Math::Rect<float> targetRect)
 		{
-			FaceMask normalizedMask = mask;
+			FaceMask<N> normalizedMask = mask;
 
 			float scaleFactor = std::min(
 				targetRect.size.width / sourceRect.size.width,
@@ -31,14 +32,14 @@ namespace FaceLandmarking::MaskTransformation
 			return normalizedMask;
 		}
 
-		static FaceMask normalizeMask(const FaceMask& mask, Math::Rect<float> targetRect)
+		static FaceMask<N> normalizeMask(const FaceMask<N>& mask, Math::Rect<float> targetRect)
 		{
 			auto maskRect = mask.faceRect();
 
 			return normalizeMask(mask, maskRect, targetRect);
 		}
 
-		static FaceMask normalizeMask(const FaceMask& mask)
+		static FaceMask<N> normalizeMask(const FaceMask<N>& mask)
 		{
 			return normalizeMask(mask, Math::Rect<float>(Math::Point<float>(0, 0), Math::Size<float>(1, 1)));
 		}

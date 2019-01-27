@@ -4,10 +4,11 @@
 
 namespace FaceLandmarking::MaskTransformation
 {
+	template<size_t N>
 	class MaskTransition
 	{
 	public:
-		static FaceMask moveMask(const FaceMask& mask, Math::Vector<float> offset)
+		static FaceMask<N> moveMask(const FaceMask<N>& mask, Math::Vector<float> offset)
 		{
 			FaceMask movedMask = mask;
 
@@ -17,9 +18,9 @@ namespace FaceLandmarking::MaskTransformation
 			return movedMask;
 		}
 
-		static FaceMask scale(const FaceMask& mask, float scaleX, float scaleY, Math::Point<float> center)
+		static FaceMask<N> scale(const FaceMask<N>& mask, float scaleX, float scaleY, Math::Point<float> center)
 		{
-			FaceMask scaledMask = mask;
+			FaceMask<N> scaledMask = mask;
 
 			for (auto& point : scaledMask)
 			{
@@ -30,7 +31,7 @@ namespace FaceLandmarking::MaskTransformation
 			return scaledMask;
 		}
 
-		static FaceMask scale(const FaceMask& mask, float scaleX, float scaleY)
+		static FaceMask<N> scale(const FaceMask<N>& mask, float scaleX, float scaleY)
 		{
 			return scale(mask, scaleX, scaleY, mask.faceCenter());
 		}

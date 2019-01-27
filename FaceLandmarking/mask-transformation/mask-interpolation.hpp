@@ -4,14 +4,15 @@
 
 namespace FaceLandmarking::MaskTransformation
 {
+	template<size_t N>
 	class MaskInterpolation
 	{
 	public:
-		static FaceMask interpolate(const FaceMask& from, const FaceMask& to, float factor, bool xReflect = false, bool yReflect = false)
+		static FaceMask<N> interpolate(const FaceMask<N>& from, const FaceMask<N>& to, float factor, bool xReflect = false, bool yReflect = false)
 		{
-			FaceMask interpolated = from;
+			FaceMask<N> interpolated = from;
 
-			for (size_t i = 0; i < from.size(); i++)
+			for (size_t i = 0; i < N; i++)
 			{
 				auto v = from[i].to(to[i]);
 

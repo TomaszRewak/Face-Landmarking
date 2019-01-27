@@ -5,11 +5,12 @@
 
 namespace FaceLandmarking::FeatureExtraction
 {
+	template<size_t N>
 	class FeatureExtractor
 	{
 	private:
 		ImageFeatureExtractor imageFeatrues;
-		MaskFeatureExtractor maskFeatures;
+		MaskFeatureExtractor<N> maskFeatures;
 
 	public:
 		void setImage(const HsvImage& image)
@@ -17,7 +18,7 @@ namespace FaceLandmarking::FeatureExtraction
 			imageFeatrues.setImage(image);
 		}
 
-		void selectFeatures(const FaceMask& mask, int maskPoint, std::vector<float>& features)
+		void selectFeatures(const FaceMask<N>& mask, int maskPoint, std::vector<float>& features)
 		{
 			auto[x, y] = mask[maskPoint];
 

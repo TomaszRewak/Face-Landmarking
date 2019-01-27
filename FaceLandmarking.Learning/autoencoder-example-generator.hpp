@@ -12,6 +12,7 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
+	template<size_t N>
 	class AutoencoderExampleGenerator
 	{
 	private:
@@ -25,20 +26,20 @@ namespace FaceLandmarking::Learning
 
 		void compute()
 		{
-			Reader::AutoencoderExampleIO io{};
+			Reader::AutoencoderExampleIO<N> io{};
 
 			auto path = dataPath / "autoencoder" / "examples";
 			fs::remove(path);
 
 			io.open(path);
 
-			Reader::DatasetReader reader(dataPath);
+			Reader::DatasetReader<N> reader(dataPath);
 			while (reader.hasNext())
 			{
 				auto example = reader.loadNext(false);
 				auto mask = example.mask;
 
-				auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(mask);
+				auto normalizedMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(mask);
 				auto normalizedMaskRect = normalizedMask.faceRect();
 
 				io.add(normalizedMask, normalizedMask);
@@ -50,8 +51,8 @@ namespace FaceLandmarking::Learning
 						auto newMaskRect = newMask.faceRect();
 
 						io.add(
-							MaskTransformation::MaskNormalizer::normalizeMask(newMask, newMaskRect, normalizedMaskRect),
-							MaskTransformation::MaskNormalizer::normalizeMask(normalizedMask, newMaskRect, normalizedMaskRect)
+							MaskTransformation::MaskNormalizer<N>::normalizeMask(newMask, newMaskRect, normalizedMaskRect),
+							MaskTransformation::MaskNormalizer<N>::normalizeMask(normalizedMask, newMaskRect, normalizedMaskRect)
 						);
 					}
 				}
@@ -60,7 +61,7 @@ namespace FaceLandmarking::Learning
 			io.close();
 		}
 
-		FaceMask addRandomNoise(FaceMask mask, float grain)
+		FaceMask<N> addRandomNoise(FaceMask<N> mask, float grain)
 		{
 			std::normal_distribution<float> normal_distribution{ 0, grain };
 

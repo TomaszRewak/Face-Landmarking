@@ -7,13 +7,14 @@
 
 namespace FaceLandmarking::FaceLocator
 {
+	template<size_t N>
 	class MaskFrame
 	{
 	private:
 		Math::Size<float> desiredSize;
 		Math::Offset<float> defaultOffset;
 
-		Math::Rect<float> getRect(const FaceMask &mask) const
+		Math::Rect<float> getRect(const FaceMask<N> &mask) const
 		{
 			float
 				minX = std::numeric_limits<float>::max(),
@@ -21,7 +22,7 @@ namespace FaceLandmarking::FaceLocator
 				minY = std::numeric_limits<float>::max(),
 				maxY = std::numeric_limits<float>::min();
 
-			for (size_t i = 0; i < mask.size(); i++)
+			for (size_t i = 0; i < N; i++)
 			{
 				minX = std::min(minX, mask[i].x);
 				maxX = std::max(maxX, mask[i].x);
@@ -36,7 +37,7 @@ namespace FaceLandmarking::FaceLocator
 		}
 
 	public:
-		MaskFrame(const FaceMask &averageMask, Math::Size<float> desiredSize)
+		MaskFrame(const FaceMask<N> &averageMask, Math::Size<float> desiredSize)
 		{
 			Math::Rect<float> fullRect = averageMask.faceRect();
 			Math::Rect<float> partialRect = getRect(averageMask);
@@ -52,7 +53,7 @@ namespace FaceLandmarking::FaceLocator
 			this->desiredSize = desiredSize;
 		}
 
-		float getScale(const FaceMask& mask) const
+		float getScale(const FaceMask<N>& mask) const
 		{
 			Math::Size<float> currentSize = getRect(mask).size;
 
@@ -65,7 +66,7 @@ namespace FaceLandmarking::FaceLocator
 			);
 		}
 
-		Math::Rect<float> getFrame(const FaceMask& mask) const
+		Math::Rect<float> getFrame(const FaceMask<N>& mask) const
 		{
 			Math::Rect<float> partRect = getRect(mask);
 

@@ -11,6 +11,7 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
+	template<size_t N>
 	class AverageMaskProcessing
 	{
 	private:
@@ -25,30 +26,30 @@ namespace FaceLandmarking::Learning
 
 		void compute() const
 		{
-			Mask::AverageMask averageMaskBuilder;
-			Reader::DatasetReader reader(dataPath);
+			Mask::AverageMask<N> averageMaskBuilder;
+			Reader::DatasetReader<N> reader(dataPath);
 
 			while (reader.hasNext())
 			{
 				auto example = reader.loadNext(false);
 				auto mask = example.mask;
 
-				mask = MaskTransformation::MaskNormalizer::normalizeMask(mask);
+				mask = MaskTransformation::MaskNormalizer<N>::normalizeMask(mask);
 				averageMaskBuilder.addMask(mask);
 			}
 
-			FaceMask averageMask = averageMaskBuilder.getAvg();
+			FaceMask<N> averageMask = averageMaskBuilder.getAvg();
 
-			Reader::MaskIO maskIO(maskFile);
+			Reader::MaskIO<N> maskIO(maskFile);
 			maskIO.save(averageMask);
 		}
 
-		FaceMask load() const
+		FaceMask<N> load() const
 		{
 			if (!fs::exists(maskFile))
 				compute();
 
-			Reader::MaskIO maskIO(maskFile);
+			Reader::MaskIO<N> maskIO(maskFile);
 			return maskIO.load();
 		}
 	};

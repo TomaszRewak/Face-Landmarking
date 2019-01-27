@@ -8,6 +8,7 @@ namespace FaceLandmarking::Reader
 {
 	namespace fs = std::experimental::filesystem;
 	
+	template<size_t N>
 	class AutoencoderExampleIO
 	{
 	private:
@@ -27,7 +28,7 @@ namespace FaceLandmarking::Reader
 			file.close();
 		}
 
-		void add(const FaceMask& inputMask, const FaceMask& outputMask)
+		void add(const FaceMask<N>& inputMask, const FaceMask<N>& outputMask)
 		{
 			for (auto point : inputMask)
 				file << point.x << " " << point.y << " ";

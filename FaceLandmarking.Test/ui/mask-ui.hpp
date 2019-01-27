@@ -6,12 +6,13 @@
 
 namespace FaceLandmarking::Test::UI
 {
+	template<size_t N>
 	class MaskUI
 	{
 	public:
-		static void drawMask(const cv::Mat& image, const FaceMask& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
+		static void drawMask(const cv::Mat& image, const FaceMask<N>& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
 		{
-			for (size_t pointIndex = 0; pointIndex < mask.size(); pointIndex++)
+			for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
 			{
 				const auto& point = mask[pointIndex];
 

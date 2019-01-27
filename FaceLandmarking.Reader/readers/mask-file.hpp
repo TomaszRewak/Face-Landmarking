@@ -4,9 +4,10 @@
 
 namespace FaceLandmarking::Reader 
 {
+	template<size_t N>
 	struct MaskFile
 	{
-		FaceMask mask;
+		FaceMask<N> mask;
 		std::string image;
 	};
 }

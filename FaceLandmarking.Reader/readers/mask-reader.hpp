@@ -5,23 +5,28 @@
 
 #include "./mask-file.hpp"
 
-namespace FaceLandmarking::Reader {
-	class MaskReader {
+namespace FaceLandmarking::Reader
+{
+	template<size_t N>
+	class MaskReader
+	{
 	private:
-		static void parseMask(std::fstream& file, FaceMask& mask)
+		static void parseMask(std::fstream& file, FaceMask<N>& mask)
 		{
 			float x, y;
 			std::string _;
 
-			while (file >> x >> _ >> y)
-				mask.push_back(Math::Point<float>(x, y));
+			for (size_t i = 0; i < N; i++) {
+				file >> x >> _ >> y;
+				mask[i] = Math::Point<float>(x, y);
+			}
 		}
 
 	public:
-		static MaskFile loadMask(fs::path filePath) 
+		static MaskFile<N> loadMask(fs::path filePath)
 		{
 			std::fstream file;
-			MaskFile maskFile;
+			MaskFile<N> maskFile;
 
 			file.open(filePath.string());
 

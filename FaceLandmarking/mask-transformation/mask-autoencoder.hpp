@@ -5,7 +5,7 @@
 
 namespace FaceLandmarking::MaskTransformation
 {
-	template<typename Regressor>
+	template<size_t N, typename Regressor>
 	class MaskAutoencoder
 	{
 	private:
@@ -16,16 +16,16 @@ namespace FaceLandmarking::MaskTransformation
 			regressor(regressor)
 		{ }
 
-		FaceMask passThrough(const FaceMask& input)
+		FaceMask<N> passThrough(const FaceMask<N>& input)
 		{
 			auto inputRect = input.faceRect();
-			auto normalizedInput = MaskNormalizer::normalizeMask(input);
+			auto normalizedInput = MaskNormalizer<N>::normalizeMask(input);
 			auto normalizedInputRect = normalizedInput.faceRect();
 
-			std::vector<float> inputValues(input.size() * 2);
-			std::vector<float> outputValues(input.size() * 2);
+			std::array<float, N * 2> inputValues;
+			std::array<float, N * 2> outputValues;
 
-			for (int i = 0; i < normalizedInput.size(); i++)
+			for (int i = 0; i < N; i++)
 			{
 				inputValues[i * 2] = normalizedInput[i].x;
 				inputValues[i * 2 + 1] = normalizedInput[i].y;
@@ -34,13 +34,13 @@ namespace FaceLandmarking::MaskTransformation
 			regressor.passThrough(inputValues.begin(), outputValues.begin());
 
 			auto normalizedOutput = normalizedInput;
-			for (int i = 0; i < normalizedOutput.size(); i++)
+			for (int i = 0; i < N; i++)
 			{
 				normalizedOutput[i].x = outputValues[i * 2];
 				normalizedOutput[i].y = outputValues[i * 2 + 1];
 			}
 
-			auto output = MaskNormalizer::normalizeMask(normalizedOutput, normalizedInputRect, inputRect);
+			auto output = MaskNormalizer<N>::normalizeMask(normalizedOutput, normalizedInputRect, inputRect);
 
 			return output;
 		}

@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {
 	const int facePoints = 194;
 
-	ProcessType processType = ProcessType::Video;
+	ProcessType processType = ProcessType::Example;
 	string dataPath = "./../Data/all-points";
 	string videoPath = "./../Data/video-examples/ja7.mp4";
 	string mask = "all";
@@ -74,16 +74,16 @@ int main(int argc, char** argv)
 	switch (processType)
 	{
 	case ProcessType::Video:
-		video_test(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
+		video_test<facePoints>(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
 		break;
 	case ProcessType::Example:
-		example_test(dataPath, mask);
+		example_test<facePoints>(dataPath, mask);
 		break;
 	case ProcessType::Features:
-		features_test(dataPath);
+		features_test<facePoints>(dataPath);
 		break;
 	case ProcessType::Autoencoder:
-		autoencoder_test(dataPath);
+		autoencoder_test<facePoints>(dataPath);
 		break;
 	}
 }

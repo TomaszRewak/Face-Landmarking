@@ -8,6 +8,7 @@ namespace FaceLandmarking::Reader
 {
 	namespace fs = std::experimental::filesystem;
 
+	template<size_t N>
 	class MaskIO
 	{
 	private:
@@ -18,12 +19,12 @@ namespace FaceLandmarking::Reader
 			path(path)
 		{ }
 
-		void save(const FaceMask& mask) const
+		void save(const FaceMask<N>& mask) const
 		{
 			std::fstream file;
 			file.open(path, std::ofstream::out);
 
-			file << mask.size() << std::endl;
+			file << N << std::endl;
 
 			for (const auto& point : mask)
 				file << point.x << " " << point.y << std::endl;
@@ -31,9 +32,9 @@ namespace FaceLandmarking::Reader
 			file.close();
 		}
 
-		FaceMask load() const
+		FaceMask<N> load() const
 		{
-			FaceMask mask;
+			FaceMask<N> mask;
 
 			std::fstream file;
 			file.open(path, std::ofstream::in);
@@ -46,7 +47,7 @@ namespace FaceLandmarking::Reader
 				Math::Point<float> point;
 				file >> point.x >> point.y;
 
-				mask.push_back(point);
+				mask[i] = point;
 			}
 
 			file.close();

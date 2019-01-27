@@ -62,7 +62,7 @@ namespace FaceLandmarking::Learning
 		}
 	};
 
-	template<typename FeatureExtractor, typename Regressor>
+	template<size_t N, typename FeatureExtractor, typename Regressor>
 	class MaskRegression
 	{
 	private:
@@ -70,7 +70,7 @@ namespace FaceLandmarking::Learning
 		Regressor regressors;
 
 		std::vector<float> features;
-		MaskTransformation::MaskOffset maskOffset;
+		MaskTransformation::MaskOffset<N> maskOffset;
 
 		int cols;
 		int rows;
@@ -93,12 +93,11 @@ namespace FaceLandmarking::Learning
 				buffer.reset(rows, cols);
 		}
 
-		void compute(FaceMask& mask, int size = 2)
+		void compute(FaceMask<N>& mask, int size = 2)
 		{
-			maskOffset.clear();
-			maskOffset.resize(mask.size());
+			std::fill(maskOffset.begin(), maskOffset.end(), Math::Vector<float>(0, 0));
 
-			for (size_t i = 0; i < mask.size(); i++)
+			for (size_t i = 0; i < N; i++)
 			{
 				auto& buffer = buffers[i];
 
@@ -139,9 +138,9 @@ namespace FaceLandmarking::Learning
 			}
 		}
 
-		void apply(FaceMask& mask, float factor = 1)
+		void apply(FaceMask<N>& mask, float factor = 1)
 		{
-			for (size_t i = 0; i < mask.size(); i++)
+			for (size_t i = 0; i < N; i++)
 				mask[i] += maskOffset[i] * factor;
 		}
 	};

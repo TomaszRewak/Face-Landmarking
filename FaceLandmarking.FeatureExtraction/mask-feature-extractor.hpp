@@ -6,10 +6,11 @@
 
 namespace FaceLandmarking::FeatureExtraction
 {
+	template<size_t N>
 	class MaskFeatureExtractor
 	{
 	public:
-		void selectFeatures(const FaceMask& mask, size_t maskPoint, std::vector<float>& features)
+		void selectFeatures(const FaceMask<N>& mask, size_t maskPoint, std::vector<float>& features)
 		{
 			int relatedPoints[]
 			{

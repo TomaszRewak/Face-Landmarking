@@ -31,6 +31,7 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
+template<size_t N>
 void video_test(
 	experimental::filesystem::path dataPath,
 	string videoPath,
@@ -44,21 +45,21 @@ void video_test(
 	bool debug
 )
 {
-	Learning::AverageMaskProcessing averageMaskProcessing(dataPath);
-	FaceMask averageMask = averageMaskProcessing.load();
+	Learning::AverageMaskProcessing<N> averageMaskProcessing(dataPath);
+	FaceMask<N> averageMask = averageMaskProcessing.load();
 
 	FaceLocator::FaceFinder faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml");
 
-	FaceLocator::MaskFrame maskFrame(averageMask, Math::Size<float>(200, 200));
-	std::vector<FaceMask> masks;
+	FaceLocator::MaskFrame<N> maskFrame(averageMask, Math::Size<float>(200, 200));
+	std::vector<FaceMask<N>> masks;
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
-	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
+	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
 
 	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
+	MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
 
 	//VideoCapture videoCapture(0);
 	VideoCapture videoCapture(videoPath);
@@ -103,7 +104,7 @@ void video_test(
 		{
 			float scale = maskFrame.getScale(mask);
 
-			FaceMask normalizedMask = MaskTransformation::MaskTransition::scale(mask, scale, scale, Math::Point<float>(0, 0));
+			FaceMask<N> normalizedMask = MaskTransformation::MaskTransition<N>::scale(mask, scale, scale, Math::Point<float>(0, 0));
 			resize(frame, scaledFrame, cv::Size(frame.cols * scale, frame.rows * scale));
 
 			auto faceRect = maskFrame.getFrame(mask);
@@ -120,14 +121,14 @@ void video_test(
 			}
 			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
 
-			Test::UI::MaskUI::drawMask(frameWithMask, mask);
+			Test::UI::MaskUI<N>::drawMask(frameWithMask, mask);
 
 			if (debug)
 			{
 				cv::Mat processedFrameRGB;
 				processedFrame.getImage(processedFrameRGB);
 
-				Test::UI::MaskUI::drawMask(processedFrameRGB, normalizedMask);
+				Test::UI::MaskUI<N>::drawMask(processedFrameRGB, normalizedMask);
 
 				Test::UI::FaceUI::drawFace(frameWithMask, faceRect, cv::Scalar(255, 255, 255));
 				Test::UI::FaceUI::drawFace(processedFrameRGB, normalizedFaceRect, cv::Scalar(255, 255, 255));
@@ -150,7 +151,7 @@ void video_test(
 
 			for (auto rect : faceFinder)
 			{
-				FaceMask mask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, rect);
+				FaceMask<N> mask = MaskTransformation::MaskNormalizer<N>::normalizeMask(averageMask, rect);
 				masks.push_back(mask);
 			}
 

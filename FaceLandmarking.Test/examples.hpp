@@ -27,10 +27,11 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
+template<size_t N>
 void example_test(experimental::filesystem::path dataPath, string mask)
 {
-	Learning::AverageMaskProcessing averageMaskProcessing(dataPath);
-	FaceMask averageMask = averageMaskProcessing.load();
+	Learning::AverageMaskProcessing<N> averageMaskProcessing(dataPath);
+	FaceMask<N> averageMask = averageMaskProcessing.load();
 
 	std::vector<float> features;
 	std::vector<float> decisions;
@@ -38,16 +39,16 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
-	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
+	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
 
-	Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation>> maskAutoencoder(autoencoderRegressor);
+	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
 
 	namedWindow("example", WINDOW_AUTOSIZE);
 
 	Mat imageWithMasks;
 
-	Reader::DatasetReader reader(dataPath);
+	Reader::DatasetReader<N> reader(dataPath);
 	while (true)
 	{
 		if (reader.hasNext()) {
@@ -58,8 +59,8 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);
 			maskRegression.setImage(processedImage);
 
-			auto normalizedMask = MaskTransformation::MaskNormalizer::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
-			auto averageScaledMask = MaskTransformation::MaskNormalizer::normalizeMask(averageMask, Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()));
+			auto normalizedMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
+			auto averageScaledMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(averageMask, Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()));
 
 			auto adjustedMask = averageScaledMask;
 
@@ -73,9 +74,9 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);
-				Test::UI::MaskUI::drawMask(imageWithMasks, example.mask);
-				Test::UI::MaskUI::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
-				Test::UI::MaskUI::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
+				Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
+				Test::UI::MaskUI<N>::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
+				Test::UI::MaskUI<N>::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
 				imshow("example", imageWithMasks);
 
 				auto key = waitKey(250000);

@@ -4,32 +4,23 @@
 
 namespace FaceLandmarking::Learning::Mask
 {
+	template<size_t N>
 	class AverageMask
 	{
 	private:
-		FaceMask avgMask;
+		FaceMask<N> avgMask;
 		int count;
-
-		void tryInitialize(const FaceMask& mask)
-		{
-			if (avgMask.size() == 0)
-			{
-				avgMask.resize(mask.size(), Math::Point<float>(0, 0));
-			}
-			else if (mask.size() != avgMask.size())
-				throw "Points count doesn't match.";
-		}
 
 	public:
 		AverageMask() :
 			count(0)
-		{ }
+		{ 
+			std::fill(avgMask.begin(), avgMask.end(), Math::Point<float>(0, 0));
+		}
 
-		void addMask(const FaceMask& mask)
+		void addMask(const FaceMask<N>& mask)
 		{
-			tryInitialize(mask);
-
-			for (size_t i = 0; i < mask.size(); i++)
+			for (size_t i = 0; i < N; i++)
 			{
 				avgMask[i].x += mask[i].x;
 				avgMask[i].y += mask[i].y;
@@ -38,9 +29,9 @@ namespace FaceLandmarking::Learning::Mask
 			count++;
 		}
 
-		FaceMask getAvg() const
+		FaceMask<N> getAvg() const
 		{
-			FaceMask mask = avgMask;
+			FaceMask<N> mask = avgMask;
 
 			for (auto& point : mask)
 			{

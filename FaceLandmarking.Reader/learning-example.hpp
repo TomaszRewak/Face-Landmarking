@@ -6,12 +6,13 @@
 
 namespace FaceLandmarking::Reader
 {
+	template<size_t N>
 	struct LearningExample
 	{
 		cv::Mat image;
-		FaceMask mask;
+		FaceMask<N> mask;
 
-		LearningExample(const cv::Mat& image, const FaceMask& mask) :
+		LearningExample(const cv::Mat& image, const FaceMask<N>& mask) :
 			image(image),
 			mask(mask)
 		{ }
