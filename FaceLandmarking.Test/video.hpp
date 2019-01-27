@@ -66,8 +66,8 @@ void video_test(
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
-	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
+	Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation>> maskAutoencoder(autoencoderRegressor);
 
 	//VideoCapture videoCapture(0);
 	VideoCapture videoCapture(videoPath);
@@ -127,7 +127,7 @@ void video_test(
 				maskRegression.apply(normalizedMask);
 				maskRegression.apply(mask, 1 / scale);
 
-				mask = maskAutoencoder.passThrough(mask);
+				maskAutoencoder.apply(mask, 1 / scale);
 				// maskFixer.compute(normalizedMask);
 				// maskFixer.apply(normalizedMask);
 				// maskFixer.apply(mask, 1 / scale);

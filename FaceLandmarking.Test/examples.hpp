@@ -50,8 +50,8 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(maskDescription, treeRegressor);
 	MaskTransformation::MaskFixer maskFixer(maskDescription, maskLimits);
 
-	Learning::Regressors::NNRegressor<Learning::Regressors::IdentityActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::IdentityActivation>> maskAutoencoder(autoencoderRegressor);
+	Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation>> maskAutoencoder(autoencoderRegressor);
 
 	namedWindow("example", WINDOW_AUTOSIZE);
 
@@ -82,7 +82,7 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 					//maskFixer.compute(adjustedMask);
 					//maskFixer.apply(adjustedMask);
 
-					adjustedMask = maskAutoencoder.passThrough(adjustedMask);
+					maskAutoencoder.apply(adjustedMask, 0.5);
 				}
 
 				example.image.copyTo(imageWithMasks);

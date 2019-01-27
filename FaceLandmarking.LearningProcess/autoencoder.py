@@ -7,12 +7,12 @@ from nn_writer import write_nn
 
 data = import_face_data('../Data/autoencoder/examples')
 
-hidden_layer_sizes = (20) # 388
+hidden_layer_sizes = (70) # 388
 nn = MLPRegressor(hidden_layer_sizes = hidden_layer_sizes, 
-    activation = 'identity')
+    activation = 'logistic')
 
-x = data#[0::2]
-y = data#[1::2]
+x = data[0::26]
+y = data[1::26]
 
 assert(len(x[0]) == 388)
 assert(len(x[0]) == 388)

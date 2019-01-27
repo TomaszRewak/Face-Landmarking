@@ -44,6 +44,8 @@ int main(int argc, char** argv)
 				processType = ProcessType::Example;
 			if (type == "features")
 				processType = ProcessType::Features;
+			if (type == "autoencoder")
+				processType = ProcessType::Autoencoder;
 		}
 		if (param == "-data")
 			dataPath = argv[i++];

@@ -40,9 +40,20 @@ namespace FaceLandmarking::MaskTransformation
 				normalizedOutput[i].y = outputValues[i * 2 + 1];
 			}
 
-			auto output = MaskNormalizer::normalizeMask(normalizedOutput, normalizedInputRect, inputRect);
+			auto output = MaskNormalizer::normalizeMask(normalizedOutput, normalizedOutput.faceRect(), inputRect);
 
 			return output;
+		}
+
+		void apply(FaceMask& mask, float factor)
+		{
+			auto newMask = passThrough(mask);
+
+			for (int i = 0; i < mask.size(); i++)
+			{
+				mask[i].x += std::min(1.f, std::max(-1.f, (newMask[i].x - mask[i].x))) * factor;
+				mask[i].y += std::min(1.f, std::max(-1.f, (newMask[i].y - mask[i].y))) * factor;
+			}
 		}
 	};
 }

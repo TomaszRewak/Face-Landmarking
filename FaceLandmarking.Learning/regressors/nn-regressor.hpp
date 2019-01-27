@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <filesystem>
+#include <cassert>
 
 #include "../../FaceLandmarking.Reader/nn-oi.hpp"
 
@@ -19,7 +20,7 @@ namespace FaceLandmarking::Learning::Regressors
 		float operator()(float value) { return std::max(0.f, value); }
 	};
 
-	struct SigmoidActivation
+	struct LogisticActivation
 	{
 		float operator()(float value) { return 1.f / (1.f + std::exp(-value)); }
 	};
@@ -67,13 +68,14 @@ namespace FaceLandmarking::Learning::Regressors
 					n = 0;
 
 				for (size_t w_i = 0; w_i < w_s; w_i++)
-					l1[w_i % l1_s] += w[w_i] * l0[w_i / l0_s];
+					l1[w_i % l1_s] += w[w_i] * l0[w_i / l1_s];
 
 				for (size_t b_i = 0; b_i < b_s; b_i++)
 					l1[b_i] += b[b_i];
 
-				for (auto& n : l1)
-					n = activation(n);
+				if (layer < layers.size() - 2)
+					for (auto& n : l1)
+						n = activation(n);
 			}
 
 			for (auto v : layers[layers.size() - 1])
