@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {
 	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data/all-points";
-	string videoPath = "./../Data/video-examples/ja3.mp4";
+	string videoPath = "./../Data/video-examples/ja7.mp4";
 	string mask = "all";
 	int steps = 40;
 

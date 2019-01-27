@@ -17,17 +17,22 @@ namespace FaceLandmarking::MaskTransformation
 			return movedMask;
 		}
 
-		static FaceMask scale(const FaceMask& mask, float scale, Math::Point<float> center)
+		static FaceMask scale(const FaceMask& mask, float scaleX, float scaleY, Math::Point<float> center)
 		{
 			FaceMask scaledMask = mask;
 
 			for (auto& point : scaledMask)
 			{
-				point.x = center.x + (point.x - center.x) * scale;
-				point.y = center.y + (point.y - center.y) * scale;
+				point.x = center.x + (point.x - center.x) * scaleX;
+				point.y = center.y + (point.y - center.y) * scaleY;
 			}
 
 			return scaledMask;
+		}
+
+		static FaceMask scale(const FaceMask& mask, float scaleX, float scaleY)
+		{
+			return scale(mask, scaleX, scaleY, mask.faceCenter());
 		}
 	};
 }
