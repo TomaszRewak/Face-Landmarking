@@ -5,14 +5,14 @@ from sklearn.neural_network import MLPRegressor
 from autoencoder_example_reader import import_face_data
 from nn_writer import write_nn
 
-data = import_face_data('../Data/autoencoder/examples')
+data = import_face_data('../Data/all-points/autoencoder/examples')
 
-hidden_layer_sizes = (70) # 388
+hidden_layer_sizes = (388) # 388
 nn = MLPRegressor(hidden_layer_sizes = hidden_layer_sizes, 
     activation = 'logistic')
 
-x = data[0::26]
-y = data[1::26]
+x = data[0::2]
+y = data[1::2]
 
 assert(len(x[0]) == 388)
 assert(len(x[0]) == 388)
@@ -30,4 +30,4 @@ score = nn.score(x_test, y_test)
 
 print(score)
 
-write_nn('../Data/regressors/nn', 'autoencoder', nn)
+write_nn('../Data/all-points/regressors/nn', 'autoencoder', nn)

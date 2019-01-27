@@ -16,9 +16,9 @@ enum class ProcessType
 
 int main(int argc, char** argv)
 {
-	ProcessType processType = ProcessType::Example;
-	string dataPath = "./../Data";
-	string videoPath = "./../Data/examples/ja3.mp4";
+	ProcessType processType = ProcessType::Video;
+	string dataPath = "./../Data/all-points";
+	string videoPath = "./../Data/video-examples/ja3.mp4";
 	string mask = "all";
 	int steps = 40;
 

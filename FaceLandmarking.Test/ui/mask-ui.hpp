@@ -18,7 +18,7 @@ namespace FaceLandmarking::Test::UI
 			
 				int pointsNumber = shape.points.size() - (shape.closed ? 0 : 1);
 			
-				for (size_t pointIndex = 0; pointIndex < pointsNumber; pointIndex++)
+				/*for (size_t pointIndex = 0; pointIndex < pointsNumber; pointIndex++)
 				{
 					const auto& point = mask[shape.point(pointIndex)];
 					const auto& nextPoint = mask[shape.point(pointIndex + 1)];
@@ -29,7 +29,7 @@ namespace FaceLandmarking::Test::UI
 						cv::Point(nextPoint.x, nextPoint.y),
 						color / 2
 					);
-				}
+				}*/
 			}
 
 			for (size_t pointIndex = 0; pointIndex < mask.size(); pointIndex++)

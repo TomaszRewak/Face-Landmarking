@@ -75,15 +75,15 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 
 			while (true)
 			{
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < 10; i++) {
 					maskRegression.compute(adjustedMask);
 					maskRegression.apply(adjustedMask);
 
 					//maskFixer.compute(adjustedMask);
 					//maskFixer.apply(adjustedMask);
-
-					maskAutoencoder.apply(adjustedMask, 0.5);
 				}
+
+				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);
 

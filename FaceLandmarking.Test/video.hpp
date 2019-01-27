@@ -112,7 +112,7 @@ void video_test(
 		{
 			float scale = maskFrame.getScale(mask);
 
-			FaceMask normalizedMask = MaskTransformation::MaskTransition::scaleRelativeTo00(mask, scale);
+			FaceMask normalizedMask = MaskTransformation::MaskTransition::scale(mask, scale, Math::Point<float>(0, 0));
 			resize(frame, scaledFrame, cv::Size(frame.cols * scale, frame.rows * scale));
 
 			auto faceRect = maskFrame.getFrame(mask);
@@ -126,12 +126,12 @@ void video_test(
 				maskRegression.compute(normalizedMask, regressionSize);
 				maskRegression.apply(normalizedMask);
 				maskRegression.apply(mask, 1 / scale);
-
-				maskAutoencoder.apply(mask, 1 / scale);
+				
 				// maskFixer.compute(normalizedMask);
 				// maskFixer.apply(normalizedMask);
 				// maskFixer.apply(mask, 1 / scale);
 			}
+			mask = maskAutoencoder.passThrough(mask);
 
 			Test::UI::MaskUI::drawMask(frameWithMask, mask, maskDescription);
 

@@ -32,6 +32,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
+    <Compile Include="mask-simplifier.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="nn_writer.py">
       <SubType>Code</SubType>
     </Compile>
