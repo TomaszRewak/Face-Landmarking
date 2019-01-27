@@ -57,8 +57,8 @@ void video_test(
 	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
 	Learning::MaskRegression<FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
 
-	Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::LogisticActivation>> maskAutoencoder(autoencoderRegressor);
+	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
+	MaskTransformation::MaskAutoencoder<Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
 
 	//VideoCapture videoCapture(0);
 	VideoCapture videoCapture(videoPath);

@@ -73,7 +73,6 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);
-
 				Test::UI::MaskUI::drawMask(imageWithMasks, example.mask);
 				Test::UI::MaskUI::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
 				Test::UI::MaskUI::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));

@@ -25,6 +25,11 @@ namespace FaceLandmarking::Learning::Regressors
 		float operator()(float value) { return 1.f / (1.f + std::exp(-value)); }
 	};
 
+	struct TanhActivation
+	{
+		float operator()(float value) { return std::tanh(value); }
+	};
+
 	template<typename Activation>
 	class NNRegressor
 	{
