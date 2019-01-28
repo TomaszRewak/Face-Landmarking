@@ -53,15 +53,16 @@ namespace FaceLandmarking::Learning::Regressors
 		{ }
 	};
 
+	template<size_t N>
 	class MaskTreeRegressor
 	{
 	private:
 		std::vector<TreeRegressorPair> regressors;
 
 	public:
-		MaskTreeRegressor(fs::path basePath, size_t pointsNumber = 194)
+		MaskTreeRegressor(fs::path basePath)
 		{
-			for (size_t i = 0; i < pointsNumber; i++)
+			for (size_t i = 0; i < N; i++)
 				regressors.push_back(TreeRegressorPair(basePath / std::to_string(i)));
 		}
 

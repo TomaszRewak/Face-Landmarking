@@ -31,7 +31,7 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-template<size_t N>
+template<size_t N, size_t N_in>
 void video_test(
 	experimental::filesystem::path dataPath,
 	string videoPath,
@@ -45,7 +45,9 @@ void video_test(
 	bool debug
 )
 {
-	Learning::AverageMaskProcessing<N> averageMaskProcessing(dataPath);
+	using DataSetReader = Reader::DatasetReducingReader<Reader::DatasetReader<N_in>>;
+
+	Learning::AverageMaskProcessing<N, DataSetReader> averageMaskProcessing(dataPath);
 	FaceMask<N> averageMask = averageMaskProcessing.load();
 
 	FaceLocator::FaceFinder faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml");
@@ -55,8 +57,8 @@ void video_test(
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 
-	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
-	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
+	Learning::Regressors::MaskTreeRegressor<N> treeRegressor(dataPath / "regressors" / "trees");
+	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor<N>> maskRegression(treeRegressor);
 
 	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
 	MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);

@@ -74,12 +74,11 @@ namespace FaceLandmarking::Learning
 
 		int cols;
 		int rows;
-		std::vector<MaskRegressionBuffer> buffers;
+		std::array<MaskRegressionBuffer, N> buffers;
 
 	public:
 		MaskRegression(Regressor regressors) :
-			regressors(regressors),
-			buffers(194)
+			regressors(regressors)
 		{ }
 
 		void setImage(const FeatureExtraction::HsvImage& image)

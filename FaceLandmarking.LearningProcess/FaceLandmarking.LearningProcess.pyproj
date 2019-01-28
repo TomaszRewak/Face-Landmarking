@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0df252f5-2ce2-464a-b470-f20574343f46</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>autoencoder.py</StartupFile>
+    <StartupFile>tree.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -32,9 +32,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="main.py" />
-    <Compile Include="mask-simplifier.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="nn_writer.py">
       <SubType>Code</SubType>
     </Compile>

@@ -12,7 +12,7 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N>
+	template<size_t N, typename DatasetReader>
 	class AutoencoderExampleGenerator
 	{
 	private:
@@ -33,7 +33,7 @@ namespace FaceLandmarking::Learning
 
 			io.open(path);
 
-			Reader::DatasetReader<N> reader(dataPath);
+			DatasetReader reader(dataPath);
 			while (reader.hasNext())
 			{
 				auto example = reader.loadNext(false);

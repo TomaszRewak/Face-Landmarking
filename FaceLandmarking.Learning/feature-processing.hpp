@@ -15,7 +15,7 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N>
+	template<size_t N, typename DatasetReader>
 	class FeatureProcessing
 	{
 	private:
@@ -25,13 +25,12 @@ namespace FaceLandmarking::Learning
 		Reader::Validation::ImageColorTest colorTest;
 		FaceMask<N> avgMask;
 
-		std::vector<Reader::FeaturesIO> ios;
+		std::array<Reader::FeaturesIO, N> ios;
 
 	public:
 		FeatureProcessing(fs::path dataPath) :
 			dataPath(dataPath),
-			ios(194),
-			avgMask(AverageMaskProcessing<N>(dataPath).load())
+			avgMask(AverageMaskProcessing<N, DatasetReader>(dataPath).load())
 		{ }
 
 		void compute()
@@ -44,7 +43,7 @@ namespace FaceLandmarking::Learning
 			for (int i = 0; i < ios.size(); i++)
 				ios[i].open(i, dir);
 
-			Reader::DatasetReader<N> reader(dataPath);
+			DatasetReader reader(dataPath);
 
 			while (reader.hasNext())
 			{

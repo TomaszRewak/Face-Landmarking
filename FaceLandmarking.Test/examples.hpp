@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "../FaceLandmarking.Reader/dataset-reader.hpp"
+#include "../FaceLandmarking.Reader/dataset-reducing-reader.hpp"
 #include "../FaceLandmarking.Reader/mask-io.hpp"
 #include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
 #include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
@@ -27,10 +28,12 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-template<size_t N>
+template<size_t N, size_t N_in>
 void example_test(experimental::filesystem::path dataPath, string mask)
 {
-	Learning::AverageMaskProcessing<N> averageMaskProcessing(dataPath);
+	using DataSetReader = Reader::DatasetReducingReader<Reader::DatasetReader<N_in>>;
+
+	Learning::AverageMaskProcessing<N, DataSetReader> averageMaskProcessing(dataPath);
 	FaceMask<N> averageMask = averageMaskProcessing.load();
 
 	std::vector<float> features;
@@ -38,8 +41,8 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
 
-	Learning::Regressors::MaskTreeRegressor treeRegressor(dataPath / "regressors" / "trees");
-	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor> maskRegression(treeRegressor);
+	Learning::Regressors::MaskTreeRegressor<N> treeRegressor(dataPath / "regressors" / "trees");
+	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor<N>> maskRegression(treeRegressor);
 
 	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
 	MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
@@ -48,7 +51,7 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 
 	Mat imageWithMasks;
 
-	Reader::DatasetReader<N> reader(dataPath);
+	DataSetReader reader(dataPath);
 	while (true)
 	{
 		if (reader.hasNext()) {
@@ -74,9 +77,9 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);
-				//Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
+				Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
 				Test::UI::MaskUI<N>::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
-				//Test::UI::MaskUI<N>::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
+				Test::UI::MaskUI<N>::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
 				imshow("example", imageWithMasks);
 
 				auto key = waitKey(250000);

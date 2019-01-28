@@ -32,7 +32,7 @@ namespace FaceLandmarking::Reader
 		static const size_t Input_N = 194;
 		static const size_t Output_N = 68;
 
-		static const std::array<Output_N> pointMapping = {
+		const std::array<size_t, Output_N> pointMapping = {
 			0,   5,   10,  15,  20,  25,  30,  35,  40,	// jaw
 			41,  45,  49,  53,  57,						// nose
 			58,  60,  63,  66,  69,  71,				// outer upper lip
@@ -50,7 +50,7 @@ namespace FaceLandmarking::Reader
 		};
 
 	public:
-		DatasetReducingReader(fs::path path) : BaseReader(path)
+		DatasetReducingReader(fs::path path) : datasetReader(path)
 		{ }
 
 		bool hasNext() const
@@ -66,7 +66,7 @@ namespace FaceLandmarking::Reader
 			for (size_t i = 0; i < Output_N; i++)
 				reducedMask[i] = fullExample.mask[pointMapping[i]];
 
-			return LearningExample<N>(fullExample.image, reducedMask);
+			return LearningExample<Output_N>(fullExample.image, reducedMask);
 		}
 	};
 }

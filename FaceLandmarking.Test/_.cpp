@@ -16,10 +16,11 @@ enum class ProcessType
 
 int main(int argc, char** argv)
 {
-	const int facePoints = 194;
+	const int N = 68;
+	const int N_in = 194;
 
-	ProcessType processType = ProcessType::Example;
-	string dataPath = "./../Data/all-points";
+	ProcessType processType = ProcessType::Video;
+	string dataPath = "./../Data";
 	string videoPath = "./../Data/video-examples/ja7.mp4";
 	string mask = "all";
 	int steps = 40;
@@ -74,16 +75,16 @@ int main(int argc, char** argv)
 	switch (processType)
 	{
 	case ProcessType::Video:
-		video_test<facePoints>(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
+		video_test<N, N_in>(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
 		break;
 	case ProcessType::Example:
-		example_test<facePoints>(dataPath, mask);
+		example_test<N, N_in>(dataPath, mask);
 		break;
 	case ProcessType::Features:
-		features_test<facePoints>(dataPath);
+		features_test<N, N_in>(dataPath);
 		break;
 	case ProcessType::Autoencoder:
-		autoencoder_test<facePoints>(dataPath);
+		autoencoder_test<N, N_in>(dataPath);
 		break;
 	}
 }

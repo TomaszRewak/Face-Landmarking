@@ -11,7 +11,7 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N>
+	template<size_t N, typename DatasetReader>
 	class AverageMaskProcessing
 	{
 	private:
@@ -27,7 +27,7 @@ namespace FaceLandmarking::Learning
 		void compute() const
 		{
 			Mask::AverageMask<N> averageMaskBuilder;
-			Reader::DatasetReader<N> reader(dataPath);
+			DatasetReader reader(dataPath);
 
 			while (reader.hasNext())
 			{
