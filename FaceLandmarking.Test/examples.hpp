@@ -74,9 +74,9 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);
-				Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
+				//Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
 				Test::UI::MaskUI<N>::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
-				Test::UI::MaskUI<N>::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
+				//Test::UI::MaskUI<N>::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
 				imshow("example", imageWithMasks);
 
 				auto key = waitKey(250000);

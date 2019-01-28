@@ -21,15 +21,15 @@ namespace FaceLandmarking::Test::UI
 					cv::Point(point.x, point.y),
 					2,
 					color,
-					1);
-
-				//cv::putText(
-				//	image,
-				//	std::to_string(pointIndex),
-				//	cv::Point(point.x, point.y),
-				//	cv::FONT_HERSHEY_SIMPLEX,
-				//	0.3,
-				//	cv::Scalar(125, 125, 0));
+					1);				
+								
+				// cv::putText(
+				// 	image,
+				// 	std::to_string(pointIndex),
+				// 	cv::Point(point.x, point.y),
+				// 	cv::FONT_HERSHEY_SIMPLEX,
+				// 	0.3,
+				// 	cv::Scalar(125, 125, 0));
 			}
 		}
 	};
