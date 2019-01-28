@@ -23,7 +23,7 @@ int main(int argc, char** argv)
 	string dataPath = "./../Data";
 	string videoPath = "./../Data/video-examples/ja7.mp4";
 	string mask = "all";
-	int steps = 40;
+	int steps = 20;
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
