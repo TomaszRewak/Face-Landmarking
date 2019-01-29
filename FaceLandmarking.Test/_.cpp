@@ -16,14 +16,14 @@ enum class ProcessType
 
 int main(int argc, char** argv)
 {
-	const int N = 68;
+	const int N = 69;
 	const int N_in = 194;
 
 	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data";
-	string videoPath = "./../Data/video-examples/ja7.mp4";
+	string videoPath = "./../Data/video-examples/ja6.mp4";
 	string mask = "all";
-	int steps = 20;
+	int steps = 100;
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;

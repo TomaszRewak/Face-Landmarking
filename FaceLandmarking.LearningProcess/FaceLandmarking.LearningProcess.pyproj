@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>0df252f5-2ce2-464a-b470-f20574343f46</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>tree.py</StartupFile>
+    <StartupFile>autoencoder.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

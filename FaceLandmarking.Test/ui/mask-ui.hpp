@@ -12,7 +12,7 @@ namespace FaceLandmarking::Test::UI
 	public:
 		static void drawMask(const cv::Mat& image, const FaceMask<N>& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
 		{
-			for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
+			/*for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
 			{
 				const auto& point = mask[pointIndex];
 
@@ -21,15 +21,20 @@ namespace FaceLandmarking::Test::UI
 					cv::Point(point.x, point.y),
 					2,
 					color,
-					1);				
-								
-				// cv::putText(
-				// 	image,
-				// 	std::to_string(pointIndex),
-				// 	cv::Point(point.x, point.y),
-				// 	cv::FONT_HERSHEY_SIMPLEX,
-				// 	0.3,
-				// 	cv::Scalar(125, 125, 0));
+					1);
+			}*/
+
+			for (size_t pointIndex = 0; pointIndex < N - 1; pointIndex++)
+			{
+				const auto& point1 = mask[pointIndex];
+				const auto& point2 = mask[pointIndex + 1];
+
+				cv::line(
+					image,
+					cv::Point(point1.x, point1.y),
+					cv::Point(point2.x, point2.y),
+					color,
+					1);
 			}
 		}
 	};

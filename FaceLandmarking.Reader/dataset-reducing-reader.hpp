@@ -30,23 +30,23 @@ namespace FaceLandmarking::Reader
 		BaseReader datasetReader;
 
 		static const size_t Input_N = 194;
-		static const size_t Output_N = 68;
+		static const size_t Output_N = 69;
 
 		const std::array<size_t, Output_N> pointMapping = {
-			0,   5,   10,  15,  20,  25,  30,  35,  40,	// jaw
-			41,  45,  49,  53,  57,						// nose
-			58,  60,  63,  66,  69,  71,				// outer upper lip
-			72,  74,  77,  80,  83,  85,				// outer lower lip
-			86,  89,  92,  94,  97,  100,				// inner upper lip
-			101, 103, 106, 108, 111, 113,				// inner lower lip
-			114, 116, 118, 120, 122, 124,				// left upper eye
-			125, 127, 129, 131, 133,					// left lower eye
-			134, 136, 138, 140, 142, 144,				// right upper eye
-			145, 147, 149, 151, 153,					// right lower eye
-			//154, 159, 164,								// left upper eyebrow
-			//169,										// left lower eyebrow
-			//174, 179, 184,								// right upper eyebrow
-			//189											// right lower eyebrow
+			  0,   4,   8,  12,  16,  20,  24,  28,  32,  36,  40,	// jaw
+			 41,  45,  49,  53,  57,								// nose
+			 58,  60,  62,  64,  65,  67,  69,  71,					// outer upper lip
+			 72,  74,  76,  78,  79,  81,  83,  85,					// outer lower lip
+			 86,  88,  90,  92,  94,  96,  98, 100,					// inner upper lip
+			101, 103, 105, 107, 109, 111, 113,							// inner lower lip
+			114, 116, 118, 120, 122, 124,							// left upper eye
+			125, 127, 129, 131, 133,								// left lower eye
+			134, 136, 138, 140, 142, 144,							// right upper eye
+			145, 147, 149, 151, 153,								// right lower eye
+			//154, 159, 164,										// left upper eyebrow
+			//169,													// left lower eyebrow
+			//174, 179, 184,										// right upper eyebrow
+			//189													// right lower eyebrow
 		};
 
 	public:
