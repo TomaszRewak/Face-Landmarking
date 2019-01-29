@@ -43,10 +43,10 @@ namespace FaceLandmarking::Reader
 			125, 127, 129, 131, 133,					// left lower eye
 			134, 136, 138, 140, 142, 144,				// right upper eye
 			145, 147, 149, 151, 153,					// right lower eye
-			154, 159, 164,								// left upper eyebrow
-			169,										// left lower eyebrow
-			174, 179, 184,								// right upper eyebrow
-			189											// right lower eyebrow
+			//154, 159, 164,								// left upper eyebrow
+			//169,										// left lower eyebrow
+			//174, 179, 184,								// right upper eyebrow
+			//189											// right lower eyebrow
 		};
 
 	public:

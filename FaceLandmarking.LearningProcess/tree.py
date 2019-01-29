@@ -20,13 +20,13 @@ for point, examples in data.items():
     y = examples['y'][1000:]
 
     x = np.array(x)
-    y = [[round(max(-1, min(1, element))) for element in line] for line in y]
+    y = [[max(-3, min(3, element)) for element in line] for line in y]
 
     y1 = np.array(y)[:,0]
     y2 = np.array(y)[:,1]
     
-    tree1 = tree.DecisionTreeClassifier(min_samples_leaf=500, criterion ='entropy')
-    tree2 = tree.DecisionTreeClassifier(min_samples_leaf=500, criterion ='entropy')
+    tree1 = tree.DecisionTreeRegressor(min_samples_leaf=5000)
+    tree2 = tree.DecisionTreeRegressor(min_samples_leaf=5000)
 
     tree1.fit(x, y1)
     tree2.fit(x, y2) 

@@ -31,7 +31,7 @@ for point, examples in data.items():
 
     #y = [[math.sqrt(math.sqrt(element)) if element > 0 else
     #-math.sqrt(math.sqrt(-element)) for element in line] for line in y];
-    y = [[round(max(-1, min(1, element))) for element in line] for line in y]
+    y = [[element for element in line] for line in y]
 
     #x = np.array(x)[:,0:9]
 
@@ -51,14 +51,13 @@ for point, examples in data.items():
 
     ######
 
-    #clf = MLPRegressor(solver='lbfgs', alpha=1e-3, hidden_layer_sizes=(5,),
-    #max_iter=100000)
+    #clf = MLPRegressor(hidden_layer_sizes=(10), activation='relu')
     #clf.fit(x, y)
-    #
+    
     #predicted = clf.predict(x_test)
-    #
+    
     #err = np.array(predicted) - np.array(y_test)
-    #
+    
     #print("Error: " + str(np.mean(np.abs(err))))
 
     ######
@@ -66,8 +65,8 @@ for point, examples in data.items():
     y1 = np.array(y[:,0]) * 2
     y2 = np.array(y[:,1]) * 2
 
-    clf1 = tree.DecisionTreeClassifier(min_samples_leaf=50000, criterion ='entropy')
-    clf2 = tree.DecisionTreeClassifier(min_samples_leaf=50000, criterion ='entropy')
+    clf1 = tree.DecisionTreeRegressor(min_samples_leaf=5000)
+    clf2 = tree.DecisionTreeRegressor(min_samples_leaf=5000)
 
     clf1.fit(x, y1) 
     clf2.fit(x, y2) 

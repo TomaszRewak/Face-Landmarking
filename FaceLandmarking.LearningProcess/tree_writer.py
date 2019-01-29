@@ -10,14 +10,8 @@ def write_tree(path, file_name, tree):
         #values = [tree.classes_[cardinalities[0].tolist().index(max(cardinalities[0]))] for cardinalities in tree.tree_.value];
 
         values = [
-            sum([
-                tree.classes_[index] * cardinality
-                for index, cardinality in enumerate(cardinalities[0])
-            ]) / sum([
-                cardinality
-                for index, cardinality in enumerate(cardinalities[0])
-            ])
-            for cardinalities in tree.tree_.value
+            values[0][0]
+            for values in tree.tree_.value
         ];
         
         for line in [tree.tree_.feature,
