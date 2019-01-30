@@ -3,7 +3,7 @@ from os.path import join
 import numpy as np
 
 
-def import_face_data(file_path):
+def read_autoencoder_examples(file_path):
     examples = [];
 
     with open(file_path, mode='r', encoding='utf-8') as file:

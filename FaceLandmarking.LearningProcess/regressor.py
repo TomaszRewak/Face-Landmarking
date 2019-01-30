@@ -2,8 +2,8 @@ import numpy as np
 import shutil
 import pathlib
 from sklearn import tree
-from data_reader import import_face_data
-from tree_writer import write_tree
+from readers.regressor_example_reader import read_regressor_examples
+from writers.tree_writer import write_tree
 
 directory = '../Data/regressors/trees'
 shutil.rmtree(directory, ignore_errors=True)
@@ -11,7 +11,7 @@ pathlib.Path(directory).mkdir(parents=True)
 
 print('loading...')
 
-data = import_face_data(15, 2, '../Data/features')
+data = read_regressor_examples(15, 2, '../Data/features')
 
 print('computing...')
 

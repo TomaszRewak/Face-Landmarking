@@ -2,12 +2,12 @@ import numpy as np
 import shutil
 import pathlib
 from sklearn.neural_network import MLPRegressor
-from autoencoder_example_reader import import_face_data
-from nn_writer import write_nn
+from readers.autoencoder_example_reader import read_autoencoder_examples
+from writers.nn_writer import write_nn
 
-data = import_face_data('../Data/autoencoder/examples')
+data = read_autoencoder_examples('../Data/autoencoder/examples')
 
-hidden_layer_sizes = (100, 100) # 388
+hidden_layer_sizes = (200, 200)
 nn = MLPRegressor(hidden_layer_sizes = hidden_layer_sizes, 
     activation = 'relu')
 
@@ -27,6 +27,6 @@ score = nn.score(x_test, y_test)
 
 print(score)
 
-directory = '../Data/regressors/nn';
+directory = '../Data/regressors/nn'
 shutil.rmtree(directory, ignore_errors=True)
 write_nn(directory, 'autoencoder', nn)

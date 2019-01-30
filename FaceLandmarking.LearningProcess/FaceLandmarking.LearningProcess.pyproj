@@ -25,20 +25,19 @@
     <Compile Include="autoencoder.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="autoencoder_example_reader.py">
+    <Compile Include="readers\autoencoder_example_reader.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="data_reader.py">
+    <Compile Include="readers\regressor_example_reader.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="main.py" />
-    <Compile Include="nn_writer.py">
+    <Compile Include="writers\nn_writer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tree_writer.py">
+    <Compile Include="writers\tree_writer.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="tree.py">
+    <Compile Include="regressor.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -52,6 +51,10 @@
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
       <Architecture>X64</Architecture>
     </Interpreter>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="writers\" />
+    <Folder Include="readers\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

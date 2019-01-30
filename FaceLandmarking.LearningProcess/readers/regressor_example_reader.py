@@ -3,7 +3,7 @@ from os import listdir
 from os.path import join
 
 
-def import_face_data(num_of_features, num_of_decisions, data_path, exact=None):
+def read_regressor_examples(num_of_features, num_of_decisions, data_path, exact=None):
     files = listdir(data_path)
 
     if (exact != None):
