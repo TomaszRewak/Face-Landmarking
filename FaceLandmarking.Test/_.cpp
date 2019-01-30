@@ -21,9 +21,9 @@ int main(int argc, char** argv)
 
 	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data";
-	string videoPath = "./../Data/video-examples/ja6.mp4";
+	string videoPath = "./../Data/video-examples/ja7.mp4";
 	string mask = "all";
-	int steps = 100;
+	int steps = 40;
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;

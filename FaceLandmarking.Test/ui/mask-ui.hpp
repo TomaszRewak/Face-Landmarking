@@ -12,7 +12,7 @@ namespace FaceLandmarking::Test::UI
 	public:
 		static void drawMask(const cv::Mat& image, const FaceMask<N>& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
 		{
-			/*for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
+			for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
 			{
 				const auto& point = mask[pointIndex];
 
@@ -22,7 +22,7 @@ namespace FaceLandmarking::Test::UI
 					2,
 					color,
 					1);
-			}*/
+			}
 
 			for (size_t pointIndex = 0; pointIndex < N - 1; pointIndex++)
 			{

@@ -120,11 +120,6 @@ void video_test(
 				maskRegression.compute(normalizedMask, regressionSize);
 				maskRegression.apply(normalizedMask);
 				maskRegression.apply(mask, 1 / scale);
-
-				if ((i + 1) % 10 == 0) {
-					mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
-					normalizedMask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(normalizedMask));
-				}
 			}
 			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
 
