@@ -20,7 +20,7 @@ for point, examples in data.items():
     y = examples['y'][1000:]
 
     x = np.array(x)
-    y = [[max(-3, min(3, element)) for element in line] for line in y]
+    y = [[max(-1, min(1, element)) for element in line] for line in y]
 
     y1 = np.array(y)[:,0]
     y2 = np.array(y)[:,1]
