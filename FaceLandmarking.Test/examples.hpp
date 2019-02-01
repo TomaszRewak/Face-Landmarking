@@ -69,11 +69,10 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 
 			while (true)
 			{
-				for (int i = 0; i < 10; i++) {
-					maskRegression.compute(adjustedMask);
-					maskRegression.apply(adjustedMask);
+				for (int i = 0; i < N; i++)
+				{
+					adjustedMask[i] += maskRegression.computeOffset(adjustedMask[i], i, 10, 2);
 				}
-
 				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
 
 				example.image.copyTo(imageWithMasks);

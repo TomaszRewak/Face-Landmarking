@@ -115,11 +115,9 @@ void video_test(
 			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.7, true);
 			maskRegression.setImage(processedFrame);
 
-			for (int i = 0; i < steps; i++)
+			for (int i = 0; i < N; i++)
 			{
-				maskRegression.compute(normalizedMask, regressionSize);
-				maskRegression.apply(normalizedMask);
-				maskRegression.apply(mask, 1 / scale);
+				mask[i] += maskRegression.computeOffset(normalizedMask[i], i, steps, regressionSize) / scale;
 			}
 			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
 

@@ -22,7 +22,7 @@ namespace FaceLandmarking::Learning
 		std::vector<Math::Point<int>> setPoints;
 
 	public:
-		void reset(int rows, int cols)
+		void resize(int rows, int cols)
 		{
 			if (rows > bufferValues.rows || cols > bufferValues.cols)
 				bufferValues.create(
@@ -35,8 +35,14 @@ namespace FaceLandmarking::Learning
 					std::max(cols, bufferComputed.cols),
 					CV_8U);
 
+			clear();
+		}
+
+		void clear()
+		{
 			for (auto& point : setPoints)
 				bufferComputed.at<uchar>(point.y, point.x) = 0;
+
 			setPoints.clear();
 		}
 
@@ -53,7 +59,7 @@ namespace FaceLandmarking::Learning
 		void setValue(int x, int y, Math::Vector<float> offset)
 		{
 			bufferValues.at<Math::Vector<float>>(y, x) = offset;
-			
+
 			if (!hasValue(x, y))
 			{
 				bufferComputed.at<uchar>(y, x) = 1;
@@ -74,7 +80,8 @@ namespace FaceLandmarking::Learning
 
 		int cols;
 		int rows;
-		std::array<MaskRegressionBuffer, N> buffers;
+
+		MaskRegressionBuffer buffer;
 
 	public:
 		MaskRegression(Regressor regressors) :
@@ -88,29 +95,29 @@ namespace FaceLandmarking::Learning
 			cols = image.columns();
 			rows = image.rows();
 
-			for(auto& buffer : buffers)
-				buffer.reset(rows, cols);
+			buffer.resize(rows, cols);
 		}
 
-		void compute(FaceMask<N>& mask, int size = 2)
+		Math::Vector<float> computeOffset(Math::Point<float> point, size_t pointNumber, size_t iterations, int size = 2)
 		{
-			std::fill(maskOffset.begin(), maskOffset.end(), Math::Vector<float>(0, 0));
+			buffer.clear();
 
-			for (size_t i = 0; i < N; i++)
+			Math::Vector<float> globalOffset;
+
+			for (int i = 0; i < iterations; i++)
 			{
-				auto& buffer = buffers[i];
+				Math::Point<float> currentPosition = point + globalOffset;
 
-				Math::Vector<float> pointOffset;
+				Math::Vector<float> stepOffset;
 				float factor = 0;
-
 				for (int x = -size; x <= size; x++)
 				{
 					for (int y = -size; y <= size; y++)
 					{
 						Math::Vector<float> localOffset;
 
-						int xi = std::max(0, std::min((int)mask[i].x + x, cols - 1));
-						int yi = std::max(0, std::min((int)mask[i].y + y, rows - 1));
+						int xi = std::max(0, std::min((int)currentPosition.x + x, cols - 1));
+						int yi = std::max(0, std::min((int)currentPosition.y + y, rows - 1));
 						if (buffer.hasValue(xi, yi))
 						{
 							localOffset = buffer.getValue(xi, yi);
@@ -120,27 +127,20 @@ namespace FaceLandmarking::Learning
 							features.clear();
 							featureExtractor.selectFeatures(xi, yi, features);
 
-							localOffset = regressors.getOffset(i, features);
+							localOffset = regressors.getOffset(pointNumber, features);
 
 							buffer.setValue(xi, yi, localOffset);
 						}
 
 						float localFactor = 1. / (std::abs(x) + std::abs(y) + 2);
-						pointOffset += localOffset * localFactor;
+						stepOffset += localOffset * localFactor;
 						factor += localFactor;
 					}
 				}
-
-				pointOffset = pointOffset / factor;
-
-				maskOffset[i] = pointOffset;
+				globalOffset += stepOffset / factor;
 			}
-		}
 
-		void apply(FaceMask<N>& mask, float factor = 1)
-		{
-			for (size_t i = 0; i < N; i++)
-				mask[i] += maskOffset[i] * factor;
+			return globalOffset;
 		}
 	};
 }
