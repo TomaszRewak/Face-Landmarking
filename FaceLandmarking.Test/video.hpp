@@ -31,7 +31,7 @@ using namespace cv;
 using namespace std;
 using namespace FaceLandmarking;
 
-template<size_t N, size_t N_in>
+template<size_t N>
 void video_test(
 	experimental::filesystem::path dataPath,
 	string videoPath,
@@ -45,7 +45,7 @@ void video_test(
 	bool debug
 )
 {
-	using DataSetReader = Reader::DatasetReducingReader<Reader::DatasetReader<N_in>>;
+	using DataSetReader = Reader::DatasetReader<N>;
 
 	Learning::AverageMaskProcessing<N, DataSetReader> averageMaskProcessing(dataPath);
 	FaceMask<N> averageMask = averageMaskProcessing.load();

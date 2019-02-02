@@ -7,7 +7,7 @@ from writers.nn_writer import write_nn
 
 data = read_autoencoder_examples('../Data/autoencoder/examples')
 
-hidden_layer_sizes = (200, 200)
+hidden_layer_sizes = (200)
 nn = MLPRegressor(hidden_layer_sizes = hidden_layer_sizes, 
     activation = 'relu')
 
