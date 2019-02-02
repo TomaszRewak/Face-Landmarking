@@ -30,12 +30,14 @@ namespace FaceLandmarking::Learning
 					std::max(cols, bufferValues.cols),
 					CV_64F);
 			if (rows > bufferComputed.rows || cols > bufferComputed.cols)
+			{
 				bufferComputed.create(
 					std::max(rows, bufferComputed.rows),
 					std::max(cols, bufferComputed.cols),
 					CV_8U);
-
-			clear();
+				bufferComputed *= 0;
+				setPoints.clear();
+			}
 		}
 
 		void clear()
