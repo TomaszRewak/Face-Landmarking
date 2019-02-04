@@ -20,16 +20,16 @@ int main(int argc, char** argv)
 
 	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data";
-	string videoPath = "./../Data/video-examples/ja7.mp4";
+	string videoPath = "./../Data/video-examples/ja6.mp4";
 	string mask = "all";
-	int steps = 40;
+	int steps = 60;
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
 	int transformWidth = 350;
 	int transformHeight = 600;
 
-	int regressionSize = 1;
+	int regressionSize = 0;
 	bool debug = false;
 
 	for (int i = 1; i < argc;)
