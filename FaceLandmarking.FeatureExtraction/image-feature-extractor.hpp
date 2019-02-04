@@ -31,7 +31,9 @@ namespace FaceLandmarking::FeatureExtraction
 				{
 					Filters::BasicFiler filter(layer, filterSeed);
 
-					features.push_back(filter(x, y));
+					float value = filter(x, y);
+
+					features.push_back(value);
 				}
 			}
 		}

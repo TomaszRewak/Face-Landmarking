@@ -24,7 +24,7 @@ namespace FaceLandmarking::Test::UI
 					1);
 			}
 
-			for (size_t pointIndex = 0; pointIndex < N - 1; pointIndex++)
+			/*for (size_t pointIndex = 0; pointIndex < N - 1; pointIndex++)
 			{
 				const auto& point1 = mask[pointIndex];
 				const auto& point2 = mask[pointIndex + 1];
@@ -35,7 +35,7 @@ namespace FaceLandmarking::Test::UI
 					cv::Point(point2.x, point2.y),
 					color,
 					1);
-			}
+			}*/
 		}
 	};
 }

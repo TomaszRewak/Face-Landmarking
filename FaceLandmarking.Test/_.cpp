@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 	int transformWidth = 350;
 	int transformHeight = 600;
 
-	int regressionSize = 5;
+	int regressionSize = 1;
 	bool debug = false;
 
 	for (int i = 1; i < argc;)

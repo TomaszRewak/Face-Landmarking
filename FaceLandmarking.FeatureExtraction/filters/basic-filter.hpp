@@ -74,7 +74,7 @@ namespace FaceLandmarking::FeatureExtraction::Filters
 						cv::borderInterpolate(x - xOffset + c, imageCols, cv::BorderTypes::BORDER_REPLICATE)
 						);
 
-					sum += filter.at<int>(r, c) * imageValue / 255.;
+					sum += filterValue * imageValue / 255.;
 				}
 			}
 
