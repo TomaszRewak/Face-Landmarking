@@ -5,9 +5,9 @@
 
 namespace FaceLandmarking::FeatureExtraction::Filters
 {
-	const std::vector<const cv::Mat> BasicFilterSeeds{
+	const std::vector<cv::Mat> BasicFilterSeeds{
 		cv::Mat{
-			1
+			+1
 		},
 		cv::Mat{
 			+1, 0, -1,
@@ -18,6 +18,13 @@ namespace FaceLandmarking::FeatureExtraction::Filters
 			+1, +2, +1,
 			 0,  0,  0,
 			-1, -2, -1
+		},
+		cv::Mat{
+			+1, +1, +1, +1, +1,
+			+1, +1, +1, +1, +1,
+			+1, +1, +1, +1, +1,
+			+1, +1, +1, +1, +1,
+			+1, +1, +1, +1, +1,
 		},
 		cv::Mat{
 			 0, +1,  0, -1,  0,

@@ -56,7 +56,7 @@ void example_test(experimental::filesystem::path dataPath, string mask)
 	{
 		if (reader.hasNext()) {
 			auto example = reader.loadNext();
-			example.scaleFace(200, 200);
+			example.scaleFace(200, 200); // Maybe smaller? 
 
 			FeatureExtraction::HsvImage processedImage;
 			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);

@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 {
 	const int N = 194;
 
-	ProcessType processType = ProcessType::Video;
+	ProcessType processType = ProcessType::Example;
 	string dataPath = "./../Data";
 	string videoPath = "./../Data/video-examples/ja6.mp4";
 	string mask = "all";
