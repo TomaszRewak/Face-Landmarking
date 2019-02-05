@@ -1,39 +1,58 @@
 import numpy as np
 import shutil
 import pathlib
-from sklearn import tree
+from sklearn.tree import DecisionTreeRegressor
 from readers.regressor_example_reader import read_regressor_examples
 from writers.tree_writer import write_tree
+from os.path import join
+from os import listdir
 
-directory = '../Data/regressors/trees'
-shutil.rmtree(directory, ignore_errors=True)
-pathlib.Path(directory).mkdir(parents=True)
 
-print('loading...')
+out_directory = '../Data/regressors/trees'
+shutil.rmtree(out_directory, ignore_errors=True)
+pathlib.Path(out_directory).mkdir(parents=True)
 
-data = read_regressor_examples(15, 2, '../Data/features')
+in_directory = '../Data/features';
+files = listdir(in_directory)
 
-print('computing...')
+for point in files:
+    print('point: {0}'.format(point))
 
-for point, examples in data.items():
-    x = examples['x'][1000:]
-    y = examples['y'][1000:]
+    in_path = join(in_directory, point)
+    examples = read_regressor_examples(24, 2, in_path)
 
-    x = np.array(x)
-    y = [[max(-1, min(1, element)) for element in line] for line in y]
+    x = examples['x']
+    y = [[max(-1, min(1, element)) for element in line] for line in examples['y']]
 
-    y1 = np.array(y)[:,0]
-    y2 = np.array(y)[:,1]
+    x_train = x[1000:]
+    y_train = y[1000:]
+
+    y1_train = np.array(y_train)[:,0]
+    y2_train = np.array(y_train)[:,1]
     
-    tree1 = tree.DecisionTreeRegressor(min_samples_leaf=5000)
-    tree2 = tree.DecisionTreeRegressor(min_samples_leaf=5000)
+    tree1 = DecisionTreeRegressor(max_depth=7)
+    tree2 = DecisionTreeRegressor(max_depth=7)
 
-    tree1.fit(x, y1)
-    tree2.fit(x, y2) 
+    print('fitting...')
 
-    # save
+    tree1.fit(x_train, y1_train)
+    tree2.fit(x_train, y2_train) 
+
+    x_test = x[:1000]
+    y_test = y[:1000]
+
+    y1_test = np.array(y_test)[:,0]
+    y2_test = np.array(y_test)[:,1]
+
+    score1 = tree1.score(x_test, y1_test)
+    print('score: {0}'.format(score1))
+
+    score2 = tree2.score(x_test, y2_test)
+    print('score: {0}'.format(score2))
+
+    print('save...')
     
-    path = '{0}/{1}'.format(directory, point)
+    out_path = join(out_directory, point)
 
-    write_tree(path, 'x', tree1)
-    write_tree(path, 'y', tree2)
+    write_tree(out_path, 'x', tree1)
+    write_tree(out_path, 'y', tree2)

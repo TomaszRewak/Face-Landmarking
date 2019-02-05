@@ -1,34 +1,21 @@
 import csv
-from os import listdir
-from os.path import join
 
 
-def read_regressor_examples(num_of_features, num_of_decisions, data_path, exact=None):
-    files = listdir(data_path)
+def read_regressor_examples(num_of_features, num_of_decisions, file_path):
+    xs = []
+    ys = []
 
-    if (exact != None):
-        files = [file for file in files if file == exact]
+    with open(file_path, mode='r', encoding='utf-8') as file:
+        reader = csv.reader(file, delimiter=' ')
 
-    landmarks = {}
+        for row in reader:
+            x = [float(value) for value in row[0 : num_of_features]]
+            y = [float(value) for value in row[num_of_features : num_of_features + num_of_decisions]]
 
-    for file_name in files:
-        xs = []
-        ys = []
+            xs.append(x)
+            ys.append(y)
 
-        file_path = join(data_path, file_name)
-        with open(file_path, mode='r', encoding='utf-8') as file:
-            reader = csv.reader(file, delimiter=' ')
-
-            for row in reader:
-                x = [float(value) for value in row[0 : num_of_features]]
-                y = [float(value) for value in row[num_of_features : num_of_features + num_of_decisions]]
-
-                xs.append(x)
-                ys.append(y)
-
-        landmarks[file_name] = {
-                'x': xs,
-                'y': ys
-            }
-
-    return landmarks
+    return {
+        'x': xs,
+        'y': ys
+    }
