@@ -34,5 +34,7 @@ namespace FaceLandmarking::Reader
 				point.y *= factor;
 			}
 		}
+
+		void mirror()
 	};
 }

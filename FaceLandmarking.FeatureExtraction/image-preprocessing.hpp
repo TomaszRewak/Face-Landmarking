@@ -17,9 +17,9 @@ namespace FaceLandmarking::FeatureExtraction
 	public:
 		void processImage(cv::Mat& inImage, HsvImage& outImage, Math::Rect<float>& faceRect, bool fixHSV = true)
 		{
-			//cv::GaussianBlur(inImage, bluredImage, cv::Size(5, 5), 2.5, 2.5);
+			cv::GaussianBlur(inImage, bluredImage, cv::Size(5, 5), 2, 2);
 
-			outImage.setImage(inImage);
+			outImage.setImage(bluredImage);
 			outImage.addOffset(FeatureExtraction::HsvChannel::H, 128);
 
 			colorDetector.detectFaceColor(outImage);

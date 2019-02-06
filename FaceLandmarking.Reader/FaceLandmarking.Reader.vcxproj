@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="autoencoder-example-io.hpp" />
+    <ClInclude Include="dataset-mirroring-reader.hpp" />
     <ClInclude Include="dataset-reducing-reader.hpp" />
     <ClInclude Include="features-io.hpp" />
     <ClInclude Include="learning-example.hpp" />

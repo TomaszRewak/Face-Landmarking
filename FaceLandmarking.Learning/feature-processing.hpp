@@ -55,7 +55,7 @@ namespace FaceLandmarking::Learning
 				example.scaleFace(200, 200);
 
 				FeatureExtraction::HsvImage processedImage;
-				imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);
+				imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect() * 0.5, true);
 				featureSelector.setImage(processedImage);
 
 				compute(example);

@@ -30,8 +30,8 @@ for point in files:
     y1_train = np.array(y_train)[:,0]
     y2_train = np.array(y_train)[:,1]
     
-    tree1 = DecisionTreeRegressor(max_depth=7)
-    tree2 = DecisionTreeRegressor(max_depth=7)
+    tree1 = DecisionTreeRegressor(max_depth=5)
+    tree2 = DecisionTreeRegressor(max_depth=5)
 
     print('fitting...')
 

@@ -52,7 +52,7 @@ void video_test(
 
 	FaceLocator::FaceFinder faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml");
 
-	FaceLocator::MaskFrame<N> maskFrame(averageMask, Math::Size<float>(200, 200));
+	FaceLocator::MaskFrame<N> maskFrame(averageMask, Math::Size<float>(150, 150));
 	std::vector<FaceMask<N>> masks;
 
 	FeatureExtraction::ImagePreprocessor imagePreprocessor;
@@ -112,7 +112,7 @@ void video_test(
 			auto faceRect = maskFrame.getFrame(mask);
 			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
 
-			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.7, true);
+			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.5, true);
 			maskRegression.setImage(processedFrame);
 
 			for (int i = 0; i < N; i++)
@@ -123,7 +123,7 @@ void video_test(
 
 			Test::UI::MaskUI<N>::drawMask(frameWithMask, mask);
 
-			if (debug)
+			if (true)
 			{
 				cv::Mat processedFrameRGB;
 				processedFrame.getImage(processedFrameRGB);

@@ -10,7 +10,6 @@ namespace FaceLandmarking::Reader
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N>
 	class DatasetReader
 	{
 	private:
@@ -21,6 +20,8 @@ namespace FaceLandmarking::Reader
 		std::vector<fs::path>::iterator exampleIterator;
 
 	public:
+		static const size_t Nodes = 194;
+
 		DatasetReader(fs::path path)
 		{
 			annotationsRootPath = path / "annotation";
@@ -34,9 +35,9 @@ namespace FaceLandmarking::Reader
 			return exampleIterator < annotationFilePaths.end();
 		}
 
-		LearningExample<N> loadNext(bool includeImage = true)
+		LearningExample<Nodes> loadNext(bool includeImage = true)
 		{
-			auto[mask, imageName] = MaskReader<N>::loadMask(*exampleIterator);
+			auto[mask, imageName] = MaskReader<Nodes>::loadMask(*exampleIterator);
 
 			cv::Mat image;
 
@@ -48,7 +49,7 @@ namespace FaceLandmarking::Reader
 
 			exampleIterator++;
 
-			return LearningExample<N>(image, mask);
+			return LearningExample<Nodes>(image, mask);
 		}
 
 	private:

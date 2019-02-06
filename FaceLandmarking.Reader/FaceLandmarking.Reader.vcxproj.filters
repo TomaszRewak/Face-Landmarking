@@ -13,6 +13,7 @@
     <ClInclude Include="tree-io.hpp" />
     <ClInclude Include="autoencoder-example-io.hpp" />
     <ClInclude Include="dataset-reducing-reader.hpp" />
+    <ClInclude Include="dataset-mirroring-reader.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />
