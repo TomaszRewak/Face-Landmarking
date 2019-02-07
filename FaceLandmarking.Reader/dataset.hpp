@@ -10,7 +10,31 @@ namespace FaceLandmarking::Reader
 {
 	namespace fs = std::experimental::filesystem;
 
-	class DatasetReader
+	template<size_t Nodes>
+	class DatasetIterator
+	{
+	private:
+		std::vector<fs::path>::iterator iterator;
+
+	public:
+		LearningExample<Nodes> operator*()
+		{
+			MaskFile<N> maskFile = MaskReader<Nodes>::loadMask(*iterator);
+			cv::Mat image = ImageReader::loadImage(getImagePath(*iterator, maskFile.imageName));
+
+			iterator++;
+
+			return LearningExample<Nodes>(image, maskFile.mask);
+		}
+
+	private:
+		fs::path getImagePath(std::string imageName)
+		{
+			return iterator->parent_path() / ".." / "images" / (imageName + ".jpg")
+		}
+	};
+
+	class Dataset
 	{
 	private:
 		fs::path annotationsRootPath;
@@ -22,8 +46,10 @@ namespace FaceLandmarking::Reader
 	public:
 		static const size_t Nodes = 194;
 
-		DatasetReader(fs::path path)
+		Dataset(fs::path path)
 		{
+			path.
+
 			annotationsRootPath = path / "annotation";
 			imagesRootPath = path / "images";
 
@@ -35,22 +61,7 @@ namespace FaceLandmarking::Reader
 			return exampleIterator < annotationFilePaths.end();
 		}
 
-		LearningExample<Nodes> loadNext(bool includeImage = true)
-		{
-			auto[mask, imageName] = MaskReader<Nodes>::loadMask(*exampleIterator);
-
-			cv::Mat image;
-
-			if (includeImage)
-			{
-				fs::path imagePath = imagesRootPath / (imageName + ".jpg");
-				image = ImageReader::loadImage(imagePath);
-			}
-
-			exampleIterator++;
-
-			return LearningExample<Nodes>(image, mask);
-		}
+		void 
 
 	private:
 		void loadAnnotationFiles()

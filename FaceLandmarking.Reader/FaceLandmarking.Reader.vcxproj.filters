@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="dataset-reader.hpp" />
     <ClInclude Include="learning-example.hpp" />
     <ClInclude Include="readers\mask-reader.hpp" />
     <ClInclude Include="readers\mask-file.hpp" />
@@ -14,6 +13,7 @@
     <ClInclude Include="autoencoder-example-io.hpp" />
     <ClInclude Include="dataset-reducing-reader.hpp" />
     <ClInclude Include="dataset-mirroring-reader.hpp" />
+    <ClInclude Include="dataset.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test\_.cpp" />

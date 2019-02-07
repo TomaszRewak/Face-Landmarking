@@ -8,6 +8,6 @@ namespace FaceLandmarking::Reader
 	struct MaskFile
 	{
 		FaceMask<N> mask;
-		std::string image;
+		std::string imageName;
 	};
 }

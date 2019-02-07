@@ -133,7 +133,7 @@
     <ClInclude Include="readers\image-reader.hpp" />
     <ClInclude Include="readers\mask-file.hpp" />
     <ClInclude Include="readers\mask-reader.hpp" />
-    <ClInclude Include="dataset-reader.hpp" />
+    <ClInclude Include="dataset.hpp" />
     <ClInclude Include="tree-io.hpp" />
     <ClInclude Include="validation\image-color-test.hpp" />
   </ItemGroup>

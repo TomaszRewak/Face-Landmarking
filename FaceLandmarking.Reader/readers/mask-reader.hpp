@@ -30,7 +30,7 @@ namespace FaceLandmarking::Reader
 
 			file.open(filePath.string());
 
-			file >> maskFile.image;
+			file >> maskFile.imageName;
 			parseMask(file, maskFile.mask);
 
 			file.close();
