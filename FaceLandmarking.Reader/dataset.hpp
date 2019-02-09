@@ -14,26 +14,41 @@ namespace FaceLandmarking::Reader
 	class DatasetIterator
 	{
 	private:
-		std::vector<fs::path>::iterator iterator;
+		fs::path annotationsRootPath;
+		fs::path imagesRootPath;
+
+		std::vector<std::string>::iterator iterator;
 
 	public:
+		DatasetIterator(			
+			fs::path annotationsRootPath,
+			fs::path imagesRootPath,
+			std::vector<std::string>::iterator iterator) :
+			annotationsRootPath(annotationsRootPath),
+			imagesRootPath(imagesRootPath),
+			iterator(iterator)
+		{ }
+
 		LearningExample<Nodes> operator*()
 		{
-			MaskFile<N> maskFile = MaskReader<Nodes>::loadMask(*iterator);
-			cv::Mat image = ImageReader::loadImage(getImagePath(*iterator, maskFile.imageName));
-
-			iterator++;
+			auto maskFile = MaskReader<Nodes>::loadMask(annotationsRootPath / *iterator);
+			auto image = ImageReader::loadImage(magesRootPath / maskFile.imageName);
 
 			return LearningExample<Nodes>(image, maskFile.mask);
 		}
 
-	private:
-		fs::path getImagePath(std::string imageName)
+		DatasetIterator& void operator++()
 		{
-			return iterator->parent_path() / ".." / "images" / (imageName + ".jpg")
+			iterator++;
+		}
+
+		bool operator!=(DatasetIterator& second)
+		{
+			return iterator != second.iterator;
 		}
 	};
 
+	template<std::size_t Nodes>
 	class Dataset
 	{
 	private:
@@ -41,27 +56,22 @@ namespace FaceLandmarking::Reader
 		fs::path imagesRootPath;
 
 		std::vector<fs::path> annotationFilePaths;
-		std::vector<fs::path>::iterator exampleIterator;
 
 	public:
 		static const size_t Nodes = 194;
 
 		Dataset(fs::path path)
 		{
-			path.
-
 			annotationsRootPath = path / "annotation";
 			imagesRootPath = path / "images";
 
 			loadAnnotationFiles();
 		}
 
-		bool hasNext() const
+		DatasetIterator<Nodes> begin()
 		{
-			return exampleIterator < annotationFilePaths.end();
+			return DatasetIterator<Nodes>(annotationsRootPath, imagesRootPath, )
 		}
-
-		void 
 
 	private:
 		void loadAnnotationFiles()
@@ -69,9 +79,7 @@ namespace FaceLandmarking::Reader
 			annotationFilePaths.clear();
 
 			for (auto& file : fs::directory_iterator(annotationsRootPath))
-				annotationFilePaths.push_back(file.path());
-
-			exampleIterator = annotationFilePaths.begin();
+				annotationFilePaths.push_back(file.path().filename());
 		}
 	};
 }
