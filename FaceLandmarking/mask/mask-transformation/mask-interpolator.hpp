@@ -14,7 +14,7 @@ namespace FaceLandmarking::MaskTransformation
 			yReflect(yReflect)
 		{ }
 
-		static FaceMask<Nodes> interpolate(const FaceMask<Nodes>& from, const FaceMask<Nodes>& to)
+		FaceMask<Nodes> operator()(const FaceMask<Nodes>& from, const FaceMask<Nodes>& to)
 		{
 			FaceMask<Nodes> interpolated = from;
 

@@ -1,25 +1,24 @@
 #pragma once
 
 #include "../face-mask.hpp"
-#include "../math/rect.hpp"
 
 namespace FaceLandmarking::MaskTransformation
 {
-	template<size_t N>
+	template<size_t Nodes>
 	class MaskNormalizer
 	{
 	public:
 		MaskNormalizer(
-			Math::Rect<float> sourceRect, 
-			Math::Rect<float> targetRect = Math::Rect<float>(Math::Point<float>(0, 0), Math::Size<float>(1, 1))
+			Math::Rect<float> sourceRect,
+			Math::Rect<float> targetRect = Math::Rect<float>(Math::Point<float>{0, 0}, Math::Size<float>{1, 1})
 		) :
 			sourceRect(sourceRect),
 			targetRect(targetRect)
 		{ }
 
-		FaceMask<N> operator()(const FaceMask<N>& mask)
+		FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
 		{
-			FaceMask<N> normalizedMask = mask;
+			FaceMask<Nodes> normalizedMask{ mask };
 
 			float scaleFactor = std::min(
 				targetRect.size.width / sourceRect.size.width,

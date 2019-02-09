@@ -5,12 +5,11 @@
 #include <algorithm>
 #include <array>
 
-#include "math/point.hpp"
-#include "math/size.hpp"
-#include "math/rect.hpp"
-#include "mask-transformation/mask-offset.hpp"
+#include "../math/point.hpp"
+#include "../math/size.hpp"
+#include "../math/rect.hpp"
 
-namespace FaceLandmarking 
+namespace FaceLandmarking
 {
 	template<size_t N>
 	class FaceMask
@@ -29,7 +28,7 @@ namespace FaceLandmarking
 			return points[n];
 		}
 
-		auto begin() const 
+		auto begin() const
 		{
 			return points.begin();
 		}
@@ -49,10 +48,10 @@ namespace FaceLandmarking
 			return points.end();
 		}
 
-		Math::Point<float> faceCenter() const 
+		Math::Point<float> faceCenter() const
 		{
-			float x = 0;
-			float y = 0;
+			float x{ 0 };
+			float y{ 0 };
 
 			for (const auto& point : *this)
 			{
@@ -60,7 +59,7 @@ namespace FaceLandmarking
 				y += point.y;
 			}
 
-			return Math::Point<float>(x / N, y / N);
+			return Math::Point<float>{x / N, y / N};
 		}
 
 		Math::Size<float> faceSize() const
@@ -79,15 +78,12 @@ namespace FaceLandmarking
 				maxY = std::max(maxY, point.y);
 			}
 
-			return Math::Size<float>(maxX - minX, maxY - minY);
+			return Math::Size<float>{maxX - minX, maxY - minY};
 		}
 
 		Math::Rect<float> faceRect() const
 		{
-			return Math::Rect<float>(
-				faceCenter(),
-				faceSize()
-			);
+			return Math::Rect<float>{faceCenter(), faceSize()};
 		}
 	};
 }

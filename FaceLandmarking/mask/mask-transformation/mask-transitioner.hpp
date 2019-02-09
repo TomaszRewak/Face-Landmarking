@@ -4,7 +4,7 @@
 
 namespace FaceLandmarking::MaskTransformation
 {
-	template<size_t N>
+	template<size_t Nodes>
 	class MaskTransitioner
 	{
 	public:
@@ -12,7 +12,7 @@ namespace FaceLandmarking::MaskTransformation
 			offset(offset)
 		{ }
 
-		FaceMask<N> operator()(const FaceMask<N>& mask)
+		FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
 		{
 			FaceMask movedMask = mask;
 

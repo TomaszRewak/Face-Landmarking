@@ -8,7 +8,7 @@ namespace FaceLandmarking::MaskTransformation
 	class MaskScaler
 	{
 	public:
-		MaskScaler(float scaleX, float scaleY, Math::Point<float> center):
+		MaskScaler(float scaleX, float scaleY, Math::Point<float> center) :
 			scaleX(scaleX),
 			scaleY(scaleY),
 			center(center)
@@ -16,7 +16,7 @@ namespace FaceLandmarking::MaskTransformation
 
 		static FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
 		{
-			FaceMask<Nodes> scaledMask = mask;
+			FaceMask<Nodes> scaledMask{ mask };
 
 			for (auto& point : scaledMask)
 			{
