@@ -1,20 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="test\_.cpp" />
+    <ClCompile Include="_.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="face-mask.hpp" />
+    <ClInclude Include="ui\mask-ui.hpp" />
+    <ClInclude Include="ui\face-ui.hpp" />
+    <ClInclude Include="features.hpp" />
+    <ClInclude Include="ui\examples.hpp" />
+    <ClInclude Include="ui\video.hpp" />
+    <ClInclude Include="mask\face-mask.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-autoencoder.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-interpolator.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-normalizer.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-scaler.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-transitioner.hpp" />
+    <ClInclude Include="math\angle.hpp" />
+    <ClInclude Include="math\offset.hpp" />
     <ClInclude Include="math\point.hpp" />
+    <ClInclude Include="math\rect.hpp" />
     <ClInclude Include="math\size.hpp" />
     <ClInclude Include="math\vector.hpp" />
-    <ClInclude Include="math\angle.hpp" />
-    <ClInclude Include="math\rect.hpp" />
-    <ClInclude Include="math\offset.hpp" />
-    <ClInclude Include="mask-transformation\mask-autoencoder.hpp" />
-    <ClInclude Include="mask-transformation\mask-transitioner.hpp" />
-    <ClInclude Include="mask-transformation\mask-interpolator.hpp" />
-    <ClInclude Include="mask-transformation\mask-normalizer.hpp" />
-    <ClInclude Include="mask-transformation\mask-scaler.hpp" />
+    <ClInclude Include="face-location\face-finder.hpp" />
+    <ClInclude Include="face-location\mask-frame.hpp" />
+    <ClInclude Include="feature-extraction\decision.hpp" />
+    <ClInclude Include="feature-extraction\face-color-detector.hpp" />
+    <ClInclude Include="feature-extraction\feature-extractor.hpp" />
+    <ClInclude Include="feature-extraction\histogram.hpp" />
+    <ClInclude Include="feature-extraction\hsv-image.hpp" />
+    <ClInclude Include="feature-extraction\image-feature-extractor.hpp" />
+    <ClInclude Include="feature-extraction\image-preprocessing.hpp" />
+    <ClInclude Include="feature-extraction\mask-feature-extractor.hpp" />
+    <ClInclude Include="feature-extraction\filters\basic-filter.hpp" />
+    <ClInclude Include="learning\mask\mask-avg.hpp" />
+    <ClInclude Include="learning\regressors\nn-regressor.hpp" />
+    <ClInclude Include="learning\regressors\tree-regressor.hpp" />
+    <ClInclude Include="learning\autoencoder-example-generator.hpp" />
+    <ClInclude Include="learning\average-mask-processing.hpp" />
+    <ClInclude Include="learning\feature-processing.hpp" />
+    <ClInclude Include="learning\mask-regression.hpp" />
+    <ClInclude Include="reader\validation\image-color-test.hpp" />
+    <ClInclude Include="reader\autoencoder-example-io.hpp" />
+    <ClInclude Include="reader\dataset.hpp" />
+    <ClInclude Include="reader\dataset-mirroring-reader.hpp" />
+    <ClInclude Include="reader\dataset-reducing-reader.hpp" />
+    <ClInclude Include="reader\features-io.hpp" />
+    <ClInclude Include="reader\learning-example.hpp" />
+    <ClInclude Include="reader\mask-io.hpp" />
+    <ClInclude Include="reader\nn-oi.hpp" />
+    <ClInclude Include="reader\tree-io.hpp" />
+    <ClInclude Include="reader\readers\image-reader.hpp" />
+    <ClInclude Include="reader\readers\mask-file.hpp" />
+    <ClInclude Include="reader\readers\mask-reader.hpp" />
   </ItemGroup>
 </Project>

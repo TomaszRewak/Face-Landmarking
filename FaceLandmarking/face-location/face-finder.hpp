@@ -8,7 +8,7 @@
 
 #include "../FaceLandmarking/math/rect.hpp"
 
-namespace FaceLandmarking::FaceLocator
+namespace FaceLandmarking::FaceLocation
 {
 	namespace fs = std::experimental::filesystem;
 

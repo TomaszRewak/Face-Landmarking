@@ -5,7 +5,7 @@
 #include "../FaceLandmarking/math/rect.hpp"
 #include "../FaceLandmarking/math/offset.hpp"
 
-namespace FaceLandmarking::FaceLocator
+namespace FaceLandmarking::FaceLocation
 {
 	template<size_t N>
 	class MaskFrame

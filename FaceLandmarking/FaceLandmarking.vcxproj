@@ -20,9 +20,10 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{EBC9C140-CB20-43E2-8A0D-135E5D6B5663}</ProjectGuid>
-    <RootNamespace>FaceLandmarking</RootNamespace>
+    <ProjectGuid>{74A63710-75E1-4BDC-A035-7BC721E769BD}</ProjectGuid>
+    <RootNamespace>FaceLandmarkingTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>FaceLandmarking</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -39,13 +40,13 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -75,30 +76,27 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\..\..\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>
+      </SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>
-      </AdditionalIncludeDirectories>
-      <BrowseInformation>true</BrowseInformation>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-    </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(OPENCV_DIR)\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world331d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-    <Bscmake>
-      <PreserveSbr>true</PreserveSbr>
-    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -120,29 +118,70 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\..\..\include</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(OPENCV_DIR)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world331.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="test\_.cpp" />
+    <ClCompile Include="_.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="face-mask.hpp" />
-    <ClInclude Include="mask-transformation\mask-autoencoder.hpp" />
-    <ClInclude Include="mask-transformation\mask-interpolator.hpp" />
-    <ClInclude Include="mask-transformation\mask-normalizer.hpp" />
-    <ClInclude Include="mask-transformation\mask-scaler.hpp" />
-    <ClInclude Include="mask-transformation\mask-transitioner.hpp" />
+    <ClInclude Include="face-location\face-finder.hpp" />
+    <ClInclude Include="face-location\mask-frame.hpp" />
+    <ClInclude Include="feature-extraction\decision.hpp" />
+    <ClInclude Include="feature-extraction\face-color-detector.hpp" />
+    <ClInclude Include="feature-extraction\feature-extractor.hpp" />
+    <ClInclude Include="feature-extraction\filters\basic-filter.hpp" />
+    <ClInclude Include="feature-extraction\histogram.hpp" />
+    <ClInclude Include="feature-extraction\hsv-image.hpp" />
+    <ClInclude Include="feature-extraction\image-feature-extractor.hpp" />
+    <ClInclude Include="feature-extraction\image-preprocessing.hpp" />
+    <ClInclude Include="feature-extraction\mask-feature-extractor.hpp" />
+    <ClInclude Include="features.hpp" />
+    <ClInclude Include="learning\autoencoder-example-generator.hpp" />
+    <ClInclude Include="learning\average-mask-processing.hpp" />
+    <ClInclude Include="learning\feature-processing.hpp" />
+    <ClInclude Include="learning\mask-regression.hpp" />
+    <ClInclude Include="learning\mask\mask-avg.hpp" />
+    <ClInclude Include="learning\regressors\nn-regressor.hpp" />
+    <ClInclude Include="learning\regressors\tree-regressor.hpp" />
+    <ClInclude Include="mask\face-mask.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-autoencoder.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-interpolator.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-normalizer.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-scaler.hpp" />
+    <ClInclude Include="mask\mask-transformation\mask-transitioner.hpp" />
     <ClInclude Include="math\angle.hpp" />
     <ClInclude Include="math\offset.hpp" />
     <ClInclude Include="math\point.hpp" />
     <ClInclude Include="math\rect.hpp" />
     <ClInclude Include="math\size.hpp" />
     <ClInclude Include="math\vector.hpp" />
+    <ClInclude Include="reader\autoencoder-example-io.hpp" />
+    <ClInclude Include="reader\dataset-mirroring-reader.hpp" />
+    <ClInclude Include="reader\dataset-reducing-reader.hpp" />
+    <ClInclude Include="reader\dataset.hpp" />
+    <ClInclude Include="reader\features-io.hpp" />
+    <ClInclude Include="reader\learning-example.hpp" />
+    <ClInclude Include="reader\mask-io.hpp" />
+    <ClInclude Include="reader\nn-oi.hpp" />
+    <ClInclude Include="reader\readers\image-reader.hpp" />
+    <ClInclude Include="reader\readers\mask-file.hpp" />
+    <ClInclude Include="reader\readers\mask-reader.hpp" />
+    <ClInclude Include="reader\tree-io.hpp" />
+    <ClInclude Include="reader\validation\image-color-test.hpp" />
+    <ClInclude Include="ui\video.hpp" />
+    <ClInclude Include="ui\examples.hpp" />
+    <ClInclude Include="ui\face-ui.hpp" />
+    <ClInclude Include="ui\mask-ui.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
