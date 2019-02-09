@@ -45,7 +45,7 @@
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Utility</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -133,10 +133,10 @@
   <ItemGroup>
     <ClInclude Include="face-mask.hpp" />
     <ClInclude Include="mask-transformation\mask-autoencoder.hpp" />
-    <ClInclude Include="mask-transformation\mask-interpolation.hpp" />
+    <ClInclude Include="mask-transformation\mask-interpolator.hpp" />
     <ClInclude Include="mask-transformation\mask-normalizer.hpp" />
-    <ClInclude Include="mask-transformation\mask-offset.hpp" />
-    <ClInclude Include="mask-transformation\mask-transition.hpp" />
+    <ClInclude Include="mask-transformation\mask-scaler.hpp" />
+    <ClInclude Include="mask-transformation\mask-transitioner.hpp" />
     <ClInclude Include="math\angle.hpp" />
     <ClInclude Include="math\offset.hpp" />
     <ClInclude Include="math\point.hpp" />

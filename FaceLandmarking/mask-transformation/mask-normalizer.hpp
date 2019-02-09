@@ -9,7 +9,15 @@ namespace FaceLandmarking::MaskTransformation
 	class MaskNormalizer
 	{
 	public:
-		static FaceMask<N> normalizeMask(const FaceMask<N>& mask, Math::Rect<float> sourceRect, Math::Rect<float> targetRect)
+		MaskNormalizer(
+			Math::Rect<float> sourceRect, 
+			Math::Rect<float> targetRect = Math::Rect<float>(Math::Point<float>(0, 0), Math::Size<float>(1, 1))
+		) :
+			sourceRect(sourceRect),
+			targetRect(targetRect)
+		{ }
+
+		FaceMask<N> operator()(const FaceMask<N>& mask)
 		{
 			FaceMask<N> normalizedMask = mask;
 
@@ -21,7 +29,7 @@ namespace FaceLandmarking::MaskTransformation
 			auto maskOffset = Math::Point<float>(
 				targetRect.center.x - sourceRect.center.x * scaleFactor,
 				targetRect.center.y - sourceRect.center.y * scaleFactor
-			);
+				);
 
 			for (auto& point : normalizedMask)
 			{
@@ -32,16 +40,8 @@ namespace FaceLandmarking::MaskTransformation
 			return normalizedMask;
 		}
 
-		static FaceMask<N> normalizeMask(const FaceMask<N>& mask, Math::Rect<float> targetRect)
-		{
-			auto maskRect = mask.faceRect();
-
-			return normalizeMask(mask, maskRect, targetRect);
-		}
-
-		static FaceMask<N> normalizeMask(const FaceMask<N>& mask)
-		{
-			return normalizeMask(mask, Math::Rect<float>(Math::Point<float>(0, 0), Math::Size<float>(1, 1)));
-		}
+	private:
+		Math::Rect<float> sourceRect;
+		Math::Rect<float> targetRect;
 	};
 }
