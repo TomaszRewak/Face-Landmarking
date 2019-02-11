@@ -2,7 +2,7 @@
 
 #include "../face-mask.hpp"
 
-namespace FaceLandmarking::MaskTransformation
+namespace FaceLandmarking::MaskTransformation::Mask
 {
 	template<size_t Nodes>
 	class MaskNormalizer
@@ -10,7 +10,7 @@ namespace FaceLandmarking::MaskTransformation
 	public:
 		MaskNormalizer(
 			Math::Rect<float> sourceRect,
-			Math::Rect<float> targetRect = Math::Rect<float>(Math::Point<float>{0, 0}, Math::Size<float>{1, 1})
+			Math::Rect<float> targetRect = Math::Rect<float>(Math::Point<float>(0, 0), Math::Size<float>(1, 1))
 		) :
 			sourceRect(sourceRect),
 			targetRect(targetRect)
@@ -18,7 +18,7 @@ namespace FaceLandmarking::MaskTransformation
 
 		FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
 		{
-			FaceMask<Nodes> normalizedMask{ mask };
+			FaceMask<Nodes> normalizedMask = mask;
 
 			float scaleFactor = std::min(
 				targetRect.size.width / sourceRect.size.width,

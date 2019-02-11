@@ -2,7 +2,7 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include <vector>
+#include <array>
 
 namespace FaceLandmarking::FeatureExtraction
 {
@@ -12,6 +12,9 @@ namespace FaceLandmarking::FeatureExtraction
 		S = 1,
 		V = 2
 	};
+
+	const std::array<HsvChannel, 3> HsvChannels
+	{ HsvChannel::H, HsvChannel::S, HsvChannel::V };
 
 	class HsvImage
 	{
@@ -33,6 +36,11 @@ namespace FaceLandmarking::FeatureExtraction
 		}
 
 		cv::Mat& operator[](HsvChannel channel)
+		{
+			return hsv[(int)channel];
+		}
+
+		const cv::Mat& operator[](HsvChannel channel) const
 		{
 			return hsv[(int)channel];
 		}

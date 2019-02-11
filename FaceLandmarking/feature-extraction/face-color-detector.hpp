@@ -4,7 +4,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
+#include "hsv-image.hpp"
 
 namespace FaceLandmarking::FeatureExtraction
 {

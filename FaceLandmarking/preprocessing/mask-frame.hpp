@@ -1,11 +1,11 @@
 #pragma once
 
 #include "mask-frame.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/math/rect.hpp"
-#include "../FaceLandmarking/math/offset.hpp"
+#include "../mask-transformation/mask-normalizer.hpp"
+#include "../math/rect.hpp"
+#include "../math/offset.hpp"
 
-namespace FaceLandmarking::FaceLocation
+namespace FaceLandmarking::Preprocessing
 {
 	template<size_t N>
 	class MaskFrame

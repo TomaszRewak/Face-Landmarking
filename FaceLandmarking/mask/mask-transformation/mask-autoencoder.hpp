@@ -3,7 +3,7 @@
 #include "../face-mask.hpp"
 #include "mask-normalizer.hpp"
 
-namespace FaceLandmarking::MaskTransformation
+namespace FaceLandmarking::MaskTransformation::Mask
 {
 	template<std::size_t Nodes, typename Regressor>
 	class MaskAutoencoder
@@ -16,7 +16,7 @@ namespace FaceLandmarking::MaskTransformation
 		FaceMask<Nodes> operator()(const FaceMask<Nodes>& input)
 		{
 			auto inputRect = input.faceRect();
-			auto normalizedInput = MaskNormalizer<Nodes>{}(input);
+			auto normalizedInput = MaskNormalizer<Nodes>()(input);
 			auto normalizedInputRect = normalizedInput.faceRect();
 
 			std::array<float, Nodes * 2> inputValues;
@@ -37,7 +37,7 @@ namespace FaceLandmarking::MaskTransformation
 				normalizedOutput[i].y = outputValues[i * 2 + 1];
 			}
 
-			auto output = MaskNormalizer<Nodes>{}(normalizedOutput, normalizedInputRect, inputRect);
+			auto output = MaskNormalizer<Nodes>()(normalizedOutput, normalizedInputRect, inputRect);
 
 			return output;
 		}

@@ -2,7 +2,7 @@
 
 #include "../face-mask.hpp"
 
-namespace FaceLandmarking::MaskTransformation
+namespace FaceLandmarking::MaskTransformation::Mask
 {
 	template<size_t Nodes>
 	class MaskInterpolator

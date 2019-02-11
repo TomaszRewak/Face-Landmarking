@@ -9,13 +9,13 @@
 #include "../math/size.hpp"
 #include "../math/rect.hpp"
 
-namespace FaceLandmarking
+namespace FaceLandmarking::Mask
 {
-	template<size_t N>
+	template<size_t Nodes>
 	class FaceMask
 	{
 	private:
-		std::array<Math::Point<float>, N> points;
+		std::array<Math::Point<float>, Nodes> points;
 
 	public:
 		Math::Point<float>& operator[](int n)
@@ -50,8 +50,8 @@ namespace FaceLandmarking
 
 		Math::Point<float> faceCenter() const
 		{
-			float x{ 0 };
-			float y{ 0 };
+			float x = 0;
+			float y = 0;
 
 			for (const auto& point : *this)
 			{
@@ -78,12 +78,16 @@ namespace FaceLandmarking
 				maxY = std::max(maxY, point.y);
 			}
 
-			return Math::Size<float>{maxX - minX, maxY - minY};
+			return Math::Size<float>(
+				maxX - minX, 
+				maxY - minY);
 		}
 
 		Math::Rect<float> faceRect() const
 		{
-			return Math::Rect<float>{faceCenter(), faceSize()};
+			return Math::Rect<float>(
+				faceCenter(), 
+				faceSize());
 		}
 	};
 }

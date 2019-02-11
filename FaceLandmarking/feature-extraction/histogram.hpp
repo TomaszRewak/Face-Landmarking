@@ -7,7 +7,7 @@
 
 #include <vector>
 
-#include "../FaceLandmarking/math/rect.hpp"
+#include "../math/rect.hpp"
 
 namespace FaceLandmarking::FeatureExtraction
 {
@@ -45,37 +45,6 @@ namespace FaceLandmarking::FeatureExtraction
 					(*this)[value] += mask.at<float>(y, x);
 				}
 			}
-		}
-
-		int max(int neighborhood = 0, bool includeEnds = true) const
-		{
-			int first = neighborhood;
-			int last = size() - 1 - neighborhood;
-
-			if (!includeEnds)
-			{
-				first += 1 + neighborhood;
-				last -= 1 + neighborhood;
-			}
-
-			int max = 0;
-			double maxValue = -1;
-
-			for (int i = first; i <= last; i++)
-			{
-				double neighborhoodSum = 0;
-
-				for (int j = -neighborhood; j <= neighborhood; j++)
-					neighborhoodSum += (*this)[i + j] * (neighborhood - std::abs(j));
-
-				if (neighborhoodSum > maxValue)
-				{
-					max = i;
-					maxValue = neighborhoodSum;
-				}
-			}
-
-			return max;
 		}
 
 		int median() const

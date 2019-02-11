@@ -18,17 +18,11 @@
     <ClInclude Include="math\rect.hpp" />
     <ClInclude Include="math\size.hpp" />
     <ClInclude Include="math\vector.hpp" />
-    <ClInclude Include="face-location\face-finder.hpp" />
-    <ClInclude Include="face-location\mask-frame.hpp" />
-    <ClInclude Include="feature-extraction\decision.hpp" />
     <ClInclude Include="feature-extraction\face-color-detector.hpp" />
     <ClInclude Include="feature-extraction\feature-extractor.hpp" />
     <ClInclude Include="feature-extraction\histogram.hpp" />
     <ClInclude Include="feature-extraction\hsv-image.hpp" />
-    <ClInclude Include="feature-extraction\image-feature-extractor.hpp" />
     <ClInclude Include="feature-extraction\image-preprocessing.hpp" />
-    <ClInclude Include="feature-extraction\mask-feature-extractor.hpp" />
-    <ClInclude Include="feature-extraction\filters\basic-filter.hpp" />
     <ClInclude Include="learning\mask\mask-avg.hpp" />
     <ClInclude Include="learning\regressors\nn-regressor.hpp" />
     <ClInclude Include="learning\regressors\tree-regressor.hpp" />
@@ -49,6 +43,11 @@
     <ClInclude Include="reader\readers\image-reader.hpp" />
     <ClInclude Include="reader\readers\mask-file.hpp" />
     <ClInclude Include="reader\readers\mask-reader.hpp" />
+    <ClInclude Include="preprocessing\face-finder.hpp" />
+    <ClInclude Include="preprocessing\mask-frame.hpp" />
+    <ClInclude Include="feature-extraction\filter.hpp" />
+    <ClInclude Include="feature-extraction\basic-filters.hpp" />
+    <ClInclude Include="learning\decision.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

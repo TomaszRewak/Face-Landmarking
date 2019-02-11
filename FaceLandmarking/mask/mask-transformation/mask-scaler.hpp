@@ -2,7 +2,7 @@
 
 #include "../face-mask.hpp"
 
-namespace FaceLandmarking::MaskTransformation
+namespace FaceLandmarking::MaskTransformation::Mask
 {
 	template<size_t Nodes>
 	class MaskScaler
@@ -16,7 +16,7 @@ namespace FaceLandmarking::MaskTransformation
 
 		static FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
 		{
-			FaceMask<Nodes> scaledMask{ mask };
+			FaceMask<Nodes> scaledMask = mask;
 
 			for (auto& point : scaledMask)
 			{

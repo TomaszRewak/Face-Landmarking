@@ -6,9 +6,9 @@
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
-#include "../FaceLandmarking/math/rect.hpp"
+#include "../math/rect.hpp"
 
-namespace FaceLandmarking::FaceLocation
+namespace FaceLandmarking::Preprocessing
 {
 	namespace fs = std::experimental::filesystem;
 
