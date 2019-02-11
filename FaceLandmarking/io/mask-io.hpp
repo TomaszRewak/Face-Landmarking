@@ -2,24 +2,17 @@
 
 #include <fstream>
 
-#include "../FaceLandmarking/face-mask.hpp"
+#include "../mask/face-mask.hpp"
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 
 	template<size_t N>
 	class MaskIO
 	{
-	private:
-		fs::path path;
-
 	public:
-		MaskIO(fs::path path) :
-			path(path)
-		{ }
-
-		void save(const FaceMask<N>& mask) const
+		static void save(fs::path path, const Mask::FaceMask<N>& mask)
 		{
 			std::fstream file;
 			file.open(path, std::ofstream::out);
@@ -32,9 +25,9 @@ namespace FaceLandmarking::Reader
 			file.close();
 		}
 
-		FaceMask<N> load() const
+		static Mask::FaceMask<N> load(fs::path path)
 		{
-			FaceMask<N> mask;
+			Mask::FaceMask<N> mask;
 
 			std::fstream file;
 			file.open(path, std::ofstream::in);

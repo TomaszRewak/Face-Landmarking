@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <fstream>
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 
@@ -16,7 +16,7 @@ namespace FaceLandmarking::Reader
 		FeaturesIO() 
 		{ }
 
-		void open(size_t maskPoint, fs::path basePath)
+		void open(fs::path basePath, size_t maskPoint)
 		{
 			fs::path filePath = basePath / std::to_string(maskPoint);
 

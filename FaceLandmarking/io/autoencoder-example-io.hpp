@@ -2,9 +2,9 @@
 
 #include <fstream>
 
-#include "../FaceLandmarking/face-mask.hpp"
+#include "../mask/face-mask.hpp"
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 	

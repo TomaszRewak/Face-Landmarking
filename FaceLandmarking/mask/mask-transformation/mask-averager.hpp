@@ -1,20 +1,19 @@
-#pragma once
+#include "../face-mask.hpp"
 
-#include "../../FaceLandmarking/face-mask.hpp"
-
-namespace FaceLandmarking::Learning::Mask
+namespace FaceLandmarking::Mask::MaskTransformation
 {
+
 	template<size_t N>
-	class AverageMask
+	class MaskAverager
 	{
 	private:
 		FaceMask<N> avgMask;
 		int count;
 
 	public:
-		AverageMask() :
+		MaskAverager() :
 			count(0)
-		{ 
+		{
 			std::fill(avgMask.begin(), avgMask.end(), Math::Point<float>(0, 0));
 		}
 

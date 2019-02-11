@@ -6,14 +6,13 @@
 #include <vector>
 #include <filesystem>
 
-#include "../FaceLandmarking/mask-transformation/mask-offset.hpp"
-#include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
+#include "../math/point.hpp"
 
-namespace FaceLandmarking::Learning
+namespace FaceLandmarking::Regression
 {
 	namespace fs = std::experimental::filesystem;
 
-	class MaskRegressionBuffer
+	class MaskRegressorBuffer
 	{
 	private:
 		cv::Mat bufferComputed;
@@ -71,7 +70,7 @@ namespace FaceLandmarking::Learning
 	};
 
 	template<size_t N, typename FeatureExtractor, typename Regressor>
-	class MaskRegression
+	class MaskRegressor
 	{
 	private:
 		FeatureExtractor featureExtractor;
@@ -83,10 +82,10 @@ namespace FaceLandmarking::Learning
 		int cols;
 		int rows;
 
-		MaskRegressionBuffer buffer;
+		MaskRegressorBuffer buffer;
 
 	public:
-		MaskRegression(Regressor regressors) :
+		MaskRegressor(Regressor regressors) :
 			regressors(regressors)
 		{ }
 

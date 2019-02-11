@@ -3,7 +3,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 
-namespace FaceLandmarking::Reader::Validation
+namespace FaceLandmarking::FeatureExtraction
 {
 	class ImageColorTest
 	{

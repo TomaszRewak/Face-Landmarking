@@ -1,16 +1,17 @@
 #pragma once
 
+#include <filesystem>
 #include <opencv2/core.hpp>
 #include <opencv2/opencv.hpp>
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 
-	class ImageReader
+	class ImageIO
 	{
 	public:
-		static cv::Mat loadImage(fs::path filePath)
+		static cv::Mat load(fs::path filePath)
 		{
 			cv::Mat image;
 

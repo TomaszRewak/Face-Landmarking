@@ -4,22 +4,23 @@
 #include <filesystem>
 #include <fstream>
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 
 	class NNIO
 	{
-	private:
-		fs::path path;
-
 	public:
-		NNIO(fs::path path) :
-			path(path)
-		{ }
-
-		std::vector<size_t> load(std::vector<std::vector<float>>& weights, std::vector<std::vector<float>>& biases) const
+		static void load(
+			fs::path path, 
+			std::vector<size_t>& layerSizes, 
+			std::vector<std::vector<float>>& weights, 
+			std::vector<std::vector<float>>& biases)
 		{
+			layerSizes.clear();
+			weights.clear();
+			biases.clear();
+
 			std::fstream file;
 			file.open(path, std::ofstream::in);
 
@@ -61,8 +62,6 @@ namespace FaceLandmarking::Reader
 			}
 
 			file.close();
-
-			return layerSizes;
 		}
 	};
 }

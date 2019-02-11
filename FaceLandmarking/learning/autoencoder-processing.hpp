@@ -12,7 +12,7 @@ namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N, typename DatasetReader>
+	template<size_t N, typename DatasetIrerator>
 	class AutoencoderExampleGenerator
 	{
 	private:

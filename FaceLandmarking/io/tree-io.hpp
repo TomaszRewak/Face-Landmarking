@@ -4,21 +4,15 @@
 #include <filesystem>
 #include <fstream>
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 
 	class TreeIO
 	{
-	private:
-		fs::path path;
-
 	public:
-		TreeIO(fs::path path) :
-			path(path)
-		{ }
-
 		void load(
+			fs::path path,
 			std::vector<int>& features,
 			std::vector<float>& thresholds,
 			std::vector<int>& leftChildren,

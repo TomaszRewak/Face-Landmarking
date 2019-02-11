@@ -4,9 +4,9 @@
 #include <filesystem>
 #include <cassert>
 
-#include "../../FaceLandmarking.Reader/nn-oi.hpp"
+#include "../../io/nn-oi.hpp"
 
-namespace FaceLandmarking::Learning::Regressors
+namespace FaceLandmarking::Regression::Regressors
 {
 	namespace fs = std::experimental::filesystem;
 
@@ -43,7 +43,8 @@ namespace FaceLandmarking::Learning::Regressors
 		{
 			Reader::NNIO io(path);
 
-			auto layerSizes = io.load(weights, biases);
+			std::vector<float>  layerSizes;				
+			io.load(layerSizes, weights, biases);
 
 			for (auto size : layerSizes)
 				layers.push_back(std::vector<float>(size));

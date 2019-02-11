@@ -2,7 +2,7 @@
 
 #include "../face-mask.hpp"
 
-namespace FaceLandmarking::MaskTransformation::Mask
+namespace FaceLandmarking::Mask::MaskTransformation
 {
 	template<size_t Nodes>
 	class MaskScaler

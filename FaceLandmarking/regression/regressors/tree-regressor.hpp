@@ -6,7 +6,7 @@
 #include "../../FaceLandmarking.Reader/tree-io.hpp"
 #include "../../FaceLandmarking/math/vector.hpp"
 
-namespace FaceLandmarking::Learning::Regressors
+namespace FaceLandmarking::Regression::Regressors
 {
 	namespace fs = std::experimental::filesystem;
 

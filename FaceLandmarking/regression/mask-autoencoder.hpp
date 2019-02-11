@@ -1,9 +1,8 @@
 #pragma once
 
-#include "../face-mask.hpp"
-#include "mask-normalizer.hpp"
+#include "../mask/mask-transformation/mask-normalizer.hpp"
 
-namespace FaceLandmarking::MaskTransformation::Mask
+namespace FaceLandmarking::Regression
 {
 	template<std::size_t Nodes, typename Regressor>
 	class MaskAutoencoder
@@ -13,10 +12,10 @@ namespace FaceLandmarking::MaskTransformation::Mask
 			_regressor(regressor)
 		{ }
 
-		FaceMask<Nodes> operator()(const FaceMask<Nodes>& input)
+		Mask::FaceMask<Nodes> operator()(const Mask::FaceMask<Nodes>& input)
 		{
 			auto inputRect = input.faceRect();
-			auto normalizedInput = MaskNormalizer<Nodes>()(input);
+			auto normalizedInput = Mask::MaskTransformation::MaskNormalizer<Nodes>()(input);
 			auto normalizedInputRect = normalizedInput.faceRect();
 
 			std::array<float, Nodes * 2> inputValues;
