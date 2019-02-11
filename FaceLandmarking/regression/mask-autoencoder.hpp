@@ -9,7 +9,7 @@ namespace FaceLandmarking::Regression
 	{
 	public:
 		MaskAutoencoder(Regressor regressor) :
-			_regressor(regressor)
+			regressor(regressor)
 		{ }
 
 		Mask::FaceMask<Nodes> operator()(const Mask::FaceMask<Nodes>& input)

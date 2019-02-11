@@ -15,12 +15,14 @@ namespace FaceLandmarking::FeatureExtraction
 			hsv(hsv)
 		{ }
 
-		float operator()(const Math::Point<float>& point)
+		std::array<float, Length> operator()(const Math::Point<float>& point)
 		{
 			std::array<float, Length> result;
 
 			for (std::size_t i = 0; i < Length; i++)
 				result[i] = operator()(point, i);
+
+			return result;
 		}
 
 		float operator()(const Math::Point<float>& point, std::size_t filter)

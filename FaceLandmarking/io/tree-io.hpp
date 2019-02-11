@@ -11,7 +11,7 @@ namespace FaceLandmarking::IO
 	class TreeIO
 	{
 	public:
-		void load(
+		static void load(
 			fs::path path,
 			std::vector<int>& features,
 			std::vector<float>& thresholds,

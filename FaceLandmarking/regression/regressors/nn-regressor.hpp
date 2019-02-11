@@ -41,13 +41,7 @@ namespace FaceLandmarking::Regression::Regressors
 	public:
 		NNRegressor(fs::path path)
 		{
-			Reader::NNIO io(path);
-
-			std::vector<float>  layerSizes;				
-			io.load(layerSizes, weights, biases);
-
-			for (auto size : layerSizes)
-				layers.push_back(std::vector<float>(size));
+			IO::NNIO::load(path, layers, weights, biases);
 		}
 
 		template<typename Iterator>

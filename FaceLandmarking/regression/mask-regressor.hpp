@@ -76,8 +76,7 @@ namespace FaceLandmarking::Regression
 		FeatureExtractor featureExtractor;
 		Regressor regressors;
 
-		std::vector<float> features;
-		MaskTransformation::MaskOffset<N> maskOffset;
+		std::array<float, FeatureExtractor::Length> features;
 
 		int cols;
 		int rows;
@@ -103,7 +102,7 @@ namespace FaceLandmarking::Regression
 		{
 			buffer.clear();
 
-			Math::Vector<float> globalOffset;
+			float globalOffset;
 
 			for (int i = 0; i < iterations; i++)
 			{

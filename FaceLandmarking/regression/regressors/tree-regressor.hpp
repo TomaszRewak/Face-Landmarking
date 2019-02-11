@@ -3,8 +3,8 @@
 #include <vector>
 #include <filesystem>
 
-#include "../../FaceLandmarking.Reader/tree-io.hpp"
-#include "../../FaceLandmarking/math/vector.hpp"
+#include "../../io/tree-io.hpp"
+#include "../../math/vector.hpp"
 
 namespace FaceLandmarking::Regression::Regressors
 {
@@ -13,32 +13,31 @@ namespace FaceLandmarking::Regression::Regressors
 	class TreeRegressor
 	{
 	private:
-		std::vector<int> _features;
-		std::vector<float> _thresholds;
-		std::vector<int> _leftChildren;
-		std::vector<int> _rightChildren;
-		std::vector<float> _values;
+		std::vector<int> features;
+		std::vector<float> thresholds;
+		std::vector<int> leftChildren;
+		std::vector<int> rightChildren;
+		std::vector<float> values;
 
 	public:
 		TreeRegressor(fs::path path)
 		{
-			Reader::TreeIO io(path);
-			io.load(_features, _thresholds, _leftChildren, _rightChildren, _values);
+			IO::TreeIO::load(path, features, thresholds, leftChildren, rightChildren, values);
 		}
 
 		float get(const std::vector<float>& features)
 		{
 			int node = 0;
 
-			while (_features[node] != -2)
+			while (features[node] != -2)
 			{
-				if (features[_features[node]] <= _thresholds[node])
-					node = _leftChildren[node];
+				if (features[features[node]] <= thresholds[node])
+					node = leftChildren[node];
 				else
-					node = _rightChildren[node];
+					node = rightChildren[node];
 			}
 
-			return _values[node];
+			return values[node];
 		}
 	};
 
