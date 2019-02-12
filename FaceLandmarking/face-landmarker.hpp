@@ -39,14 +39,7 @@ namespace FaceLandmarking
 		MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder;
 
 	public:
-		FaceLandmarker(
-			fs::path dataPath,
-			string videoPath,
-			string mask,
-			int steps,
-			int regressionSize,
-			bool debug
-		) :
+		FaceLandmarker(fs::path dataPath) :
 			averageMask(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask")),
 			maskFrame(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask"), Math::Size<float>(150, 150)),
 			faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml"),
@@ -64,17 +57,17 @@ namespace FaceLandmarking
 				masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(rect)(averageMask));
 		}
 
-		void adjustMasks(const cv::Mat& frame)
+		void adjustMasks(const cv::Mat& frame, int steps)
 		{
 			for (auto& mask : masks)
-				adjustMasks(mask);
+				adjustMasks(mask, steps);
 		}
 
 	private:
 		cv::Mat scaledFrame;
 		FeatureExtraction::HsvImage processedFrame;
 
-		void adjustMasks(const cv::Mat& frame, Mask::FaceMask& mask)
+		void adjustMasks(const cv::Mat& frame, Mask::FaceMask& mask, int steps)
 		{
 			auto scale = maskFrame.getScale(mask);
 			auto normalizedMask = Mask::MaskTransformation::MaskScaler<N>(scale, scale, Math::Point<float>(0, 0))(mask);
