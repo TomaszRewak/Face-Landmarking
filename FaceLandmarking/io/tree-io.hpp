@@ -18,7 +18,7 @@ namespace FaceLandmarking::IO
 			std::vector<int>& leftChildren,
 			std::vector<int>& rightChildren,
 			std::vector<float>& values
-		) const
+		)
 		{
 			std::fstream file;
 			file.open(path, std::ofstream::in);

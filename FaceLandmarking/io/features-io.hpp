@@ -3,10 +3,13 @@
 #include <filesystem>
 #include <fstream>
 
+#include "../math/vector.hpp"
+
 namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
-
+	
+	template<typename Length>
 	class FeaturesIO
 	{
 	private:
@@ -28,13 +31,12 @@ namespace FaceLandmarking::IO
 			file.close();
 		}
 
-		void add(const std::vector<float>& features, const std::vector<float>& decisions)
+		void add(const std::array<float, Length>& features, const Math::Vector<float>& decision)
 		{
 			for (auto feature : features)
 				file << feature << " ";
 
-			for (auto decision : decisions)
-				file << decision << " ";
+			file << decision.x << " " << decision.y;
 
 			file << "\n";
 		}

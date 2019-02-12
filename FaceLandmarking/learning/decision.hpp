@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../FaceLandmarking/face-mask.hpp"
+#include "../mask/face-mask.hpp"
 
 namespace FaceLandmarking::FeatureExtraction
 {
@@ -8,13 +8,14 @@ namespace FaceLandmarking::FeatureExtraction
 	class Decision
 	{
 	public:
-		static void getDecisions(const FaceMask<N>& face, const FaceMask<N>& mask, size_t point, std::vector<float>& decisions)
+		static Math::Vector<float> getDecisions(const Mask::FaceMask<N>& face, const Mask::FaceMask<N>& mask, size_t point)
 		{
 			const auto& facePoint = face[point];
 			const auto& maskPoint = mask[point];
 
-			decisions.push_back(facePoint.x - maskPoint.x);
-			decisions.push_back(facePoint.y - maskPoint.y);
+			return Math::Vector<float>(
+				facePoint.x - maskPoint.x,
+				facePoint.y - maskPoint.y);
 		}
 	};
 }
