@@ -13,30 +13,16 @@ using namespace std;
 using namespace FaceLandmarking;
 
 template<size_t N>
-void example_test(experimental::filesystem::path dataPath, string mask)
+void example_test(experimental::filesystem::path dataPath)
 {
-	using DataSetReader = Reader::DatasetReader<N>;
-
-	Learning::AverageMaskProcessing<N, DataSetReader> averageMaskProcessing(dataPath);
-	FaceMask<N> averageMask = averageMaskProcessing.load();
-
-	std::vector<float> features;
-	std::vector<float> decisions;
-
-	FeatureExtraction::ImagePreprocessor imagePreprocessor;
-
-	Learning::Regressors::MaskTreeRegressor<N> treeRegressor(dataPath / "regressors" / "trees");
-	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor<N>> maskRegression(treeRegressor);
-
-	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
+	Data::Dataset<N> dataset(datePath);
+	FaceLandmarking::FaceLandmarker<N> faceLandmarker(dataPath);
 
 	namedWindow("example", WINDOW_AUTOSIZE);
 
 	Mat imageWithMasks;
 
-	DataSetReader reader(dataPath);
-	while (true)
+	for (auto iter = dataset.begin(); iter!= dataset.end(); iter++)
 	{
 		if (reader.hasNext()) {
 			auto example = reader.loadNext();

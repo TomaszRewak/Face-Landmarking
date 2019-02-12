@@ -29,24 +29,16 @@ void video_test(
 	bool transform,
 	int transformRotate,
 	int transformWidth,
-	int transformHeight,
-	int regressionSize,
-	bool debug
+	int transformHeight
 )
 {
-	FaceLandmarking::FaceLandmarker faceLandmarker(dataPath);
+	FaceLandmarking::FaceLandmarker<N> faceLandmarker(dataPath);
 
 	VideoCapture videoCapture(videoPath);
 	if (!videoCapture.isOpened())
 		return;
 
 	namedWindow("real", WINDOW_AUTOSIZE);
-
-	if (debug)
-	{
-		namedWindow("face", WINDOW_AUTOSIZE);
-		namedWindow("color", WINDOW_AUTOSIZE);
-	}
 
 	Mat frame;
 	Mat frameWithMask;
@@ -71,37 +63,18 @@ void video_test(
 
 		frame.copyTo(frameWithMask);
 
-		for (auto& mask : masks)
-		{
+		faceLandmarker.adjustMasks(frame, steps);
+
+		for (auto& mask : faceLandmarker.masks)
 			Test::UI::MaskUI<N>::drawMask(frameWithMask, mask);
-
-			if (true)
-			{
-				cv::Mat processedFrameRGB;
-				processedFrame.getImage(processedFrameRGB);
-
-				Test::UI::MaskUI<N>::drawMask(processedFrameRGB, normalizedMask);
-
-				Test::UI::FaceUI::drawFace(frameWithMask, faceRect, cv::Scalar(255, 255, 255));
-				Test::UI::FaceUI::drawFace(processedFrameRGB, normalizedFaceRect, cv::Scalar(255, 255, 255));
-
-				imshow("face", processedFrameRGB);
-				imshow("color", imagePreprocessor.colorDetector);
-			}
-		}
 
 		imshow("real", frameWithMask);
 
-		auto key = waitKey(30);
-		switch (key)
+		switch (waitKey(30)) // How to improve?
 		{
 		case 32: // space
 		{
-			masks.clear();
-
-			for (auto rect : faceFinder.locate(frame))
-				masks.push_back(MaskTransformation::MaskNormalizer<N>::normalizeMask(averageMask, rect));
-
+			faceLandmarker.findFaces(frame);
 			break;
 		}
 		case 27: // escape

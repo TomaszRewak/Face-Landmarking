@@ -21,16 +21,12 @@ int main(int argc, char** argv)
 	ProcessType processType = ProcessType::Video;
 	string dataPath = "./../Data";
 	string videoPath = "./../Data/video-examples/ja6.mp4";
-	string mask = "all";
 	int steps = 60;
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
 	int transformWidth = 350;
 	int transformHeight = 600;
-
-	int regressionSize = 0;
-	bool debug = false;
 
 	for (int i = 1; i < argc;)
 	{
@@ -53,8 +49,6 @@ int main(int argc, char** argv)
 			dataPath = argv[i++];
 		if (param == "-video")
 			videoPath = argv[i++];
-		if (param == "-mask")
-			mask = argv[i++];
 		if (param == "-steps")
 			steps = stoi(argv[i++]);
 		if (param == "-transform")
@@ -65,19 +59,15 @@ int main(int argc, char** argv)
 			transformWidth = stoi(argv[i++]);
 		if (param == "-transform-height")
 			transformHeight = stoi(argv[i++]);
-		if (param == "-regression-size")
-			regressionSize = stoi(argv[i++]);
-		if (param == "-debug")
-			debug = false;
 	}
 
 	switch (processType)
 	{
 	case ProcessType::Video:
-		video_test<N>(dataPath, videoPath, mask, steps, transform, transformRotate, transformWidth, transformHeight, regressionSize, debug);
+		video_test<N>(dataPath, videoPath, steps, transform, transformRotate, transformWidth, transformHeight);
 		break;
 	case ProcessType::Example:
-		example_test<N>(dataPath, mask);
+		example_test<N>(dataPath);
 		break;
 	case ProcessType::Features:
 		features_test<N>(dataPath);

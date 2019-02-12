@@ -27,7 +27,6 @@ namespace FaceLandmarking::IO
 			int layers;
 			file >> layers;
 
-			std::vector<size_t> layerSizes;
 			for (int i = 0; i < layers; i++)
 			{
 				size_t layerSize;

@@ -35,8 +35,8 @@ namespace FaceLandmarking
 		Preprocessing::FaceFinder faceFinder;
 		FeatureExtraction::ImagePreprocessor imagePreprocessor;
 
-		Regression::MaskRegression<N, FeatureExtraction::FeatureExtractor, Regression::Regressors::TreeMaskRegressor<N>> maskRegression;
-		MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder;
+		Regression::MaskRegressor<N, FeatureExtraction::FeatureExtractor, Regression::Regressors::TreeMaskRegressor<N>> maskRegression;
+		Regression::MaskAutoencoder<N, Regression::Regressors::NNRegressor<Regression::Regressors::ReluActivation>> maskAutoencoder;
 
 	public:
 		FaceLandmarker(fs::path dataPath) :
@@ -49,7 +49,7 @@ namespace FaceLandmarking
 
 		std::vector<Mask::FaceMask<N>> masks;
 
-		void localizeMasks(const cv::Mat& frame)
+		void findFaces(const cv::Mat& frame)
 		{
 			masks.clear();
 
@@ -67,7 +67,7 @@ namespace FaceLandmarking
 		cv::Mat scaledFrame;
 		FeatureExtraction::HsvImage processedFrame;
 
-		void adjustMasks(const cv::Mat& frame, Mask::FaceMask& mask, int steps)
+		void adjustMasks(const cv::Mat& frame, Mask::FaceMask<N>& mask, int steps)
 		{
 			auto scale = maskFrame.getScale(mask);
 			auto normalizedMask = Mask::MaskTransformation::MaskScaler<N>(scale, scale, Math::Point<float>(0, 0))(mask);
@@ -84,6 +84,7 @@ namespace FaceLandmarking
 			{
 				mask[i] += maskRegression.computeOffset(normalizedMask[i], i, steps, regressionSize) / scale;
 			}
+
 			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
 		}
 	};

@@ -70,7 +70,12 @@ namespace FaceLandmarking::Data
 
 		DatasetIterator<Nodes> begin()
 		{
-			return DatasetIterator<Nodes>(annotationsRootPath, imagesRootPath, )
+			return DatasetIterator<Nodes>(annotationsRootPath, imagesRootPath, annotationFilePaths.begin());
+		}
+
+		DatasetIterator<Nodes> end()
+		{
+			return DatasetIterator<Nodes>(annotationsRootPath, imagesRootPath, annotationFilePaths.end());
 		}
 
 	private:

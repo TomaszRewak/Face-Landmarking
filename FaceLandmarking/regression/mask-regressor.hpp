@@ -7,6 +7,7 @@
 #include <filesystem>
 
 #include "../math/point.hpp"
+#include "../feature-extraction/hsv-image.hpp"
 
 namespace FaceLandmarking::Regression
 {

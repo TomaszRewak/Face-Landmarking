@@ -14,7 +14,7 @@ namespace FaceLandmarking::Mask::MaskTransformation
 			center(center)
 		{ }
 
-		static FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
+		FaceMask<Nodes> operator()(const FaceMask<Nodes>& mask)
 		{
 			FaceMask<Nodes> scaledMask = mask;
 
