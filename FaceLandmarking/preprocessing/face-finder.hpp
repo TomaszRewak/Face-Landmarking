@@ -12,7 +12,7 @@ namespace FaceLandmarking::Preprocessing
 {
 	namespace fs = std::experimental::filesystem;
 
-	class FaceFinder : public std::vector<Math::Rect<float>>
+	class FaceFinder 
 	{
 	private:
 		cv::CascadeClassifier faceCascade;
@@ -24,9 +24,10 @@ namespace FaceLandmarking::Preprocessing
 			faceCascade(faceCascadePath.string())
 		{ }
 
-		void locate(cv::Mat& image)
+		std::vector<Math::Rect<float>> locate(cv::Mat& image)
 		{
-			clear();
+			std::vector<Math::Rect<float>> result;
+
 			faceRects.clear();
 
 			cv::cvtColor(image, grayImage, cv::COLOR_BGR2GRAY);
@@ -36,8 +37,10 @@ namespace FaceLandmarking::Preprocessing
 				Math::Rect<float> rect(face.x, face.y, face.width, face.height);
 				rect.center += Math::Vector<float>(0, rect.size.height / 8);
 
-				push_back(rect);
+				result.push_back(rect);
 			}
+
+			return result;
 		}
 	};
 }

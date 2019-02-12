@@ -1,5 +1,5 @@
-#include "examples.hpp"
-#include "video.hpp"
+#include "ui/examples.hpp"
+#include "ui/video.hpp"
 #include "features.hpp"
 
 using namespace cv;

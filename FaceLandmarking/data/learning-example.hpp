@@ -2,7 +2,7 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include "../FaceLandmarking/face-mask.hpp"
+#include "../mask/face-mask.hpp"
 
 namespace FaceLandmarking::Data
 {
@@ -10,9 +10,9 @@ namespace FaceLandmarking::Data
 	struct LearningExample
 	{
 		cv::Mat image;
-		FaceMask<N> mask;
+		Mask::FaceMask<N> mask;
 
-		LearningExample(const cv::Mat& image, const FaceMask<N>& mask) :
+		LearningExample(const cv::Mat& image, const Mask::FaceMask<N>& mask) :
 			image(image),
 			mask(mask)
 		{ }
@@ -34,7 +34,5 @@ namespace FaceLandmarking::Data
 				point.y *= factor;
 			}
 		}
-
-		void mirror()
 	};
 }

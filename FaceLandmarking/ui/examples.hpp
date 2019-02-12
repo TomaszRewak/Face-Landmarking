@@ -6,23 +6,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 
-#include "../FaceLandmarking.Reader/dataset-reader.hpp"
-#include "../FaceLandmarking.Reader/dataset-reducing-reader.hpp"
-#include "../FaceLandmarking.Reader/mask-io.hpp"
-#include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-autoencoder.hpp"
-#include "../FaceLandmarking.Learning/average-mask-processing.hpp"
-#include "../FaceLandmarking.Learning/feature-processing.hpp"
-#include "../FaceLandmarking.Learning/mask-regression.hpp"
-#include "../FaceLandmarking.Learning/regressors/tree-regressor.hpp"
-#include "../FaceLandmarking.Learning/regressors/nn-regressor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
-#include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
-#include "../FaceLandmarking.FeatureExtraction/image-preprocessing.hpp"
-#include "ui/mask-ui.hpp"
+#include "../data/dataset.hpp"
 
 using namespace cv;
 using namespace std;

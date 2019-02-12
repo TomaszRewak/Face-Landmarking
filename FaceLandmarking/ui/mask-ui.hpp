@@ -2,7 +2,8 @@
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
-#include "../../FaceLandmarking/face-mask.hpp"
+
+#include "../mask/face-mask.hpp"
 
 namespace FaceLandmarking::Test::UI
 {
@@ -10,7 +11,7 @@ namespace FaceLandmarking::Test::UI
 	class MaskUI
 	{
 	public:
-		static void drawMask(const cv::Mat& image, const FaceMask<N>& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
+		static void drawMask(const cv::Mat& image, const Mask::FaceMask<N>& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
 		{
 			for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
 			{
@@ -23,19 +24,6 @@ namespace FaceLandmarking::Test::UI
 					color,
 					1);
 			}
-
-			/*for (size_t pointIndex = 0; pointIndex < N - 1; pointIndex++)
-			{
-				const auto& point1 = mask[pointIndex];
-				const auto& point2 = mask[pointIndex + 1];
-
-				cv::line(
-					image,
-					cv::Point(point1.x, point1.y),
-					cv::Point(point2.x, point2.y),
-					color,
-					1);
-			}*/
 		}
 	};
 }

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "mask-frame.hpp"
-#include "../mask-transformation/mask-normalizer.hpp"
+#include "../mask/face-mask.hpp"
 #include "../math/rect.hpp"
 #include "../math/offset.hpp"
 
@@ -14,7 +13,7 @@ namespace FaceLandmarking::Preprocessing
 		Math::Size<float> desiredSize;
 		Math::Offset<float> defaultOffset;
 
-		Math::Rect<float> getRect(const FaceMask<N> &mask) const
+		Math::Rect<float> getRect(const Mask::FaceMask<N> &mask) const
 		{
 			float
 				minX = std::numeric_limits<float>::max(),
@@ -37,7 +36,7 @@ namespace FaceLandmarking::Preprocessing
 		}
 
 	public:
-		MaskFrame(const FaceMask<N> &averageMask, Math::Size<float> desiredSize)
+		MaskFrame(const Mask::FaceMask<N> &averageMask, Math::Size<float> desiredSize)
 		{
 			Math::Rect<float> fullRect = averageMask.faceRect();
 			Math::Rect<float> partialRect = getRect(averageMask);
@@ -53,7 +52,7 @@ namespace FaceLandmarking::Preprocessing
 			this->desiredSize = desiredSize;
 		}
 
-		float getScale(const FaceMask<N>& mask) const
+		float getScale(const Mask::FaceMask<N>& mask) const
 		{
 			Math::Size<float> currentSize = getRect(mask).size;
 
@@ -66,7 +65,7 @@ namespace FaceLandmarking::Preprocessing
 			);
 		}
 
-		Math::Rect<float> getFrame(const FaceMask<N>& mask) const
+		Math::Rect<float> getFrame(const Mask::FaceMask<N>& mask) const
 		{
 			Math::Rect<float> partRect = getRect(mask);
 

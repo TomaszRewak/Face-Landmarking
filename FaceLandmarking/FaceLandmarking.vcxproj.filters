@@ -21,7 +21,6 @@
     <ClInclude Include="feature-extraction\feature-extractor.hpp" />
     <ClInclude Include="feature-extraction\histogram.hpp" />
     <ClInclude Include="feature-extraction\hsv-image.hpp" />
-    <ClInclude Include="feature-extraction\image-preprocessing.hpp" />
     <ClInclude Include="learning\average-mask-processing.hpp" />
     <ClInclude Include="preprocessing\face-finder.hpp" />
     <ClInclude Include="preprocessing\mask-frame.hpp" />
@@ -46,6 +45,9 @@
     <ClInclude Include="data\mask-file.hpp" />
     <ClInclude Include="io\image-io.hpp" />
     <ClInclude Include="data\dataset-mirroring-iterator.hpp" />
+    <ClInclude Include="regression\regressors\tree-mask-regressor.hpp" />
+    <ClInclude Include="feature-extraction\image-preprocessor.hpp" />
+    <ClInclude Include="face-landmarker.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -6,36 +6,25 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
 
-#include "../FaceLandmarking.Reader/dataset-reader.hpp"
-#include "../FaceLandmarking.Reader/mask-io.hpp"
-#include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-autoencoder.hpp"
-#include "../FaceLandmarking.Learning/average-mask-processing.hpp"
-#include "../FaceLandmarking.Learning/feature-processing.hpp"
-#include "../FaceLandmarking.Learning/mask-regression.hpp"
-#include "../FaceLandmarking.Learning/regressors/tree-regressor.hpp"
-#include "../FaceLandmarking.Learning/regressors/nn-regressor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/image-feature-extractor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/test/FilterApplier.hpp"
-#include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/histogram.hpp"
-#include "../FaceLandmarking.FeatureExtraction/hsv-image.hpp"
-#include "../FaceLandmarking.FeatureExtraction/image-preprocessing.hpp"
-#include "../FaceLandmarking.FaceLocator/face-finder.hpp"
-#include "../FaceLandmarking.FaceLocator/mask-frame.hpp"
+#include "../data/dataset.hpp"
+#include "../preprocessing/face-finder.hpp"
+#include "../preprocessing/mask-frame.hpp"
+#include "../regression/mask-regressor.hpp"
+#include "../regression/mask-autoencoder.hpp"
+#include "../regression/regressors/nn-regressor.hpp"
+#include "../regression/regressors/tree-mask-regressor.hpp"
+#include "../feature-extraction/feature-extractor.hpp"
+#include "../feature-extraction/image-preprocessor.hpp"
+
+#include "../face-landmarker.hpp"
+
 #include "ui/mask-ui.hpp"
 #include "ui/face-ui.hpp"
-
-using namespace cv;
-using namespace std;
-using namespace FaceLandmarking;
 
 template<size_t N>
 void video_test(
 	experimental::filesystem::path dataPath,
-	string videoPath,
-	string mask,
+	std::string videoPath,
 	int steps,
 	bool transform,
 	int transformRotate,
@@ -45,25 +34,8 @@ void video_test(
 	bool debug
 )
 {
-	using DataSetReader = Reader::DatasetReader<N>;
+	FaceLandmarking::FaceLandmarker faceLandmarker(dataPath);
 
-	Learning::AverageMaskProcessing<N, DataSetReader> averageMaskProcessing(dataPath);
-	FaceMask<N> averageMask = averageMaskProcessing.load();
-
-	FaceLocator::FaceFinder faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml");
-
-	FaceLocator::MaskFrame<N> maskFrame(averageMask, Math::Size<float>(150, 150));
-	std::vector<FaceMask<N>> masks;
-
-	FeatureExtraction::ImagePreprocessor imagePreprocessor;
-
-	Learning::Regressors::MaskTreeRegressor<N> treeRegressor(dataPath / "regressors" / "trees");
-	Learning::MaskRegression<N, FeatureExtraction::ImageFeatureExtractor, Learning::Regressors::MaskTreeRegressor<N>> maskRegression(treeRegressor);
-
-	Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation> autoencoderRegressor(dataPath / "regressors" / "nn" / "autoencoder");
-	MaskTransformation::MaskAutoencoder<N, Learning::Regressors::NNRegressor<Learning::Regressors::ReluActivation>> maskAutoencoder(autoencoderRegressor);
-
-	//VideoCapture videoCapture(0);
 	VideoCapture videoCapture(videoPath);
 	if (!videoCapture.isOpened())
 		return;
@@ -77,11 +49,8 @@ void video_test(
 	}
 
 	Mat frame;
-	Mat scaledFrame;
 	Mat frameWithMask;
-	Mat faceImage;
 	Mat frameTransform;
-	FeatureExtraction::HsvImage processedFrame;
 
 	for (;;)
 	{
@@ -104,23 +73,6 @@ void video_test(
 
 		for (auto& mask : masks)
 		{
-			float scale = maskFrame.getScale(mask);
-			FaceMask<N> normalizedMask = MaskTransformation::MaskTransition<N>::scale(mask, scale, scale, Math::Point<float>(0, 0));
-
-			resize(frame, scaledFrame, cv::Size(frame.cols * scale, frame.rows * scale));
-
-			auto faceRect = maskFrame.getFrame(mask);
-			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
-
-			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.5, true);
-			maskRegression.setImage(processedFrame);
-
-			for (int i = 0; i < N; i++)
-			{
-				mask[i] += maskRegression.computeOffset(normalizedMask[i], i, steps, regressionSize) / scale;
-			}
-			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
-
 			Test::UI::MaskUI<N>::drawMask(frameWithMask, mask);
 
 			if (true)
@@ -147,13 +99,8 @@ void video_test(
 		{
 			masks.clear();
 
-			faceFinder.locate(frame);
-
-			for (auto rect : faceFinder)
-			{
-				FaceMask<N> mask = MaskTransformation::MaskNormalizer<N>::normalizeMask(averageMask, rect);
-				masks.push_back(mask);
-			}
+			for (auto rect : faceFinder.locate(frame))
+				masks.push_back(MaskTransformation::MaskNormalizer<N>::normalizeMask(averageMask, rect));
 
 			break;
 		}

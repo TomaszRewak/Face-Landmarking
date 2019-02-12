@@ -144,13 +144,15 @@
     <ClInclude Include="feature-extraction\filter.hpp" />
     <ClInclude Include="feature-extraction\histogram.hpp" />
     <ClInclude Include="feature-extraction\hsv-image.hpp" />
-    <ClInclude Include="feature-extraction\image-preprocessing.hpp" />
+    <ClInclude Include="feature-extraction\image-preprocessor.hpp" />
     <ClInclude Include="features.hpp" />
     <ClInclude Include="learning\autoencoder-processing.hpp" />
     <ClInclude Include="learning\average-mask-processing.hpp" />
     <ClInclude Include="learning\regressor-processing.hpp" />
     <ClInclude Include="regression\mask-regressor.hpp" />
+    <ClInclude Include="face-landmarker.hpp" />
     <ClInclude Include="regression\regressors\nn-regressor.hpp" />
+    <ClInclude Include="regression\regressors\tree-mask-regressor.hpp" />
     <ClInclude Include="regression\regressors\tree-regressor.hpp" />
     <ClInclude Include="mask\face-mask.hpp" />
     <ClInclude Include="regression\mask-autoencoder.hpp" />

@@ -40,37 +40,4 @@ namespace FaceLandmarking::Regression::Regressors
 			return values[node];
 		}
 	};
-
-	class TreeRegressorPair {
-	public:
-		TreeRegressor x;
-		TreeRegressor y;
-
-		TreeRegressorPair(fs::path path) : 
-			x(path / "x"),
-			y(path / "y")
-		{ }
-	};
-
-	template<size_t N>
-	class MaskTreeRegressor
-	{
-	private:
-		std::vector<TreeRegressorPair> regressors;
-
-	public:
-		MaskTreeRegressor(fs::path basePath)
-		{
-			for (size_t i = 0; i < N; i++)
-				regressors.push_back(TreeRegressorPair(basePath / std::to_string(i)));
-		}
-
-		Math::Vector<float> getOffset(int point, const std::vector<float>& features)
-		{
-			return Math::Vector<float>(
-				regressors[point].x.get(features),
-				regressors[point].y.get(features)
-				);
-		}
-	};
 }

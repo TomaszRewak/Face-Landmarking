@@ -98,46 +98,35 @@ namespace FaceLandmarking::Regression
 			buffer.resize(rows, cols);
 		}
 
-		Math::Vector<float> computeOffset(Math::Point<float> point, size_t pointNumber, size_t iterations, int size = 2)
+		Math::Vector<float> computeOffset(Math::Point<float> point, size_t pointNumber, size_t iterations)
 		{
 			buffer.clear();
 
-			float globalOffset;
+			Math::Vector<float> globalOffset;
 
 			for (int i = 0; i < iterations; i++)
 			{
 				Math::Point<float> currentPosition = point + globalOffset;
+				Math::Vector<float> localOffset;
 
-				Math::Vector<float> stepOffset;
-				float factor = 0;
-				for (int x = -size; x <= size; x++)
+				int xi = std::max(0, std::min((int)currentPosition.x + x, cols - 1));
+				int yi = std::max(0, std::min((int)currentPosition.y + y, rows - 1));
+
+				if (buffer.hasValue(xi, yi))
 				{
-					for (int y = -size; y <= size; y++)
-					{
-						Math::Vector<float> localOffset;
-
-						int xi = std::max(0, std::min((int)currentPosition.x + x, cols - 1));
-						int yi = std::max(0, std::min((int)currentPosition.y + y, rows - 1));
-						if (buffer.hasValue(xi, yi))
-						{
-							localOffset = buffer.getValue(xi, yi);
-						}
-						else
-						{
-							features.clear();
-							featureExtractor.selectFeatures(xi, yi, features);
-
-							localOffset = regressors.getOffset(pointNumber, features);
-
-							buffer.setValue(xi, yi, localOffset);
-						}
-
-						float localFactor = 1. / (std::abs(x) + std::abs(y) + 2);
-						stepOffset += localOffset * localFactor;
-						factor += localFactor;
-					}
+					localOffset = buffer.getValue(xi, yi);
 				}
-				globalOffset += stepOffset / factor;
+				else
+				{
+					features.clear();
+					featureExtractor.selectFeatures(xi, yi, features);
+
+					localOffset = regressors.getOffset(pointNumber, features);
+
+					buffer.setValue(xi, yi, localOffset);
+				}
+
+				globalOffset += localOffset;
 			}
 
 			return globalOffset;
