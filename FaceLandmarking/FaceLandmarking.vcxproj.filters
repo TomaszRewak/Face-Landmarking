@@ -41,11 +41,11 @@
     <ClInclude Include="io\nn-oi.hpp" />
     <ClInclude Include="io\tree-io.hpp" />
     <ClInclude Include="data\dataset.hpp" />
-    <ClInclude Include="data\dataset-mirroring-reader.hpp" />
     <ClInclude Include="data\learning-example.hpp" />
     <ClInclude Include="feature-extraction\image-color-test.hpp" />
     <ClInclude Include="data\mask-file.hpp" />
     <ClInclude Include="io\image-io.hpp" />
+    <ClInclude Include="data\dataset-mirroring-iterator.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

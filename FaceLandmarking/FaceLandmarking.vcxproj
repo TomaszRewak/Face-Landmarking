@@ -165,7 +165,7 @@
     <ClInclude Include="math\size.hpp" />
     <ClInclude Include="math\vector.hpp" />
     <ClInclude Include="io\autoencoder-example-io.hpp" />
-    <ClInclude Include="data\dataset-mirroring-reader.hpp" />
+    <ClInclude Include="data\dataset-mirroring-iterator.hpp" />
     <ClInclude Include="data\dataset.hpp" />
     <ClInclude Include="io\features-io.hpp" />
     <ClInclude Include="data\learning-example.hpp" />

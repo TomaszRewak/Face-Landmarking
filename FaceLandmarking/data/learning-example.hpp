@@ -4,7 +4,7 @@
 #include <opencv2/imgproc.hpp>
 #include "../FaceLandmarking/face-mask.hpp"
 
-namespace FaceLandmarking::IO
+namespace FaceLandmarking::Data
 {
 	template<size_t N>
 	struct LearningExample

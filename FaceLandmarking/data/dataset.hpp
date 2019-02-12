@@ -3,10 +3,10 @@
 #include <filesystem>
 
 #include "learning-example.hpp"
-#include "readers/image-reader.hpp"
-#include "readers/mask-reader.hpp"
+#include "../io/image-io.hpp"
+#include "../io/mask-io.hpp"
 
-namespace FaceLandmarking::Reader
+namespace FaceLandmarking::Data
 {
 	namespace fs = std::experimental::filesystem;
 
@@ -37,7 +37,7 @@ namespace FaceLandmarking::Reader
 			return LearningExample<Nodes>(image, maskFile.mask);
 		}
 
-		DatasetIterator& void operator++()
+		DatasetIterator& operator++()
 		{
 			iterator++;
 		}

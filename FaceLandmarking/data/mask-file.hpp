@@ -2,7 +2,7 @@
 
 #include "../FaceLandmarking/face-mask.hpp"
 
-namespace FaceLandmarking::Reader 
+namespace FaceLandmarking::Data
 {
 	template<size_t N>
 	struct MaskFile
