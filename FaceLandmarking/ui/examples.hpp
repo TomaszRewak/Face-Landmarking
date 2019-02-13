@@ -13,52 +13,40 @@ using namespace std;
 using namespace FaceLandmarking;
 
 template<size_t N>
-void example_test(experimental::filesystem::path dataPath)
+void example_test(experimental::filesystem::path dataPath, std::size_t steps)
 {
-	Data::Dataset<N> dataset(datePath);
+	Data::Dataset<N> dataset(dataPath);
 	FaceLandmarking::FaceLandmarker<N> faceLandmarker(dataPath);
+	Mask::FaceMask averageMask = IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask");
 
 	namedWindow("example", WINDOW_AUTOSIZE);
 
 	Mat imageWithMasks;
 
-	for (auto iter = dataset.begin(); iter!= dataset.end(); iter++)
+	for (auto iter = dataset.begin(); iter != dataset.end(); ++iter)
 	{
-		if (reader.hasNext()) {
-			auto example = reader.loadNext();
-			example.scaleFace(200, 200); // Maybe smaller? 
+		auto example = *iter;
+		example.scaleFace(200, 200);
 
-			FeatureExtraction::HsvImage processedImage;
-			imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect(), false);
-			maskRegression.setImage(processedImage);
+		faceLandmarker.masks.clear();
+		faceLandmarker.masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()))(averageMask));
 
-			auto normalizedMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(example.mask, Math::Rect<float>(Math::Point<float>(50, 50), Math::Size<float>(100, 100)));
-			auto averageScaledMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(averageMask, Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()));
+		while (true)
+		{
+			faceLandmarker.adjustMasks(example.image, steps);
 
-			auto adjustedMask = averageScaledMask;
+			example.image.copyTo(imageWithMasks);
+			Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
+			Test::UI::MaskUI<N>::drawMask(imageWithMasks, faceLandmarker.masks[0], cv::Scalar(0, 0, 255));
+			imshow("example", imageWithMasks);
 
-			while (true)
-			{
-				for (int i = 0; i < N; i++)
-				{
-					adjustedMask[i] += maskRegression.computeOffset(adjustedMask[i], i, 10, 2);
-				}
-				adjustedMask = maskAutoencoder.passThrough(adjustedMask);
-
-				example.image.copyTo(imageWithMasks);
-				Test::UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
-				Test::UI::MaskUI<N>::drawMask(imageWithMasks, averageScaledMask, cv::Scalar(0, 0, 255));
-				Test::UI::MaskUI<N>::drawMask(imageWithMasks, adjustedMask, cv::Scalar(255, 255, 255));
-				imshow("example", imageWithMasks);
-
-				auto key = waitKey(250000);
-				if (key == 32)
-					continue;
-				else if (key == 27)
-					return;
-				else
-					break;
-			}
+			auto key = waitKey(250000);
+			if (key == 32) // space
+				continue;
+			else if (key == 27) // escape
+				return;
+			else
+				break;
 		}
 	}
 }

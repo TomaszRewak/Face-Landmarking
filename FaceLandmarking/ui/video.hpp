@@ -70,15 +70,10 @@ void video_test(
 
 		imshow("real", frameWithMask);
 
-		switch (waitKey(30)) // How to improve?
-		{
-		case 32: // space
-		{
+		auto key = waitKey(30);
+		if (key == 32) // space
 			faceLandmarker.findFaces(frame);
-			break;
-		}
-		case 27: // escape
+		else if (key == 27) // escape
 			return;
-		}
 	}
 }

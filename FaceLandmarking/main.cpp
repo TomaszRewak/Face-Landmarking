@@ -67,7 +67,7 @@ int main(int argc, char** argv)
 		video_test<N>(dataPath, videoPath, steps, transform, transformRotate, transformWidth, transformHeight);
 		break;
 	case ProcessType::Example:
-		example_test<N>(dataPath);
+		example_test<N>(dataPath, steps);
 		break;
 	case ProcessType::Features:
 		features_test<N>(dataPath);
