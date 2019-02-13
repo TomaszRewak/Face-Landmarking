@@ -28,7 +28,7 @@ namespace FaceLandmarking::IO
 			file.close();
 		}
 
-		void add(const FaceMask<N>& inputMask, const FaceMask<N>& outputMask)
+		void add(const Mask::FaceMask<N>& inputMask, const Mask::FaceMask<N>& outputMask)
 		{
 			for (auto point : inputMask)
 				file << point.x << " " << point.y << " ";

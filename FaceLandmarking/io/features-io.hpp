@@ -9,7 +9,7 @@ namespace FaceLandmarking::IO
 {
 	namespace fs = std::experimental::filesystem;
 	
-	template<typename Length>
+	template<std::size_t Length>
 	class FeaturesIO
 	{
 	private:

@@ -145,7 +145,7 @@
     <ClInclude Include="feature-extraction\histogram.hpp" />
     <ClInclude Include="feature-extraction\hsv-image.hpp" />
     <ClInclude Include="feature-extraction\image-preprocessor.hpp" />
-    <ClInclude Include="features.hpp" />
+    <ClInclude Include="app\features.hpp" />
     <ClInclude Include="learning\autoencoder-processing.hpp" />
     <ClInclude Include="learning\average-mask-processing.hpp" />
     <ClInclude Include="learning\regressor-processing.hpp" />
@@ -177,10 +177,10 @@
     <ClInclude Include="data\mask-file.hpp" />
     <ClInclude Include="io\tree-io.hpp" />
     <ClInclude Include="feature-extraction\image-color-test.hpp" />
-    <ClInclude Include="ui\video.hpp" />
-    <ClInclude Include="ui\examples.hpp" />
-    <ClInclude Include="ui\face-ui.hpp" />
-    <ClInclude Include="ui\mask-ui.hpp" />
+    <ClInclude Include="app\video.hpp" />
+    <ClInclude Include="app\examples.hpp" />
+    <ClInclude Include="app\ui\face-ui.hpp" />
+    <ClInclude Include="app\ui\mask-ui.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

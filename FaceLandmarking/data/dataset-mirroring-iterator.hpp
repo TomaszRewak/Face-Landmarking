@@ -6,7 +6,7 @@ namespace FaceLandmarking::Data
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<typename DatasetIterator>
+	template<std::size_t Nodes, typename DatasetIterator>
 	class DatasetMirroringIterator
 	{
 	private:
@@ -53,7 +53,7 @@ namespace FaceLandmarking::Data
 		}
 
 	private:
-		cv::Mat flipImage(const Mat& image)
+		cv::Mat flipImage(const cv::Mat& image)
 		{
 			cv::Mat flippedImage;
 			cv::flip(example.image, flippedImage, 1);
@@ -61,9 +61,9 @@ namespace FaceLandmarking::Data
 			return flippedImage;
 		}
 
-		Mask::FaceMask<N> flipMask(const Mask::FaceMask& mask)
+		Mask::FaceMask<Nodes> flipMask(const Mask::FaceMask<Nodes>& mask)
 		{
-			Mask::FaceMask<N> flippedMask = mask;
+			Mask::FaceMask<Nodes> flippedMask = mask;
 			for (auto& point : flippedMask)
 				point.x = src.cols - point.x;
 

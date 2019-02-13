@@ -3,9 +3,9 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "../mask/face-mask.hpp"
+#include "../../mask/face-mask.hpp"
 
-namespace FaceLandmarking::Test::UI
+namespace FaceLandmarking::App::UI
 {
 	template<size_t N>
 	class MaskUI

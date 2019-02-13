@@ -31,8 +31,8 @@ namespace FaceLandmarking::Data
 
 		LearningExample<Nodes> operator*()
 		{
-			auto maskFile = MaskReader<Nodes>::loadMask(annotationsRootPath / *iterator);
-			auto image = ImageReader::loadImage(magesRootPath / maskFile.imageName);
+			auto maskFile = IO::MaskIO<Nodes>::load(annotationsRootPath / *iterator);
+			auto image = IO::ImageIO::load(imagesRootPath / maskFile.imageName);
 
 			return LearningExample<Nodes>(image, maskFile.mask);
 		}

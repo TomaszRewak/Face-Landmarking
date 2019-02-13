@@ -3,43 +3,42 @@
 #include <filesystem>
 #include <random>
 
-#include "../FaceLandmarking.Reader/dataset-reader.hpp"
-#include "../FaceLandmarking.Reader/autoencoder-example-io.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
-#include "../FaceLandmarking/math/angle.hpp"
+#include "../data/dataset.hpp"
+#include "../data/dataset-mirroring-iterator.hpp"
+#include "../io/autoencoder-example-io.hpp"
 
 namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N, typename DatasetIrerator>
-	class AutoencoderExampleGenerator
+	template<size_t N>
+	class AutoencoderProcessing
 	{
 	private:
 		fs::path dataPath;
 		std::default_random_engine e{};
 
 	public:
-		AutoencoderExampleGenerator(fs::path dataPath) :
+		AutoencoderProcessing(fs::path dataPath) :
 			dataPath(dataPath)
 		{ }
 
-		void compute()
+		template<typename DatasetIterator>
+		void compute(DatasetIterator begin, DatasetIterator end)
 		{
-			Reader::AutoencoderExampleIO<N> io{};
+			IO::AutoencoderExampleIO<N> io;
 
 			auto path = dataPath / "autoencoder" / "examples";
 			fs::remove(path);
 
 			io.open(path);
 
-			DatasetReader reader(dataPath);
-			while (reader.hasNext())
+			for (auto iter = begin; iter != end; iter++)
 			{
-				auto example = reader.loadNext(false);
+				auto example = *iter;
 				auto mask = example.mask;
 
-				auto normalizedMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(mask);
+				auto normalizedMask = Mask::MaskTransformation::MaskNormalizer<N>(mask.faceRect())(mask);
 				auto normalizedMaskRect = normalizedMask.faceRect();
 
 				io.add(normalizedMask, normalizedMask);
@@ -61,7 +60,7 @@ namespace FaceLandmarking::Learning
 			io.close();
 		}
 
-		FaceMask<N> addRandomNoise(FaceMask<N> mask, float grain)
+		Mask::FaceMask<N> addRandomNoise(Mask::FaceMask<N> mask, float grain)
 		{
 			std::normal_distribution<float> normal_distribution{ 0, grain };
 

@@ -3,37 +3,36 @@
 #include <filesystem>
 
 #include "average-mask-processing.hpp"
-#include "../FaceLandmarking.FeatureExtraction/decision.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-interpolation.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-transition.hpp"
-#include "../FaceLandmarking.Reader/features-io.hpp"
-#include "../FaceLandmarking.Reader/validation/image-color-test.hpp"
-#include "../FaceLandmarking.FeatureExtraction/feature-extractor.hpp"
-#include "../FaceLandmarking.FeatureExtraction/image-preprocessing.hpp"
+#include "../learning/decision.hpp"
+#include "../mask/mask-transformation/mask-interpolator.hpp"
+#include "../mask/mask-transformation/mask-transitioner.hpp"
+#include "../io/features-io.hpp"
+#include "../feature-extraction/image-color-test.hpp"
+#include "../feature-extraction/feature-extractor.hpp"
+#include "../feature-extraction/image-preprocessor.hpp"
 
 namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t N, typename DatasetReader>
-	class FeatureProcessing
+	template<size_t N>
+	class RegressorProcessing
 	{
 	private:
 		fs::path dataPath;
 		FeatureExtraction::ImagePreprocessor imagePreprocessor;
-		FeatureExtraction::FeatureExtractor<N> featureSelector;
-		Reader::Validation::ImageColorTest colorTest;
-		FaceMask<N> avgMask;
+		FeatureExtraction::ImageColorTest colorTest;
+		Mask::FaceMask<N> avgMask;
 
-		std::array<Reader::FeaturesIO, N> ios;
+		std::array<IO::FeaturesIO<N>, N> ios;
 
 	public:
-		FeatureProcessing(fs::path dataPath) :
-			dataPath(dataPath),
-			avgMask(AverageMaskProcessing<N, DatasetReader>(dataPath).load())
+		RegressorProcessing(fs::path dataPath) :
+			avgMask(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask"))
 		{ }
 
-		void compute()
+		template<typename DatasetIterator>
+		void compute(DatasetIterator begin, DatasetIterator end)
 		{
 			auto dir = dataPath / "features";
 
@@ -45,9 +44,9 @@ namespace FaceLandmarking::Learning
 
 			DatasetReader reader(dataPath);
 
-			while (reader.hasNext())
+			for (auto iter = begin; iter != end; iter++)
 			{
-				auto example = reader.loadNext(true);
+				auto example = *iter;
 
 				if (colorTest.isBackAndWhite(example.image))
 					continue;
@@ -56,8 +55,8 @@ namespace FaceLandmarking::Learning
 
 				FeatureExtraction::HsvImage processedImage;
 				imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect() * 0.5, true);
-				featureSelector.setImage(processedImage);
 
+				FeatureExtraction::FeatureExtractor featureSelector(processedImage);
 				compute(example);
 			}
 
@@ -66,7 +65,7 @@ namespace FaceLandmarking::Learning
 		}
 
 	private:
-		void compute(Reader::LearningExample<N>& example)
+		void compute(FeatureExtraction::FeatureExtractor& featureSelector, Data::LearningExample<N>& example)
 		{
 			auto normalizedAvgMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(
 				avgMask,
@@ -108,7 +107,7 @@ namespace FaceLandmarking::Learning
 			}
 		}
 
-		void compute(Reader::LearningExample<N>& example, const FaceMask<N>& currentMask)
+		void compute(FeatureExtraction::FeatureExtractor& featureSelector, Data::LearningExample<N>& example, const Mask::FaceMask<N>& currentMask)
 		{
 			for (size_t i = 0; i < N; i++)
 			{

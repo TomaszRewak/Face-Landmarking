@@ -1,11 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="ui\mask-ui.hpp" />
-    <ClInclude Include="ui\face-ui.hpp" />
-    <ClInclude Include="features.hpp" />
-    <ClInclude Include="ui\examples.hpp" />
-    <ClInclude Include="ui\video.hpp" />
     <ClInclude Include="mask\face-mask.hpp" />
     <ClInclude Include="mask\mask-transformation\mask-interpolator.hpp" />
     <ClInclude Include="mask\mask-transformation\mask-normalizer.hpp" />
@@ -48,6 +43,11 @@
     <ClInclude Include="regression\regressors\tree-mask-regressor.hpp" />
     <ClInclude Include="feature-extraction\image-preprocessor.hpp" />
     <ClInclude Include="face-landmarker.hpp" />
+    <ClInclude Include="app\examples.hpp" />
+    <ClInclude Include="app\video.hpp" />
+    <ClInclude Include="app\ui\face-ui.hpp" />
+    <ClInclude Include="app\ui\mask-ui.hpp" />
+    <ClInclude Include="app\features.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

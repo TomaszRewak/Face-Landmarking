@@ -2,46 +2,42 @@
 
 #include <filesystem>
 
-#include "../FaceLandmarking.Reader/dataset-reader.hpp"
-#include "../FaceLandmarking.Reader/mask-io.hpp"
-#include "mask/mask-avg.hpp"
-#include "../FaceLandmarking/mask-transformation/mask-normalizer.hpp"
+#include "../io/mask-io.hpp"
+#include "../mask/mask-transformation/mask-averager.hpp"
+#include "../mask/mask-transformation/mask-normalizer.hpp"
 
 namespace FaceLandmarking::Learning
 {
 	namespace fs = std::experimental::filesystem;
 
-	template<size_t Nodes, typename DatasetReader>
+	template<size_t Nodes>
 	class AverageMaskProcessing
 	{
 	private:
-		fs::path dataPath;
 		fs::path maskFile;
 
 	public:
 		AverageMaskProcessing(fs::path dataPath) :
-			dataPath(dataPath),
 			maskFile(dataPath / "mask" / "avg-face.mask")
 		{ }
 
-		void compute() const
+		template<typename DatasetIterator>
+		void compute(DatasetIterator begin, DatasetIterator end) const
 		{
-			Mask::AverageMask<Nodes> averageMaskBuilder;
-			DatasetReader reader(dataPath);
+			Mask::MaskTransformation::MaskAverager<Nodes> averageMaskBuilder;
 
-			while (reader.hasNext())
+			for (auto iter = begin; iter != end; iter++)
 			{
-				auto example = reader.loadNext(false);
+				auto example = *iter;
 				auto mask = example.mask;
 
 				mask = MaskTransformation::MaskNormalizer<N>::normalizeMask(mask);
 				averageMaskBuilder.addMask(mask);
 			}
 
-			FaceMask<N> averageMask = averageMaskBuilder.getAvg();
+			Mask::FaceMask<N> averageMask = averageMaskBuilder.getAvg();
 
-			Reader::MaskIO<Nodes> maskIO(maskFile);
-			maskIO.save(averageMask);
+			IO::MaskIO<Nodes>::save(maskFile, averageMask);
 		}
 	};
 }

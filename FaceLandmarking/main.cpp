@@ -1,17 +1,12 @@
-#include "ui/examples.hpp"
-#include "ui/video.hpp"
-#include "features.hpp"
-
-using namespace cv;
-using namespace std;
-using namespace FaceLandmarking;
+#include "app/examples.hpp"
+#include "app/video.hpp"
+#include "app/features.hpp"
 
 enum class ProcessType
 {
 	Video,
 	Example,
-	Features,
-	Autoencoder
+	Features
 };
 
 int main(int argc, char** argv)
@@ -19,8 +14,8 @@ int main(int argc, char** argv)
 	const int N = 194;
 
 	ProcessType processType = ProcessType::Video;
-	string dataPath = "./../Data";
-	string videoPath = "./../Data/video-examples/ja6.mp4";
+	std::string dataPath = "./../Data";
+	std::string videoPath = "./../Data/video-examples/ja6.mp4";
 	int steps = 60;
 
 	bool transform = true;
@@ -30,11 +25,11 @@ int main(int argc, char** argv)
 
 	for (int i = 1; i < argc;)
 	{
-		string param(argv[i++]);
+		std::string param(argv[i++]);
 
 		if (param == "-type")
 		{
-			string type(argv[i++]);
+			std::string type(argv[i++]);
 
 			if (type == "video")
 				processType = ProcessType::Video;
@@ -42,38 +37,33 @@ int main(int argc, char** argv)
 				processType = ProcessType::Example;
 			if (type == "features")
 				processType = ProcessType::Features;
-			if (type == "autoencoder")
-				processType = ProcessType::Autoencoder;
 		}
 		if (param == "-data")
 			dataPath = argv[i++];
 		if (param == "-video")
 			videoPath = argv[i++];
 		if (param == "-steps")
-			steps = stoi(argv[i++]);
+			steps = std::stoi(argv[i++]);
 		if (param == "-transform")
 			transform = true;
 		if (param == "-transform-rotate")
-			transformRotate = stoi(argv[i++]);
+			transformRotate = std::stoi(argv[i++]);
 		if (param == "-transform-width")
-			transformWidth = stoi(argv[i++]);
+			transformWidth = std::stoi(argv[i++]);
 		if (param == "-transform-height")
-			transformHeight = stoi(argv[i++]);
+			transformHeight = std::stoi(argv[i++]);
 	}
 
 	switch (processType)
 	{
 	case ProcessType::Video:
-		video_test<N>(dataPath, videoPath, steps, transform, transformRotate, transformWidth, transformHeight);
+		FaceLandmarking::App::video<N>(dataPath, videoPath, steps, transform, transformRotate, transformWidth, transformHeight);
 		break;
 	case ProcessType::Example:
-		example_test<N>(dataPath, steps);
+		FaceLandmarking::App::example<N>(dataPath, steps);
 		break;
 	case ProcessType::Features:
-		features_test<N>(dataPath);
-		break;
-	case ProcessType::Autoencoder:
-		autoencoder_test<N>(dataPath);
+		FaceLandmarking::App::features<N>(dataPath);
 		break;
 	}
 }

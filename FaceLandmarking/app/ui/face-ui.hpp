@@ -7,7 +7,7 @@
 
 #include "../../FaceLandmarking/math/rect.hpp"
 
-namespace FaceLandmarking::Test::UI
+namespace FaceLandmarking::App::UI
 {
 	class FaceUI
 	{
