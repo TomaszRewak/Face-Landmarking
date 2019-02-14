@@ -4,7 +4,7 @@
 
 #include "learning-example.hpp"
 #include "../io/image-io.hpp"
-#include "../io/mask-io.hpp"
+#include "../io/annotation-io.hpp"
 
 namespace FaceLandmarking::Data
 {
@@ -17,13 +17,13 @@ namespace FaceLandmarking::Data
 		fs::path annotationsRootPath;
 		fs::path imagesRootPath;
 
-		std::vector<std::string>::iterator iterator;
+		std::vector<fs::path>::iterator iterator;
 
 	public:
 		DatasetIterator(			
 			fs::path annotationsRootPath,
 			fs::path imagesRootPath,
-			std::vector<std::string>::iterator iterator) :
+			std::vector<fs::path>::iterator iterator) :
 			annotationsRootPath(annotationsRootPath),
 			imagesRootPath(imagesRootPath),
 			iterator(iterator)
@@ -31,7 +31,7 @@ namespace FaceLandmarking::Data
 
 		LearningExample<Nodes> operator*()
 		{
-			auto maskFile = IO::MaskIO<Nodes>::load(annotationsRootPath / *iterator);
+			auto maskFile = IO::AnnotationIO<Nodes>::load(annotationsRootPath / *iterator);
 			auto image = IO::ImageIO::load(imagesRootPath / maskFile.imageName);
 
 			return LearningExample<Nodes>(image, maskFile.mask);

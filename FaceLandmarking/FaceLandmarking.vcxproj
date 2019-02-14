@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="feature-extraction\basic-filters.hpp" />
+    <ClInclude Include="io\annotation-io.hpp" />
     <ClInclude Include="mask\mask-transformation\mask-averager.hpp" />
     <ClInclude Include="preprocessing\face-finder.hpp" />
     <ClInclude Include="preprocessing\mask-frame.hpp" />
