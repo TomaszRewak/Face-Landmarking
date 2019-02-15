@@ -1,21 +1,22 @@
 #pragma once
 
+#include "regressors/nn-regressor.hpp"
 #include "../mask/mask-transformation/mask-normalizer.hpp"
 
 namespace FaceLandmarking::Regression
 {
-	template<std::size_t Nodes, typename Regressor>
+	template<std::size_t Nodes>
 	class MaskAutoencoder
 	{
 	public:
-		MaskAutoencoder(Regressor regressor) :
-			regressor(regressor)
+		MaskAutoencoder(fs::path dataPath) :
+			regressor(dataPath / "regressors" / "nn" / "autoencoder")
 		{ }
 
 		Mask::FaceMask<Nodes> operator()(const Mask::FaceMask<Nodes>& input)
 		{
 			auto inputRect = input.faceRect();
-			auto normalizedInput = Mask::MaskTransformation::MaskNormalizer<Nodes>()(input);
+			auto normalizedInput = Mask::MaskTransformation::MaskNormalizer<Nodes>(inputRect)(input);
 			auto normalizedInputRect = normalizedInput.faceRect();
 
 			std::array<float, Nodes * 2> inputValues;
@@ -42,6 +43,6 @@ namespace FaceLandmarking::Regression
 		}
 
 	private:
-		Regressor regressor;
+		Regression::Regressors::NNRegressor<Regression::Regressors::ReluActivation> regressor;
 	};
 }

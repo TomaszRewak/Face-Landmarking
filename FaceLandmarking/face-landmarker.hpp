@@ -18,9 +18,6 @@
 #include "feature-extraction/image-preprocessor.hpp"
 #include "mask/mask-transformation/mask-scaler.hpp"
 
-#include "ui/mask-ui.hpp"
-#include "ui/face-ui.hpp"
-
 namespace FaceLandmarking
 {
 	namespace fs = std::experimental::filesystem;
@@ -35,16 +32,16 @@ namespace FaceLandmarking
 		Preprocessing::FaceFinder faceFinder;
 		FeatureExtraction::ImagePreprocessor imagePreprocessor;
 
-		Regression::MaskRegressor<N, FeatureExtraction::FeatureExtractor, Regression::Regressors::TreeMaskRegressor<N>> maskRegression;
-		Regression::MaskAutoencoder<N, Regression::Regressors::NNRegressor<Regression::Regressors::ReluActivation>> maskAutoencoder;
+		Regression::MaskRegressor<N> maskRegression;
+		Regression::MaskAutoencoder<N> maskAutoencoder;
 
 	public:
 		FaceLandmarker(fs::path dataPath) :
 			averageMask(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask")),
 			maskFrame(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask"), Math::Size<float>(150, 150)),
 			faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml"),
-			maskRegression(dataPath / "regressors" / "trees"),
-			maskAutoencoder(dataPath / "regressors" / "nn" / "autoencoder"),
+			maskRegression(dataPath),
+			maskAutoencoder(dataPath)
 		{ }
 
 		std::vector<Mask::FaceMask<N>> masks;
@@ -60,7 +57,7 @@ namespace FaceLandmarking
 		void adjustMasks(const cv::Mat& frame, int steps)
 		{
 			for (auto& mask : masks)
-				adjustMasks(mask, steps);
+				adjustMasks(frame, mask, steps);
 		}
 
 	private:
@@ -78,14 +75,13 @@ namespace FaceLandmarking
 			auto normalizedFaceRect = maskFrame.getFrame(normalizedMask);
 
 			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.5, true);
-			maskRegression.setImage(processedFrame);
 
 			for (int i = 0; i < N; i++)
 			{
-				mask[i] += maskRegression.computeOffset(normalizedMask[i], i, steps, regressionSize) / scale;
+				mask[i] += maskRegression.computeOffset(processedFrame, normalizedMask[i], i, steps) / scale;
 			}
 
-			mask = maskAutoencoder.passThrough(maskAutoencoder.passThrough(mask));
+			mask = maskAutoencoder(maskAutoencoder(mask));
 		}
 	};
 }

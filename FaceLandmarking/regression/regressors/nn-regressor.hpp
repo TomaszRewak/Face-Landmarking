@@ -36,7 +36,7 @@ namespace FaceLandmarking::Regression::Regressors
 	private:
 		std::vector<std::vector<float>> weights;
 		std::vector<std::vector<float>> biases;
-		std::vector<std::vector<float>> layers;
+		std::vector<std::size_t> layers;
 
 	public:
 		NNRegressor(fs::path path)

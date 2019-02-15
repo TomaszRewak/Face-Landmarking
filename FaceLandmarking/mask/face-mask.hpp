@@ -59,7 +59,7 @@ namespace FaceLandmarking::Mask
 				y += point.y;
 			}
 
-			return Math::Point<float>{x / N, y / N};
+			return Math::Point<float>{x / Nodes, y / Nodes};
 		}
 
 		Math::Size<float> faceSize() const

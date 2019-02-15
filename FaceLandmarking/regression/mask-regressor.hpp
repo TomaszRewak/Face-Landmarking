@@ -6,8 +6,10 @@
 #include <vector>
 #include <filesystem>
 
+#include "regressors/tree-mask-regressor.hpp"
 #include "../math/point.hpp"
 #include "../feature-extraction/hsv-image.hpp"
+#include "../feature-extraction/feature-extractor.hpp"
 
 namespace FaceLandmarking::Regression
 {
@@ -70,37 +72,27 @@ namespace FaceLandmarking::Regression
 		}
 	};
 
-	template<size_t N, typename FeatureExtractor, typename Regressor>
+	template<size_t N>
 	class MaskRegressor
 	{
 	private:
-		FeatureExtractor featureExtractor;
-		Regressor regressors;
-
-		std::array<float, FeatureExtractor::Length> features;
-
-		int cols;
-		int rows;
+		Regression::Regressors::TreeMaskRegressor<N> regressors;
 
 		MaskRegressorBuffer buffer;
 
 	public:
-		MaskRegressor(Regressor regressors) :
-			regressors(regressors)
+		MaskRegressor(fs::path dataPath) :
+			regressors(dataPath / "regressors" / "trees")
 		{ }
 
-		void setImage(const FeatureExtraction::HsvImage& image)
+		Math::Vector<float> computeOffset(const FeatureExtraction::HsvImage& image, Math::Point<float> point, size_t pointNumber, size_t iterations)
 		{
-			featureExtractor.setImage(image);
+			FeatureExtraction::FeatureExtractor featureExtractor(image);
 
-			cols = image.columns();
-			rows = image.rows();
+			int cols = image.columns();
+			int rows = image.rows();
 
 			buffer.resize(rows, cols);
-		}
-
-		Math::Vector<float> computeOffset(Math::Point<float> point, size_t pointNumber, size_t iterations)
-		{
 			buffer.clear();
 
 			Math::Vector<float> globalOffset;
@@ -119,8 +111,7 @@ namespace FaceLandmarking::Regression
 				}
 				else
 				{
-					features.clear();
-					featureExtractor.selectFeatures(xi, yi, features);
+					auto features = featureExtractor.selectFeatures(xi, yi);
 
 					localOffset = regressors.getOffset(pointNumber, features);
 

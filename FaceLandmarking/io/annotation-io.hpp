@@ -28,7 +28,7 @@ namespace FaceLandmarking::IO
 		static Data::MaskFile<N> load(fs::path filePath)
 		{
 			std::fstream file;
-			Mask::MaskFile<N> maskFile;
+			Data::MaskFile<N> maskFile;
 
 			file.open(filePath.string());
 

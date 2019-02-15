@@ -24,7 +24,7 @@ namespace FaceLandmarking::Preprocessing
 			faceCascade(faceCascadePath.string())
 		{ }
 
-		std::vector<Math::Rect<float>> locate(cv::Mat& image)
+		std::vector<Math::Rect<float>> locate(const cv::Mat& image)
 		{
 			std::vector<Math::Rect<float>> result;
 
