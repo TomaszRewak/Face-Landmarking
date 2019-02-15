@@ -15,7 +15,7 @@ namespace FaceLandmarking::FeatureExtraction
 			hsv(hsv)
 		{ }
 
-		std::array<float, Length> operator()(const Math::Point<float>& point)
+		std::array<float, Length> operator()(const Math::Point<int>& point)
 		{
 			std::array<float, Length> result;
 
@@ -25,7 +25,7 @@ namespace FaceLandmarking::FeatureExtraction
 			return result;
 		}
 
-		float operator()(const Math::Point<float>& point, std::size_t filter)
+		float operator()(const Math::Point<int>& point, std::size_t filter)
 		{
 			return selectFeatures(
 				point,
@@ -34,7 +34,7 @@ namespace FaceLandmarking::FeatureExtraction
 		}
 
 	private:
-		float selectFeatures(const Math::Point<float>& point, HsvChannel channel, std::size_t filter)
+		float selectFeatures(const Math::Point<int>& point, HsvChannel channel, std::size_t filter)
 		{
 			return Filter(hsv[channel], filter)(point.x, point.y);
 		}

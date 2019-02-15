@@ -102,8 +102,8 @@ namespace FaceLandmarking::Regression
 				Math::Point<float> currentPosition = point + globalOffset;
 				Math::Vector<float> localOffset;
 
-				int xi = std::max(0, std::min((int)currentPosition.x + x, cols - 1));
-				int yi = std::max(0, std::min((int)currentPosition.y + y, rows - 1));
+				int xi = std::max(0, std::min((int)currentPosition.x, cols - 1));
+				int yi = std::max(0, std::min((int)currentPosition.y, rows - 1));
 
 				if (buffer.hasValue(xi, yi))
 				{
@@ -111,7 +111,7 @@ namespace FaceLandmarking::Regression
 				}
 				else
 				{
-					auto features = featureExtractor.selectFeatures(xi, yi);
+					auto features = featureExtractor(Math::Point<int>(xi, yi));
 
 					localOffset = regressors.getOffset(pointNumber, features);
 

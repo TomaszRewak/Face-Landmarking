@@ -45,7 +45,7 @@ namespace FaceLandmarking::Regression::Regressors
 		}
 
 		template<typename Iterator>
-		void passThrough(Iterator input, Iterator output)
+		void operator()(Iterator input, Iterator output)
 		{
 			Activation activation;
 

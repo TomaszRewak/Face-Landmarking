@@ -37,7 +37,7 @@ namespace FaceLandmarking::Regression
 				normalizedOutput[i].y = outputValues[i * 2 + 1];
 			}
 
-			auto output = MaskNormalizer<Nodes>()(normalizedOutput, normalizedInputRect, inputRect);
+			auto output = Mask::MaskTransformation::MaskNormalizer<Nodes>(normalizedInputRect, inputRect)(normalizedOutput);
 
 			return output;
 		}
