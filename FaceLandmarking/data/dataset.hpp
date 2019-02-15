@@ -40,6 +40,8 @@ namespace FaceLandmarking::Data
 		DatasetIterator& operator++()
 		{
 			iterator++;
+
+			return *this;
 		}
 
 		bool operator!=(DatasetIterator& second)

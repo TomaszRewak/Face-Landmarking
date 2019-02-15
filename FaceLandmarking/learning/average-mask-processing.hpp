@@ -26,16 +26,16 @@ namespace FaceLandmarking::Learning
 		{
 			Mask::MaskTransformation::MaskAverager<Nodes> averageMaskBuilder;
 
-			for (auto iter = begin; iter != end; iter++)
+			for (auto iter = begin; iter != end; ++iter)
 			{
 				auto example = *iter;
 				auto mask = example.mask;
 
-				mask = MaskTransformation::MaskNormalizer<N>::normalizeMask(mask);
+				mask = Mask::MaskTransformation::MaskNormalizer<Nodes>(mask.faceRect())(mask);
 				averageMaskBuilder.addMask(mask);
 			}
 
-			Mask::FaceMask<N> averageMask = averageMaskBuilder.getAvg();
+			Mask::FaceMask<Nodes> averageMask = averageMaskBuilder.getAvg();
 
 			IO::MaskIO<Nodes>::save(maskFile, averageMask);
 		}

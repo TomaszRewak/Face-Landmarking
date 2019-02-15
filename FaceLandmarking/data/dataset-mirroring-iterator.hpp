@@ -27,27 +27,29 @@ namespace FaceLandmarking::Data
 				return example;
 
 			auto flippedImage = flipImage(example.image);
-			auto flippedMask = flipMask(example.mask);
+			auto flippedMask = flipMask(example.mask, example.image.cols);
 
-			return example LearningExample<Nodes>(
+			return LearningExample<Nodes>(
 				flippedImage,
 				flippedMask);
 		}
 
-		DatasetIterator& operator++()
+		DatasetMirroringIterator& operator++()
 		{
 			if (reversed)
 			{
-				iterator++;
+				++iterator;
 				reversed = false;
 			}
 			else
 			{
 				reversed = true;
 			}
+
+			return *this;
 		}
 
-		bool operator!=(DatasetIterator& second)
+		bool operator!=(DatasetMirroringIterator& second)
 		{
 			return iterator != second.iterator || reversed != reversed;
 		}
@@ -56,16 +58,16 @@ namespace FaceLandmarking::Data
 		cv::Mat flipImage(const cv::Mat& image)
 		{
 			cv::Mat flippedImage;
-			cv::flip(example.image, flippedImage, 1);
+			cv::flip(image, flippedImage, 1);
 
 			return flippedImage;
 		}
 
-		Mask::FaceMask<Nodes> flipMask(const Mask::FaceMask<Nodes>& mask)
+		Mask::FaceMask<Nodes> flipMask(Mask::FaceMask<Nodes>& mask, std::size_t width)
 		{
 			Mask::FaceMask<Nodes> flippedMask = mask;
 			for (auto& point : flippedMask)
-				point.x = src.cols - point.x;
+				point.x = width - point.x;
 
 			return flippedMask;
 		}

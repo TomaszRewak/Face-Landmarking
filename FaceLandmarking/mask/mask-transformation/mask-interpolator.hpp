@@ -18,7 +18,7 @@ namespace FaceLandmarking::Mask::MaskTransformation
 		{
 			FaceMask<Nodes> interpolated = from;
 
-			for (size_t i = 0; i < N; i++)
+			for (size_t i = 0; i < Nodes; i++)
 			{
 				auto v = from[i].to(to[i]);
 

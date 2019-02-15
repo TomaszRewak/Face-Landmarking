@@ -76,7 +76,7 @@ namespace FaceLandmarking::Regression
 	class MaskRegressor
 	{
 	private:
-		Regression::Regressors::TreeMaskRegressor<N> regressors;
+		Regression::Regressors::TreeMaskRegressor<N, FeatureExtraction::FeatureExtractor::Length> regressors;
 
 		MaskRegressorBuffer buffer;
 

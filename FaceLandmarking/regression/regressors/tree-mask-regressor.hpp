@@ -4,10 +4,11 @@
 
 namespace FaceLandmarking::Regression::Regressors
 {
+	template<size_t N>
 	class TreeMaskRegressorPair {
 	public:
-		TreeRegressor x;
-		TreeRegressor y;
+		TreeRegressor<N> x;
+		TreeRegressor<N> y;
 
 		TreeMaskRegressorPair(fs::path path) :
 			x(path / "x"),
@@ -15,20 +16,20 @@ namespace FaceLandmarking::Regression::Regressors
 		{ }
 	};
 
-	template<size_t N>
+	template<size_t N, size_t F>
 	class TreeMaskRegressor
 	{
 	private:
-		std::vector<TreeMaskRegressorPair> regressors;
+		std::vector<TreeMaskRegressorPair<F>> regressors;
 
 	public:
 		TreeMaskRegressor(fs::path basePath)
 		{
 			for (size_t i = 0; i < N; i++)
-				regressors.push_back(TreeMaskRegressorPair(basePath / std::to_string(i)));
+				regressors.push_back(TreeMaskRegressorPair<F>(basePath / std::to_string(i)));
 		}
 
-		Math::Vector<float> getOffset(int point, const std::vector<float>& features)
+		Math::Vector<float> getOffset(int point, const std::array<float, F>& features)
 		{
 			return Math::Vector<float>(
 				regressors[point].x.get(features),

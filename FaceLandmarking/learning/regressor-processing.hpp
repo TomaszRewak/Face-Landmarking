@@ -24,7 +24,7 @@ namespace FaceLandmarking::Learning
 		FeatureExtraction::ImageColorTest colorTest;
 		Mask::FaceMask<N> avgMask;
 
-		std::array<IO::FeaturesIO<N>, N> ios;
+		std::array<IO::FeaturesIO<FeatureExtraction::FeatureExtractor::Length>, N> ios;
 
 	public:
 		RegressorProcessing(fs::path dataPath) :
@@ -40,11 +40,9 @@ namespace FaceLandmarking::Learning
 			fs::create_directory(dir);
 
 			for (int i = 0; i < ios.size(); i++)
-				ios[i].open(i, dir);
+				ios[i].open(dir, i);
 
-			DatasetReader reader(dataPath);
-
-			for (auto iter = begin; iter != end; iter++)
+			for (auto iter = begin; iter != end; ++iter)
 			{
 				auto example = *iter;
 
@@ -57,7 +55,7 @@ namespace FaceLandmarking::Learning
 				imagePreprocessor.processImage(example.image, processedImage, example.mask.faceRect() * 0.5, true);
 
 				FeatureExtraction::FeatureExtractor featureSelector(processedImage);
-				compute(example);
+				compute(featureSelector, example);
 			}
 
 			for (int i = 0; i < ios.size(); i++)
@@ -67,10 +65,7 @@ namespace FaceLandmarking::Learning
 	private:
 		void compute(FeatureExtraction::FeatureExtractor& featureSelector, Data::LearningExample<N>& example)
 		{
-			auto normalizedAvgMask = MaskTransformation::MaskNormalizer<N>::normalizeMask(
-				avgMask,
-				example.mask.faceRect()
-			);
+			auto normalizedAvgMask = Mask::MaskTransformation::MaskNormalizer<N>(example.mask.faceRect())(avgMask);
 
 			float interpolationFactors[]{
 				0.,
@@ -84,10 +79,10 @@ namespace FaceLandmarking::Learning
 
 			for (auto factor : interpolationFactors)
 			{
-				compute(example, MaskTransformation::MaskInterpolation<N>::interpolate(example.mask, normalizedAvgMask, factor, false, false));
-				compute(example, MaskTransformation::MaskInterpolation<N>::interpolate(example.mask, normalizedAvgMask, factor, false, true));
-				compute(example, MaskTransformation::MaskInterpolation<N>::interpolate(example.mask, normalizedAvgMask, factor, true, false));
-				compute(example, MaskTransformation::MaskInterpolation<N>::interpolate(example.mask, normalizedAvgMask, factor, true, true));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskInterpolator<N>(factor, false, false)(example.mask, normalizedAvgMask));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskInterpolator<N>(factor, false, true)(example.mask, normalizedAvgMask));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskInterpolator<N>(factor, true, false)(example.mask, normalizedAvgMask));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskInterpolator<N>(factor, true, true)(example.mask, normalizedAvgMask));
 			}
 
 			float offsetFactors[]{
@@ -100,10 +95,10 @@ namespace FaceLandmarking::Learning
 
 			for (auto offsetFactor : offsetFactors)
 			{
-				compute(example, MaskTransformation::MaskTransition<N>::moveMask(example.mask, Math::Vector<float>(offsetFactor, 0)));
-				compute(example, MaskTransformation::MaskTransition<N>::moveMask(example.mask, Math::Vector<float>(-offsetFactor, 0)));
-				compute(example, MaskTransformation::MaskTransition<N>::moveMask(example.mask, Math::Vector<float>(0, offsetFactor)));
-				compute(example, MaskTransformation::MaskTransition<N>::moveMask(example.mask, Math::Vector<float>(0, -offsetFactor)));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskTransitioner<N>(Math::Vector<float>(offsetFactor, 0))(example.mask));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskTransitioner<N>(Math::Vector<float>(-offsetFactor, 0))(example.mask));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskTransitioner<N>(Math::Vector<float>(0, offsetFactor))(example.mask));
+				compute(featureSelector, example, Mask::MaskTransformation::MaskTransitioner<N>(Math::Vector<float>(0, -offsetFactor))(example.mask));
 			}
 		}
 
@@ -111,11 +106,8 @@ namespace FaceLandmarking::Learning
 		{
 			for (size_t i = 0; i < N; i++)
 			{
-				std::vector<float> features;
-				std::vector<float> decisions;
-
-				featureSelector.selectFeatures(currentMask, i, features);
-				FeatureExtraction::Decision<N>::getDecisions(example.mask, currentMask, i, decisions);
+				auto features = featureSelector(Math::Point<int>(currentMask[i].x, currentMask[i].y));
+				auto decisions = FeatureExtraction::Decision<N>::getDecisions(example.mask, currentMask, i);
 
 				ios[i].add(features, decisions);
 			}

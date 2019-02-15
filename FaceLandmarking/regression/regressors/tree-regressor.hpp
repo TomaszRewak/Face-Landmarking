@@ -10,6 +10,7 @@ namespace FaceLandmarking::Regression::Regressors
 {
 	namespace fs = std::experimental::filesystem;
 
+	template<std::size_t N>
 	class TreeRegressor
 	{
 	private:
@@ -25,7 +26,7 @@ namespace FaceLandmarking::Regression::Regressors
 			IO::TreeIO::load(path, features, thresholds, leftChildren, rightChildren, values);
 		}
 
-		float get(const std::vector<float>& features)
+		float get(const std::array<float, N>& features)
 		{
 			int node = 0;
 

@@ -33,7 +33,7 @@ namespace FaceLandmarking::Learning
 
 			io.open(path);
 
-			for (auto iter = begin; iter != end; iter++)
+			for (auto iter = begin; iter != end; ++iter)
 			{
 				auto example = *iter;
 				auto mask = example.mask;
@@ -50,8 +50,8 @@ namespace FaceLandmarking::Learning
 						auto newMaskRect = newMask.faceRect();
 
 						io.add(
-							MaskTransformation::MaskNormalizer<N>::normalizeMask(newMask, newMaskRect, normalizedMaskRect),
-							MaskTransformation::MaskNormalizer<N>::normalizeMask(normalizedMask, newMaskRect, normalizedMaskRect)
+							Mask::MaskTransformation::MaskNormalizer<N>(newMaskRect, normalizedMaskRect)(newMask),
+							Mask::MaskTransformation::MaskNormalizer<N>(newMaskRect, normalizedMaskRect)(normalizedMask)
 						);
 					}
 				}
