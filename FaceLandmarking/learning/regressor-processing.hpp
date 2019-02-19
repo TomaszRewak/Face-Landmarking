@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <iostream>
 
 #include "average-mask-processing.hpp"
 #include "../learning/decision.hpp"
@@ -28,12 +29,15 @@ namespace FaceLandmarking::Learning
 
 	public:
 		RegressorProcessing(fs::path dataPath) :
+			dataPath(dataPath),
 			avgMask(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask"))
 		{ }
 
 		template<typename DatasetIterator>
 		void compute(DatasetIterator begin, DatasetIterator end)
 		{
+			std::cout << std::endl << "Regressor processing";
+
 			auto dir = dataPath / "features";
 
 			fs::remove_all(dir);
@@ -56,6 +60,8 @@ namespace FaceLandmarking::Learning
 
 				FeatureExtraction::FeatureExtractor featureSelector(processedImage);
 				compute(featureSelector, example);
+
+				std::cout << ".";
 			}
 
 			for (int i = 0; i < ios.size(); i++)

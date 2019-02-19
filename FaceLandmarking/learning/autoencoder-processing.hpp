@@ -26,6 +26,8 @@ namespace FaceLandmarking::Learning
 		template<typename DatasetIterator>
 		void compute(DatasetIterator begin, DatasetIterator end)
 		{
+			std::cout << std::endl << "Autoencoder processing";
+
 			IO::AutoencoderExampleIO<N> io;
 
 			auto path = dataPath / "autoencoder" / "examples";
@@ -55,6 +57,8 @@ namespace FaceLandmarking::Learning
 						);
 					}
 				}
+
+				std::cout << ".";
 			}
 
 			io.close();

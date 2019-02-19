@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <iostream>
 
 #include "../io/mask-io.hpp"
 #include "../mask/mask-transformation/mask-averager.hpp"
@@ -24,6 +25,8 @@ namespace FaceLandmarking::Learning
 		template<typename DatasetIterator>
 		void compute(DatasetIterator begin, DatasetIterator end) const
 		{
+			std::cout << std::endl << "Average face processing";
+
 			Mask::MaskTransformation::MaskAverager<Nodes> averageMaskBuilder;
 
 			for (auto iter = begin; iter != end; ++iter)
@@ -33,6 +36,8 @@ namespace FaceLandmarking::Learning
 
 				mask = Mask::MaskTransformation::MaskNormalizer<Nodes>(mask.faceRect())(mask);
 				averageMaskBuilder.addMask(mask);
+
+				std::cout << ".";
 			}
 
 			Mask::FaceMask<Nodes> averageMask = averageMaskBuilder.getAvg();
