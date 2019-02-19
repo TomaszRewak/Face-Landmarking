@@ -51,7 +51,7 @@ namespace FaceLandmarking
 			masks.clear();
 
 			for (auto rect : faceFinder.locate(frame))
-				masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(rect)(averageMask));
+				masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(averageMask.faceRect(), rect)(averageMask));
 		}
 
 		void adjustMasks(const cv::Mat& frame, int steps)

@@ -26,13 +26,13 @@ namespace FaceLandmarking::Regression::Regressors
 			IO::TreeIO::load(path, features, thresholds, leftChildren, rightChildren, values);
 		}
 
-		float get(const std::array<float, N>& features)
+		float get(const std::array<float, N>& featureValues)
 		{
 			int node = 0;
 
 			while (features[node] != -2)
 			{
-				if (features[features[node]] <= thresholds[node])
+				if (featureValues[features[node]] <= thresholds[node])
 					node = leftChildren[node];
 				else
 					node = rightChildren[node];

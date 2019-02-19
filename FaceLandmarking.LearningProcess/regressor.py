@@ -19,7 +19,7 @@ for point in files:
     print('point: {0}'.format(point))
 
     in_path = join(in_directory, point)
-    examples = read_regressor_examples(24, 2, in_path)
+    examples = read_regressor_examples(12 * 3, 2, in_path)
 
     x = examples['x']
     y = [[max(-1, min(1, element)) for element in line] for line in examples['y']]

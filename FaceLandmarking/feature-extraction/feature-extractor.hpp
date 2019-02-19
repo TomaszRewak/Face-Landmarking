@@ -11,7 +11,7 @@ namespace FaceLandmarking::FeatureExtraction
 	public:
 		static const std::size_t Length = Filter::Length * HsvChannels.size();
 
-		FeatureExtractor(const HsvImage& image) :
+		FeatureExtractor(const HsvImage& hsv) :
 			hsv(hsv)
 		{ }
 
@@ -25,12 +25,12 @@ namespace FaceLandmarking::FeatureExtraction
 			return result;
 		}
 
-		float operator()(const Math::Point<int>& point, std::size_t filter)
+		float operator()(const Math::Point<int>& point, std::size_t feature)
 		{
 			return selectFeatures(
 				point,
-				HsvChannels[filter / Filter::Length],
-				filter / HsvChannels.size());
+				HsvChannels[feature / Filter::Length],
+				feature % Filter::Length);
 		}
 
 	private:

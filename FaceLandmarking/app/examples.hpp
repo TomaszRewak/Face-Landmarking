@@ -19,15 +19,21 @@ namespace FaceLandmarking::App
 
 		namedWindow("example", cv::WINDOW_AUTOSIZE);
 
+		auto begin = Data::DatasetMirroringIterator<N, Data::DatasetIterator<N>>(dataset.begin());
+		auto end = Data::DatasetMirroringIterator<N, Data::DatasetIterator<N>>(dataset.end());
+
 		cv::Mat imageWithMasks;
 
-		for (auto iter = dataset.begin(); iter != dataset.end(); ++iter)
+		for (auto iter = begin; iter != end; ++iter)
 		{
 			auto example = *iter;
 			example.scaleFace(200, 200);
 
 			faceLandmarker.masks.clear();
-			faceLandmarker.masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()))(averageMask));
+			faceLandmarker.masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(
+				averageMask.faceRect(), 
+				Math::Rect<float>(example.mask.faceCenter(), example.mask.faceSize()))
+				(averageMask));
 
 			while (true)
 			{

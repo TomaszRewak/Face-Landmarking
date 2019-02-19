@@ -14,8 +14,8 @@ namespace FaceLandmarking::App
 		auto begin = Data::DatasetMirroringIterator<N, Data::DatasetIterator<N>>(dataset.begin());
 		auto end = Data::DatasetMirroringIterator<N, Data::DatasetIterator<N>>(dataset.end());
 
-		Learning::AverageMaskProcessing<N> averageMaskProcessing(dataPath);
-		averageMaskProcessing.compute(begin, end);
+		//Learning::AverageMaskProcessing<N> averageMaskProcessing(dataPath);
+		//averageMaskProcessing.compute(begin, end);
 
 		Learning::RegressorProcessing<N> featureProcessing(dataPath);
 		featureProcessing.compute(begin, end);
