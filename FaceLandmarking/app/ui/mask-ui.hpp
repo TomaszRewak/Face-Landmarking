@@ -21,7 +21,7 @@ namespace FaceLandmarking::App::UI
 					image,
 					cv::Point(point.x, point.y),
 					2,
-					cv::Scalar(255, 255 * pointIndex / N, 255 - 255 * pointIndex / N),
+					cv::Scalar(255 * pointIndex / N, 255, 255 - 255 * pointIndex / N),
 					1);
 			}
 		}

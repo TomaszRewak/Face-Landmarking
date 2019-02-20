@@ -38,7 +38,7 @@ namespace FaceLandmarking
 	public:
 		FaceLandmarker(fs::path dataPath) :
 			averageMask(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask")),
-			maskFrame(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask"), Math::Size<float>(150, 150)),
+			maskFrame(IO::MaskIO<N>::load(dataPath / "mask" / "avg-face.mask"), Math::Size<float>(200, 200)),
 			faceFinder(dataPath / "haar" / "haarcascade_frontalface_default.xml"),
 			maskRegression(dataPath),
 			maskAutoencoder(dataPath)
@@ -77,9 +77,7 @@ namespace FaceLandmarking
 			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.5, true);
 
 			for (int i = 0; i < N; i++)
-			{
 				mask[i] += maskRegression.computeOffset(processedFrame, normalizedMask[i], i, steps) / scale;
-			}
 
 			mask = maskAutoencoder(mask);
 		}

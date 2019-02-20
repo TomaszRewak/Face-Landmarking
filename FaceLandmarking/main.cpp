@@ -13,10 +13,9 @@ int main(int argc, char** argv)
 {
 	const int N = 194;
 
-	ProcessType processType = ProcessType::Example;
+	ProcessType processType = ProcessType::Video;
 	std::string dataPath = "./../Data";
 	std::string videoPath = "./../Data/video-examples/ja6.mp4";
-	int steps = 15;
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
@@ -42,8 +41,6 @@ int main(int argc, char** argv)
 			dataPath = argv[i++];
 		if (param == "-video")
 			videoPath = argv[i++];
-		if (param == "-steps")
-			steps = std::stoi(argv[i++]);
 		if (param == "-transform")
 			transform = true;
 		if (param == "-transform-rotate")
@@ -57,10 +54,10 @@ int main(int argc, char** argv)
 	switch (processType)
 	{
 	case ProcessType::Video:
-		FaceLandmarking::App::video<N>(dataPath, videoPath, steps, transform, transformRotate, transformWidth, transformHeight);
+		FaceLandmarking::App::video<N>(dataPath, videoPath, transform, transformRotate, transformWidth, transformHeight);
 		break;
 	case ProcessType::Example:
-		FaceLandmarking::App::example<N>(dataPath, steps);
+		FaceLandmarking::App::example<N>(dataPath);
 		break;
 	case ProcessType::Features:
 		FaceLandmarking::App::features<N>(dataPath);

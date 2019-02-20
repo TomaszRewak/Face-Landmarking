@@ -27,7 +27,6 @@ namespace FaceLandmarking::App
 	void video(
 		std::experimental::filesystem::path dataPath,
 		std::string videoPath,
-		int steps,
 		bool transform,
 		int transformRotate,
 		int transformWidth,
@@ -65,7 +64,7 @@ namespace FaceLandmarking::App
 
 			frame.copyTo(frameWithMask);
 
-			faceLandmarker.adjustMasks(frame, steps);
+			faceLandmarker.adjustMasks(frame, 20);
 
 			for (auto& mask : faceLandmarker.masks)
 				UI::MaskUI<N>::drawMask(frameWithMask, mask);

@@ -11,7 +11,7 @@
 namespace FaceLandmarking::App
 {
 	template<size_t N>
-	void example(std::experimental::filesystem::path dataPath, std::size_t steps)
+	void example(std::experimental::filesystem::path dataPath)
 	{
 		Data::Dataset<N> dataset(dataPath);
 		FaceLandmarking::FaceLandmarker<N> faceLandmarker(dataPath);
@@ -37,7 +37,7 @@ namespace FaceLandmarking::App
 
 			while (true)
 			{
-				faceLandmarker.adjustMasks(example.image, steps);
+				faceLandmarker.adjustMasks(example.image, 20);
 
 				example.image.copyTo(imageWithMasks);
 				UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);

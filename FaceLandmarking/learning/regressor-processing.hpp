@@ -71,7 +71,7 @@ namespace FaceLandmarking::Learning
 	private:
 		void compute(FeatureExtraction::FeatureExtractor& featureSelector, Data::LearningExample<N>& example)
 		{
-			auto normalizedAvgMask = Mask::MaskTransformation::MaskNormalizer<N>(example.mask.faceRect())(avgMask);
+			auto normalizedAvgMask = Mask::MaskTransformation::MaskNormalizer<N>(avgMask.faceRect(), example.mask.faceRect())(avgMask);
 
 			float interpolationFactors[]{
 				0.,
