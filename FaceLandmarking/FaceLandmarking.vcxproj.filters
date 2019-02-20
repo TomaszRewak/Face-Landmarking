@@ -49,6 +49,7 @@
     <ClInclude Include="app\ui\mask-ui.hpp" />
     <ClInclude Include="app\features.hpp" />
     <ClInclude Include="io\annotation-io.hpp" />
+    <ClInclude Include="app\ui\video-capture.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -5,6 +5,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <iostream>
+#include <chrono>
 
 #include "../data/dataset.hpp"
 #include "../preprocessing/face-finder.hpp"
@@ -20,47 +21,30 @@
 
 #include "ui/mask-ui.hpp"
 #include "ui/face-ui.hpp"
+#include "ui/video-capture.hpp"
 
 namespace FaceLandmarking::App
 {
 	template<std::size_t N>
 	void video(
 		std::experimental::filesystem::path dataPath,
-		std::string videoPath,
-		bool transform,
-		int transformRotate,
-		int transformWidth,
-		int transformHeight
+		UI::VideoCapture videoCapture
 	)
 	{
-		FaceLandmarking::FaceLandmarker<N> faceLandmarker(dataPath);
+		const int FPS = 30;
 
-		cv::VideoCapture videoCapture(videoPath);
-		if (!videoCapture.isOpened())
-			return;
+		FaceLandmarking::FaceLandmarker<N> faceLandmarker(dataPath);
 
 		cv::namedWindow("real", cv::WINDOW_AUTOSIZE);
 
 		cv::Mat frame;
 		cv::Mat frameWithMask;
-		cv::Mat frameTransform;
 
 		for (;;)
 		{
-			videoCapture >> frame;
+			auto frameStart = std::chrono::system_clock::now();
 
-			if (frame.empty()) {
-				videoCapture = cv::VideoCapture(videoPath);
-				continue;
-			}
-
-			if (transform)
-			{
-				cv::rotate(frame, frameTransform, transformRotate);
-				frameTransform.copyTo(frame);
-				cv::resize(frame, frameTransform, cv::Size(transformWidth, transformHeight));
-				frameTransform.copyTo(frame);
-			}
+			videoCapture.loadFrame(frame);
 
 			frame.copyTo(frameWithMask);
 
@@ -71,7 +55,9 @@ namespace FaceLandmarking::App
 
 			cv::imshow("real", frameWithMask);
 
-			auto key = cv::waitKey(30);
+			auto frameEnd = std::chrono::system_clock::now();
+
+			auto key = cv::waitKey(1000 / FPS);
 			if (key == 32) // space
 				faceLandmarker.findFaces(frame);
 			else if (key == 27) // escape

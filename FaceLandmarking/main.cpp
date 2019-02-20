@@ -54,7 +54,7 @@ int main(int argc, char** argv)
 	switch (processType)
 	{
 	case ProcessType::Video:
-		FaceLandmarking::App::video<N>(dataPath, videoPath, transform, transformRotate, transformWidth, transformHeight);
+		FaceLandmarking::App::video<N>(dataPath, FaceLandmarking::App::UI::VideoCapture(videoPath, transform, transformRotate, transformWidth, transformHeight));
 		break;
 	case ProcessType::Example:
 		FaceLandmarking::App::example<N>(dataPath);

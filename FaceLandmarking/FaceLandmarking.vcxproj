@@ -134,6 +134,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="app\ui\video-capture.hpp" />
     <ClInclude Include="feature-extraction\basic-filters.hpp" />
     <ClInclude Include="io\annotation-io.hpp" />
     <ClInclude Include="mask\mask-transformation\mask-averager.hpp" />
