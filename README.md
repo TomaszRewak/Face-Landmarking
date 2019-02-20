@@ -1,7 +1,9 @@
 # FaceLandmarking
 Face landmarking software for lips movement detection.
 
-![Detection](https://github.com/TomaszRewak/Face-Landmarking/blob/master/About/detection.gif?raw=true)
+<p align="center">
+  <img src="https://github.com/TomaszRewak/Face-Landmarking/blob/master/About/detection.gif?raw=true" width=400/>
+</p>
 
 This software is written (mostly) in C++ (with ML parts written in Python) using OpenCV (for video capture and processing). The algorithm itself is written from a scratch. It's based on decision trees and active mask that have been taught using the Helen dataset.
 
