@@ -42,8 +42,6 @@ namespace FaceLandmarking::App
 
 		for (;;)
 		{
-			auto frameStart = std::chrono::system_clock::now();
-
 			videoCapture.loadFrame(frame);
 
 			frame.copyTo(frameWithMask);
@@ -55,9 +53,7 @@ namespace FaceLandmarking::App
 
 			cv::imshow("real", frameWithMask);
 
-			auto frameEnd = std::chrono::system_clock::now();
-
-			auto key = cv::waitKey(1000 / FPS);
+			auto key = cv::waitKey(std::max(1., FPS - (double)videoCapture.sinceLastFrame().count()));
 			if (key == 32) // space
 				faceLandmarker.findFaces(frame);
 			else if (key == 27) // escape

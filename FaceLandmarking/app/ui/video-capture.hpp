@@ -5,6 +5,8 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <exception>
+#include <chrono>
+
 
 namespace FaceLandmarking::App::UI
 {
@@ -19,6 +21,8 @@ namespace FaceLandmarking::App::UI
 		int transformHeight;
 
 		cv::Mat frameTransform;
+
+		std::chrono::time_point<std::chrono::system_clock> frameTimestamp;
 
 	public:
 		VideoCapture(
@@ -54,6 +58,15 @@ namespace FaceLandmarking::App::UI
 				cv::resize(frame, frameTransform, cv::Size(transformWidth, transformHeight));
 				frameTransform.copyTo(frame);
 			}
+
+			frameTimestamp = std::chrono::system_clock::now();
+		}
+
+		std::chrono::milliseconds sinceLastFrame()
+		{
+			auto now = std::chrono::system_clock::now();
+
+			return std::chrono::duration_cast<std::chrono::milliseconds>(now - frameTimestamp);
 		}
 	};
 }
