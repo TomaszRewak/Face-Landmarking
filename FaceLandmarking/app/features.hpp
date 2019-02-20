@@ -20,7 +20,7 @@ namespace FaceLandmarking::App
 		Learning::RegressorProcessing<N> featureProcessing(dataPath);
 		featureProcessing.compute(begin, end);
 
-		Learning::AutoencoderProcessing<N> autoencoderProcessing(dataPath);
-		autoencoderProcessing.compute(begin, end);
+		/*Learning::AutoencoderProcessing<N> autoencoderProcessing(dataPath);
+		autoencoderProcessing.compute(begin, end);*/
 	}
 }

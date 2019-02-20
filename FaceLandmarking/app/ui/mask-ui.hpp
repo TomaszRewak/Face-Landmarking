@@ -11,7 +11,7 @@ namespace FaceLandmarking::App::UI
 	class MaskUI
 	{
 	public:
-		static void drawMask(const cv::Mat& image, const Mask::FaceMask<N>& mask, cv::Scalar color = cv::Scalar(255, 255, 0))
+		static void drawMask(const cv::Mat& image, const Mask::FaceMask<N>& mask)
 		{
 			for (size_t pointIndex = 0; pointIndex < N; pointIndex++)
 			{
@@ -21,7 +21,7 @@ namespace FaceLandmarking::App::UI
 					image,
 					cv::Point(point.x, point.y),
 					2,
-					color,
+					cv::Scalar(255, 255 * pointIndex / N, 255 - 255 * pointIndex / N),
 					1);
 			}
 		}

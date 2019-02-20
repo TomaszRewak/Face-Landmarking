@@ -81,7 +81,7 @@ namespace FaceLandmarking
 				mask[i] += maskRegression.computeOffset(processedFrame, normalizedMask[i], i, steps) / scale;
 			}
 
-			mask = maskAutoencoder(maskAutoencoder(mask));
+			mask = maskAutoencoder(mask);
 		}
 	};
 }

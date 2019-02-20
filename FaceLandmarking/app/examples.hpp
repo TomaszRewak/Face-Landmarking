@@ -41,7 +41,7 @@ namespace FaceLandmarking::App
 
 				example.image.copyTo(imageWithMasks);
 				UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);
-				UI::MaskUI<N>::drawMask(imageWithMasks, faceLandmarker.masks[0], cv::Scalar(0, 0, 255));
+				UI::MaskUI<N>::drawMask(imageWithMasks, faceLandmarker.masks[0]);
 				cv::imshow("example", imageWithMasks);
 
 				auto key = cv::waitKey(250000);

@@ -5,7 +5,7 @@
 
 namespace FaceLandmarking::FeatureExtraction
 {
-	static const std::array<cv::Mat, 12> BasicFilters
+	static const std::array<cv::Mat, 5> BasicFilters
 	{
 		cv::Mat{
 			+1
@@ -20,13 +20,13 @@ namespace FaceLandmarking::FeatureExtraction
 			 0,  0,  0,
 			-1, -2, -1
 		},
-		cv::Mat{
+		/*cv::Mat{
 			+1, +1, +1, +1, +1,
 			+1, +1, +1, +1, +1,
 			+1, +1, +1, +1, +1,
 			+1, +1, +1, +1, +1,
 			+1, +1, +1, +1, +1,
-		},
+		},*/
 		cv::Mat{
 			 0, +1,  0, -1,  0,
 			+1, +2,  0, -2, -1,
@@ -41,7 +41,7 @@ namespace FaceLandmarking::FeatureExtraction
 			-1, -2, -4, -2, -1,
 			 0, -1, -2, -1,  0,
 		},
-		cv::Mat{
+		/*cv::Mat{
 			+4, +2,  0, -2, +4,
 			+2, +1,  0, -1, +2,
 			+1,  0,  0,  0, +1,
@@ -54,8 +54,8 @@ namespace FaceLandmarking::FeatureExtraction
 			 0,  0,  0,  0,  0,
 			-2, -1,  0, -1, -2,
 			-4, -2, -1, -2, -4,
-		},
-		cv::Mat{
+		},*/
+		/*cv::Mat{
 			+1, +1,  0,  0,  0,
 			+1, +1,  0,  0,  0,
 			 0,  0,  0,  0,  0,
@@ -82,6 +82,6 @@ namespace FaceLandmarking::FeatureExtraction
 			 0,  0,  0,  0,  0,
 			 0,  0,  0, +1, +1,
 			 0,  0,  0, +1, +1,
-		},
+		},*/
 	};
 }
