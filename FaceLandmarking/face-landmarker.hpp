@@ -54,17 +54,17 @@ namespace FaceLandmarking
 				masks.push_back(Mask::MaskTransformation::MaskNormalizer<N>(averageMask.faceRect(), rect)(averageMask));
 		}
 
-		void adjustMasks(const cv::Mat& frame, int steps)
+		void adjustMasks(const cv::Mat& frame, int steps, int iterators)
 		{
 			for (auto& mask : masks)
-				adjustMasks(frame, mask, steps);
+				adjustMasks(frame, mask, steps, iterators);
 		}
 
 	private:
 		cv::Mat scaledFrame;
 		FeatureExtraction::HsvImage processedFrame;
 
-		void adjustMasks(const cv::Mat& frame, Mask::FaceMask<N>& mask, int steps)
+		void adjustMasks(const cv::Mat& frame, Mask::FaceMask<N>& mask, int steps, int iterations)
 		{
 			auto scale = maskFrame.getScale(mask);
 			auto normalizedMask = Mask::MaskTransformation::MaskScaler<N>(scale, scale, Math::Point<float>(0, 0))(mask);
@@ -76,10 +76,15 @@ namespace FaceLandmarking
 
 			imagePreprocessor.processImage(scaledFrame, processedFrame, normalizedFaceRect * 0.5, true);
 
-			for (int i = 0; i < N; i++)
-				mask[i] += maskRegression.computeOffset(processedFrame, normalizedMask[i], i, steps) / scale;
+			for (int i = 0; i < iterations; i++)
+			{
+				for (int n = 0; n < N; n++)
+					normalizedMask[n] += maskRegression.computeOffset(processedFrame, normalizedMask[n], n, steps);
 
-			mask = maskAutoencoder(mask);
+				normalizedMask = maskAutoencoder(normalizedMask);
+			}
+
+			mask = Mask::MaskTransformation::MaskScaler<N>(1. / scale, 1. / scale, Math::Point<float>(0, 0))(normalizedMask);
 		}
 	};
 }

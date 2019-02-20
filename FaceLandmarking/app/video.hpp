@@ -64,7 +64,7 @@ namespace FaceLandmarking::App
 
 			frame.copyTo(frameWithMask);
 
-			faceLandmarker.adjustMasks(frame, 20);
+			faceLandmarker.adjustMasks(frame, 15, 3);
 
 			for (auto& mask : faceLandmarker.masks)
 				UI::MaskUI<N>::drawMask(frameWithMask, mask);

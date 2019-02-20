@@ -37,7 +37,7 @@ namespace FaceLandmarking::App
 
 			while (true)
 			{
-				faceLandmarker.adjustMasks(example.image, 20);
+				faceLandmarker.adjustMasks(example.image, 20, 1);
 
 				example.image.copyTo(imageWithMasks);
 				UI::MaskUI<N>::drawMask(imageWithMasks, example.mask);

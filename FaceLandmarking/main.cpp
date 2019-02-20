@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 
 	ProcessType processType = ProcessType::Video;
 	std::string dataPath = "./../Data";
-	std::string videoPath = "./../Data/video-examples/ja6.mp4";
+	std::string videoPath = "./../Data/video-examples/ja7.mp4";
 
 	bool transform = true;
 	int transformRotate = cv::ROTATE_90_COUNTERCLOCKWISE;
