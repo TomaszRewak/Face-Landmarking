@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 {
 	const int N = 194;
 
-	ProcessType processType = ProcessType::Video;
+	ProcessType processType = ProcessType::Example;
 	std::string dataPath = "./../Data";
 	std::string videoPath = "./../Data/video-examples/ja7.mp4";
 
