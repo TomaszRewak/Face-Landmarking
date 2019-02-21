@@ -15,13 +15,13 @@ In this project, the face landmarking is an iterative process which updates posi
 
 The algorithm maps 194 points on all of the detected faces each frame. The ML models have been thought using the HELEN dataset: http://www.ifp.illinois.edu/~vuongle2/helen/
 
-It's just a pet project of mine, so still requires some work. In particular I didn't have that much time (nor will :D) to conduct extended experiments. Most of the parameters (like shape and number of filters, size of NN etc.) are just mine educated guesses.
+It's just a pet project of mine, so it still requires some work. In particular I didn't have that much time (nor will :D) to conduct extended experiments. Most of the parameters (like shape and number of filters, size of NN etc.) are just mine educated guesses.
 
 ## Setup
 
 This repo contains all the code required to extract features from the dataset, generate ML models and use the face landmarker. Things that are missing are: dependencies (like OpenCV which has to be installed separately) and learning data.
 
-In the main directory of the cloned repo one has to create a `Data` directory with following subdirectories: `annotation`, `images`, `haar`, `mask`, `autoencoder`, `features` and `regressors`.
+First: in the main directory of the cloned repo create a `Data` directory with following subdirectories: `annotation`, `images`, `haar`, `mask`, `autoencoder`, `features` and `regressors`.
 
 The dataset can be downloaded from the HELEN project website: http://www.ifp.illinois.edu/~vuongle2/helen/
 
@@ -53,4 +53,4 @@ Finally, a `-type video` flag can be used to load a video for a file (provided w
 
 ## More
 
-If you have any questions fell free to reach out to me.
+If you have any questions fell free to contact me.
