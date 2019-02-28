@@ -1,7 +1,7 @@
 # FaceLandmarking
-Real time face landmarking software.
+Real time face landmarking using decision trees and NN autoencoders.
 
-The approach to the face landmarking problem used in this project is described in detail on my blog: (work in progress). The blog post contains also some information on how I’ve achieved the real time performance.
+The approach to the face landmarking problem used in this project is briefly described on my blog: https://blog.tomasz-rewak.com/face-landmarking/. The blog post contains also some information on how I’ve achieved the real time performance.
 
 <p align="center">
   <img src="https://github.com/TomaszRewak/Face-Landmarking/blob/master/About/detection.gif?raw=true" width=400/>
